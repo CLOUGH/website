@@ -1,22 +1,3 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: website
-  labels:
-    run: website
-spec:
-  type: NodePort
-  ports:
-  - port: 80
-    targetPort: 80
-    protocol: TCP
-    name: http
-  - port: 443
-    protocol: TCP
-    name: https
-  selector:
-    run: website
----
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -33,5 +14,58 @@ spec:
         image: clough/website:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
-        - containerPort: 443      
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostaliases-pod
+spec:
+  restartPolicy: Never
+  hostAliases:
+  - ip: "127.0.0.1"
+    hostnames:
+    - "warrenclough.com"
+  containers:
+  - name: cat-hosts
+    image: busybox
+    command:
+    - cat
+    args:
+    - "/etc/hosts"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: website
+  labels:
+    run: website
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    protocol: TCP
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
+  selector:
+    run: website
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: website
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /*
+          backend:
+            serviceName: website
+            servicePort: 80

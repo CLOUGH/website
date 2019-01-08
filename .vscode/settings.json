@@ -1,3 +1,4 @@
 {
-    "docker.defaultRegistryPath": "clough"
+    "docker.defaultRegistryPath": "clough",
+    "tslint.autoFixOnSave": true
 }

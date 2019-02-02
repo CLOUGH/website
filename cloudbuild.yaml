@@ -1,5 +1,13 @@
 steps:
-  #install node packages
+  #install angular
+- name: 'gcr.io/cloud-builders/npm'
+  id: 'Install'
+  args: 
+    - 'install'
+    - '-g'
+    - '@angular/cli'
+
+# Install Dependencies
 - name: 'gcr.io/cloud-builders/npm'
   id: 'Install'
   args: 
@@ -17,8 +25,10 @@ steps:
   id: 'Complie'
   args: 
     - 'run' 
+    - 'ng'
     - 'build'
     - '--prod'
+    - '--aot'
 
   # This step builds the container image.
 - name: 'gcr.io/cloud-builders/docker'

@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: website
-        image: gcr.io/website-227817/github.com/clough/website:latest
+        image: gcr.io/website-227817/website-cloudbuild:latest
         imagePullPolicy: Always
         ports:
         - name: http

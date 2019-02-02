@@ -13,7 +13,7 @@ steps:
   
   # Build productive files
 - name: 'gcr.io/cloud-builders/npm'
-  id: 'Compiling'
+  id: 'Complie'
   args: 
     - 'run' 
     - 'build'
@@ -35,4 +35,4 @@ steps:
   id: Push
   args: 
     - 'push'
-    - 'gcr.io/$PROJECT_ID/hello-cloudbuild:$SHORT_SHA'
+    - 'gcr.io/$PROJECT_ID/website-cloudbuild:$SHORT_SHA'

@@ -1,7 +1,7 @@
 steps:
   #install angular
 - name: 'gcr.io/cloud-builders/npm'
-  id: 'Install'
+  id: 'Install Angular'
   args: 
     - 'install'
     - '-g'
@@ -9,7 +9,7 @@ steps:
 
 # Install Dependencies
 - name: 'gcr.io/cloud-builders/npm'
-  id: 'Install'
+  id: 'Install Project Dependencies'
   args: 
     - 'install'
   

@@ -14,11 +14,11 @@ steps:
     - 'install'
   
   # This step run the unit tests
-- name: 'gcr.io/cloud-builders/npm'
-  id: 'Test'
-  args: 
-    - 'run'
-    - 'test-headless'
+# - name: 'gcr.io/cloud-builders/npm'
+#   id: 'Test'
+#   args: 
+#     - 'run'
+#     - 'test-headless'
   
   # Build productive files
 - name: 'gcr.io/cloud-builders/npm'

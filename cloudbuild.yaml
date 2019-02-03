@@ -13,12 +13,15 @@ steps:
   args: 
     - 'install'
   
-  # This step run the unit tests
-# - name: 'gcr.io/cloud-builders/npm'
-#   id: 'Test'
-#   args: 
-#     - 'run'
-#     - 'test-headless'
+# This step run the unit tests
+- name: 'gcr.io/cloud-builders/npm'
+  id: 'Test'
+  args: 
+    - 'run'
+    - 'ng'
+    - 'test'
+    - '-browsers'
+    - 'ChromeHeadless'
   
   # Build productive files
 - name: 'gcr.io/cloud-builders/npm'

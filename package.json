@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless --progress=false",
-    "test-phantomjs": "ng test --browsers PhantomJS"
+    "test-phantomjs": "ng test --browsers=PhantomJS --watch=false"
   },
   "private": true,
   "dependencies": {

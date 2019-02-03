@@ -18,7 +18,7 @@ steps:
   id: 'Test'
   args: 
     - 'run'
-    - 'test-headless'
+    - 'test-phantomjs'
   
   # Build productive files
 - name: 'gcr.io/cloud-builders/npm'

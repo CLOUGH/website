@@ -46,7 +46,7 @@ steps:
   - image
   - deployment
   - website
-  - web=gcr.io/$PROJECT_ID/website:1.0.$BUILD_ID
+  - web=gcr.io/$PROJECT_ID/website:SHORT_SHA
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   - 'CLOUDSDK_CONTAINER_CLUSTER=website-cluster'

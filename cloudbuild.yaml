@@ -20,8 +20,10 @@ steps:
     - 'run'
     - 'ng'
     - 'test'
-    - '-browsers'
-    - 'ChromeHeadless'
+    - '--browsers=ChromeHeadless'
+    - '--watch=false'
+    - '--progress=false'
+    - '--sourcemaps=false'
   
   # Build productive files
 - name: 'gcr.io/cloud-builders/npm'

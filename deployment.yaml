@@ -11,26 +11,13 @@ spec:
     spec:
       containers:
       - name: website
-        image: gcr.io/website-227817/website-cloudbuild:latest
+        image: gcr.io/website-227817/wesbite:latest
         imagePullPolicy: Always
         ports:
         - name: http
           containerPort: 80
         - name: https
           containerPort: 443
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: website-ingress
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name: website-ip
-  labels:
-    app: website
-spec:
-  backend:
-    serviceName: website-service
-    servicePort: 8080
 ---
 apiVersion: v1
 kind: Service
@@ -46,3 +33,16 @@ spec:
   ports:
   - port: 8080
     targetPort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: website-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: website-ip
+  labels:
+    app: website
+spec:
+  backend:
+    serviceName: website-service
+    servicePort: 8080

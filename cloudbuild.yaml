@@ -40,6 +40,7 @@ steps:
 
 # Deploy application on kubernetes
 - name: 'gcr.io/cloud-builders/kubectl'
+  id: 'Deploy on Kubernetes'
   args:
   - set
   - image

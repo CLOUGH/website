@@ -19,16 +19,6 @@ steps:
   args: 
     - 'run'
     - 'test-phantomjs'
-  
-  # Build productive files
-- name: 'gcr.io/cloud-builders/npm'
-  id: 'Complie'
-  args: 
-    - 'run' 
-    - 'ng'
-    - 'build'
-    - '--prod'
-    - '--aot'
 
   # This step builds the container image.
 - name: 'gcr.io/cloud-builders/docker'

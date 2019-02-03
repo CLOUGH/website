@@ -18,12 +18,7 @@ steps:
   id: 'Test'
   args: 
     - 'run'
-    - 'ng'
-    - 'test'
-    - '--browsers=ChromeHeadless'
-    - '--watch=false'
-    - '--progress=false'
-    - '--sourcemaps=false'
+    - 'test-headless'
   
   # Build productive files
 - name: 'gcr.io/cloud-builders/npm'

@@ -21,9 +21,16 @@ module.exports = function (config) {
       fixWebpackSourcePaths: true
     },
     customLaunchers: {
-      ChromeHeadlessNoSandbox: {
+      browsers: ['ChromeHeadless'],
+      singleRun: true,
+      ChromeHeadless: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
+        flags: [
+          '--headless',
+          '--disable-gpu',
+          '--no-sandbox',
+          '--remote-debugging-port=9222'
+        ]
       }
     },
     reporters: ['progress', 'kjhtml'],

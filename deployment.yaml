@@ -1,28 +1,31 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: website
+  name: websiteweb
+  labels:
+    app: website
 spec:
-  replicas: 1
+  selector:
+    matchLabels:
+      app: website
+      tier: web
   template:
     metadata:
       labels:
-        run: website
+        app: website
+        tier: web
     spec:
       containers:
-      - name: website
+      - name: website-app
         image: gcr.io/website-227817/website:latest
         imagePullPolicy: Always
         ports:
-        - name: http
-          containerPort: 80
-        - name: https
-          containerPort: 443
+        - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: website
+  name: websiteweb-backend
   labels:
     app: website
 spec:
@@ -37,12 +40,12 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: website
+  name: websiteweb
   annotations:
     kubernetes.io/ingress.global-static-ip-name: website-ip
   labels:
     app: website
 spec:
   backend:
-    serviceName: website
+    serviceName: websiteweb-backend
     servicePort: 8080

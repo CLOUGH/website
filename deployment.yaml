@@ -44,5 +44,5 @@ metadata:
     app: website
 spec:
   backend:
-    serviceName: website-service
+    serviceName: website
     servicePort: 8080

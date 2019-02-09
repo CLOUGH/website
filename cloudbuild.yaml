@@ -41,6 +41,9 @@ steps:
 # Deploy application on kubernetes
 - name: 'gcr.io/cloud-builders/kubectl'
   id: 'Deploy on Kubernetes'
+  env:
+    - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=website-cluster'
   args:
     - 'apply'
     - '-f'

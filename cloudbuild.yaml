@@ -44,6 +44,7 @@ steps:
   env:
     - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
     - 'CLOUDSDK_CONTAINER_CLUSTER=website-cluster'
+    - 'LATEST_IMAGE_TAG=$SHORT_SHA'
   args:
     - 'apply'
     - '-f'

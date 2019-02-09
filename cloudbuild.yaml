@@ -37,6 +37,15 @@ steps:
   args: 
     - 'push'
     - 'gcr.io/$PROJECT_ID/website:latest'
+  
+# generate new deployment yaml based on $SHORT_SHA
+- name: 'gcr.io/$PROJECT_ID/envsubst'
+  id: 'Substituting Environment Values'
+  args:
+    - 'deployment.yaml'
+    - 'deployment.yaml'
+  env:
+    - 'SHORT_SHA=$SHORT_SHA'
 
 # Deploy application on kubernetes
 - name: 'gcr.io/cloud-builders/kubectl'
@@ -44,6 +53,7 @@ steps:
   env:
     - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
     - 'CLOUDSDK_CONTAINER_CLUSTER=website-cluster'
+    - 'SHORT_SHA=$SHORT_SHA'
   args:
     - 'apply'
     - '-f'

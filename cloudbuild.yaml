@@ -42,11 +42,6 @@ steps:
 - name: 'gcr.io/cloud-builders/kubectl'
   id: 'Deploy on Kubernetes'
   args:
-  - set
-  - image
-  - deployment
-  - website
-  - web=gcr.io/$PROJECT_ID/website:${SHORT_SHA}
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=website-cluster'
+    - 'apply'
+    - '-f'
+    - 'deployment.yaml'

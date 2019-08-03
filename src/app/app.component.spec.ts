@@ -2,15 +2,13 @@ import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
-import { HomePageComponent } from './home-page/home-page.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        MaintenancePageComponent,
-        HomePageComponent
+        MaintenancePageComponent
       ],
       imports: [
         AppRoutingModule

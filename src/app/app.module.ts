@@ -3,18 +3,16 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
 import { MatExpansionModule } from '@angular/material';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HomePageComponent } from './home-page/home-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MaintenancePageComponent,
-    HomePageComponent
+    MaintenancePageComponent
   ],
   imports: [
     BrowserModule,
@@ -23,6 +21,7 @@ import { HomePageComponent } from './home-page/home-page.component';
     MatExpansionModule,
     MatToolbarModule,
     AppRoutingModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

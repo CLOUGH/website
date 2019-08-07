@@ -1,0 +1,28 @@
+.hero{
+    height: calc(100vh - 56px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: bottom;
+    .text-area {
+      align-self: center;
+      text-align: center;
+    }
+}
+
+.post-preview {
+  .card-body {
+    min-height: 50px;
+    .card-title {
+      // white-space:nowrap
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+    }
+    .article-excerpt {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      height: 50px;
+    }
+  }
+}

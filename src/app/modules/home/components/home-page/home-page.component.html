@@ -1,0 +1,27 @@
+
+<app-main-layout>
+  <section class="hero" *ngIf="pageContent.hero" [style.background-image]="'url('+pageContent.hero.image+')'">
+    <div class="text-area">
+      <h1 class="mat-display-3">{{pageContent.hero.mainHeading}}</h1>
+      <h3 class="mat-display-1">{{pageContent.hero.subHeading}}</h3>
+      <a *ngFor="let link of pageContent.hero.links"  class="btn btn-primary" [href]="link.link" role="button">{{link.text}}</a>
+    </div>
+  </section>
+  <div class="bg-light">
+    <section class="recent-posts container ">
+      <h1 class="display-4">Recent</h1>
+      <div class="row">
+        <div *ngFor="let post of recentPosts" class="col-lg-4">
+          <article class="card mb-5 post-preview">
+            <img [src]="post.coverImage.src" [alt]="post.coverImage.caption" class="card-img-top">
+            <div class="card-body">
+              <h2 class="card-title">{{post.title}}</h2>
+              <div><small>{{post.created_by}}</small></div>
+              <p class="article-excerpt">{{post.excerpt}}</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+</app-main-layout>

@@ -3,16 +3,17 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule, CoreModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatExpansionModule } from '@angular/material';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppRoutingModule } from './app-routing.module';
+import { AboutPageComponent } from './pages/about-page/about-page.component';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MaintenancePageComponent
+    AboutPageComponent
   ],
   imports: [
     BrowserModule,

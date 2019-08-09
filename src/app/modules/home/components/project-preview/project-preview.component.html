@@ -1,0 +1,14 @@
+<div class="card">
+  <carousel [interval]="false" [showIndicators]="true">
+    <slide *ngFor="let image of project.images">
+      <img [src]="image.src" [alt]="image.caption" class="card-img-top" style="display: block; width: 100%;">
+    </slide>
+  </carousel>
+
+  <div class="card-body">
+    <h2 class="card-title">
+      <span><a href="#">{{project.name}}</a></span>
+    </h2>
+    <!-- <p class="card-text">{{project.description}}</p> -->
+  </div>
+</div>

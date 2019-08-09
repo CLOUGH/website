@@ -1,0 +1,18 @@
+.card {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  a{
+    color:inherit;
+  }
+  .card-title{
+    font-size: 12pt;
+    text-align: center;
+  }
+}
+
+.carousel-control.left {
+  display: none;
+}
+.carousel-control.right {
+  display: none;
+}

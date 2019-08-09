@@ -1,29 +1,79 @@
-
 <app-main-layout>
   <section class="hero" *ngIf="pageContent.hero" [style.background-image]="'url('+pageContent.hero.image+')'">
     <div class="text-area">
       <h1 class="mat-display-3">{{pageContent.hero.mainHeading}}</h1>
       <h3 class="mat-display-1">{{pageContent.hero.subHeading}}</h3>
-      <a *ngFor="let link of pageContent.hero.links"  class="btn btn-primary" [href]="link.link" role="button">{{link.text}}</a>
+      <a *ngFor="let link of pageContent.hero.links" class="btn btn-primary" [href]="link.link"
+        role="button">{{link.text}}</a>
     </div>
   </section>
   <div class="bg-light">
     <section class="recent-posts container ">
-      <h2 class="display-2 mb-5 pt-3">Posts</h2>
+      <h2 class="display-2 mb-5 pt-3">About Me</h2>
       <div class="row">
-        <div *ngFor="let post of posts" class="col-lg-4 col-md-6">
-          <app-post-preview [post]="post"></app-post-preview>
+        <div class="col pb-5">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia alias distinctio praesentium similique sit
+            quaerat neque qui placeat et, possimus ut veniam laborum earum? Laborum eaque doloribus aperiam nesciunt
+            repellat!
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia alias distinctio praesentium similique sit
+            quaerat neque qui placeat et, possimus ut veniam laborum earum? Laborum eaque doloribus aperiam nesciunt
+            repellat!
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia alias distinctio praesentium similique sit
+            quaerat neque qui placeat et, possimus ut veniam laborum earum? Laborum eaque doloribus aperiam nesciunt
+            repellat!
+          </p>
+          <div class="text-center">
+            <a name="" id="" class="btn btn-primary" href="#" role="button">Download Resume</a>
+          </div>
+        </div>
+        <div class="col">
+          <div class="mb-3 ">
+            <span>Java</span>
+            <progressbar [value]="70">70%</progressbar>
+          </div>
+          <div class="mb-3 ">
+            <span>ReactJs</span>
+            <progressbar [value]="70">70%</progressbar>
+          </div>
+          <div class="mb-3 ">
+            <span>Angular</span>
+            <progressbar [value]="85">85%</progressbar>
+          </div>
+          <div class="mb-3 ">
+            <span>Laravel</span>
+            <progressbar [value]="80">80%</progressbar>
+          </div>
+          <div class="mb-3 ">
+            <span>Git</span>
+            <progressbar [value]="90">90%</progressbar>
+          </div>
+          <div class="mb-3 ">
+            <span>NodeJs</span>
+            <progressbar [value]="75">75%</progressbar>
+          </div>
         </div>
       </div>
     </section>
   </div>
   <div class="bg-white">
     <section class="recent-posts container ">
-      <h2 class="display-2 mb-5 pt-3">Portfolio-</h2>
+      <h2 class="display-2 mb-5 pt-3">Posts</h2>
       <div class="row">
-        <div *ngFor="let post of posts" class="col-lg-4 col-md-6">
-          <app-post-preview [post]="post"></app-post-preview>
-        </div>
+        <app-post-preview *ngFor="let post of posts" [post]="post" class="col-lg-4 col-md-6"></app-post-preview>
+      </div>
+    </section>
+  </div>
+  <div class="bg-light">
+    <section class="recent-posts container ">
+      <h2 class="display-2 mb-5 pt-3">Projects</h2>
+      <div class="row">
+        <app-project-preview *ngFor="let project of projects" class="col-lg-4 col-md-6" [project]="project">
+        </app-project-preview>
       </div>
     </section>
   </div>

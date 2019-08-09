@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as faker from 'faker';
 import { Post } from '../../models/post';
+import { range } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -23,27 +24,46 @@ export class HomePageComponent implements OnInit {
     }
   };
 
-  posts: Post[] = [];
+  posts: Post[];
+  projects: any[];
 
   constructor() { }
 
   ngOnInit() {
-    const noPost = 6;
-    for (let i = 0; i < noPost; i++) {
-      this.posts.push(
-        {
-          title: faker.lorem.sentence(faker.random.number({ min: 3, max: 10 })),
-          created_at: faker.date.recent(),
-          created_by: faker.name.findName(),
-          excerpt: faker.lorem.sentences(faker.random.number({ min: 2, max: 10 })),
-          coverImage: {
-            src: `https://picsum.photos/500/320?random=${faker.random.number(1080)}`,
-            caption: faker.lorem.sentences(faker.random.number({ min: 1, max: 5 }))
-          }
+    this.posts = [...Array(6).keys()].map(value => {
+      return {
+        title: faker.lorem.sentence(faker.random.number({ min: 3, max: 10 })),
+        created_at: faker.date.recent(),
+        created_by: faker.name.findName(),
+        excerpt: faker.lorem.sentences(faker.random.number({ min: 2, max: 10 })),
+        coverImage: {
+          src: `https://picsum.photos/500/320?random=${faker.random.number(1080)}`,
+          caption: faker.lorem.sentences(faker.random.number({ min: 1, max: 5 }))
         }
-      );
-    }
+      };
+    }).sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
 
-    this.posts.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+    this.projects = [...Array(3).keys()].map(value => {
+      return {
+        name: faker.lorem.sentence(faker.random.number(10)),
+        description: faker.lorem.paragraph(),
+        created_at: faker.date.recent(),
+        images: [
+          {
+            src: `https://picsum.photos/980/600?random=${faker.random.number(1080)}`,
+            caption: faker.lorem.sentence
+          },
+          {
+            src: `https://picsum.photos/980/600?random=${faker.random.number(1080)}`,
+            caption: faker.lorem.sentence
+          },
+          {
+            src: `https://picsum.photos/980/600?random=${faker.random.number(1080)}`,
+            caption: faker.lorem.sentence
+          }
+        ]
+      };
+    });
+
   }
 }

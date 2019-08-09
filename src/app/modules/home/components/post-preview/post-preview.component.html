@@ -1,0 +1,15 @@
+<article class="card mb-5 post-preview">
+  <a href="#">
+    <img [src]="post.coverImage.src" [alt]="post.coverImage.caption" class="card-img-top">
+  </a>
+  <div class="card-body">
+    <h2 class="card-title">
+      <span><a href="#">{{post.title}}</a></span>
+    </h2>
+    <hr>
+    <div class="article-info">
+      <span class="author">{{post.created_by}}</span>
+      <span class="created">{{post.created_at | amTimeAgo}}</span>
+    </div>
+  </div>
+</article>

@@ -9,17 +9,20 @@
   </section>
   <div class="bg-light">
     <section class="recent-posts container ">
-      <h1 class="display-4">Recent</h1>
+      <h2 class="display-2 mb-5 pt-3">Posts</h2>
       <div class="row">
-        <div *ngFor="let post of recentPosts" class="col-lg-4">
-          <article class="card mb-5 post-preview">
-            <img [src]="post.coverImage.src" [alt]="post.coverImage.caption" class="card-img-top">
-            <div class="card-body">
-              <h2 class="card-title">{{post.title}}</h2>
-              <div><small>{{post.created_by}}</small></div>
-              <p class="article-excerpt">{{post.excerpt}}</p>
-            </div>
-          </article>
+        <div *ngFor="let post of posts" class="col-lg-4 col-md-6">
+          <app-post-preview [post]="post"></app-post-preview>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="bg-white">
+    <section class="recent-posts container ">
+      <h2 class="display-2 mb-5 pt-3">Portfolio-</h2>
+      <div class="row">
+        <div *ngFor="let post of posts" class="col-lg-4 col-md-6">
+          <app-post-preview [post]="post"></app-post-preview>
         </div>
       </div>
     </section>

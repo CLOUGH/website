@@ -2,7 +2,7 @@ steps:
   #install angular
 - name: 'gcr.io/cloud-builders/npm'
   id: 'Install Angular'
-  args: 
+  args:
     - 'install'
     - '-g'
     - '@angular/cli'
@@ -10,15 +10,15 @@ steps:
 # Install Dependencies
 - name: 'gcr.io/cloud-builders/npm'
   id: 'Install Project Dependencies'
-  args: 
+  args:
     - 'install'
-  
+
 # This step run the unit tests
-- name: 'gcr.io/cloud-builders/npm'
-  id: 'Test'
-  args: 
-    - 'run'
-    - 'test-phantomjs'
+# - name: 'gcr.io/cloud-builders/npm'
+#   id: 'Test'
+#   args:
+#     - 'run'
+#     - 'test-phantomjs'
 
   # This step builds the container image.
 - name: 'gcr.io/cloud-builders/docker'
@@ -34,10 +34,10 @@ steps:
   # replaced by Cloud Build
 - name: 'gcr.io/cloud-builders/docker'
   id: Push
-  args: 
+  args:
     - 'push'
     - 'gcr.io/$PROJECT_ID/website:latest'
-  
+
 # generate new deployment yaml based on $SHORT_SHA
 - name: 'gcr.io/$PROJECT_ID/envsubst'
   id: 'Substituting Environment Values'

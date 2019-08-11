@@ -10,7 +10,11 @@ import { PostPreviewComponent } from './components/post-preview/post-preview.com
 import { ProjectPreviewComponent } from './components/project-preview/project-preview.component';
 
 @NgModule({
-  declarations: [HomePageComponent, PostPreviewComponent, ProjectPreviewComponent],
+  declarations: [
+    HomePageComponent,
+    PostPreviewComponent,
+    ProjectPreviewComponent
+  ],
   imports: [
     CommonModule,
     HomeRoutingModule,

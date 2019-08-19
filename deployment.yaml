@@ -37,16 +37,3 @@ spec:
   ports:
   - port: 8080
     targetPort: 8080
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: websiteweb
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name: website-ip
-  labels:
-    app: website
-spec:
-  backend:
-    serviceName: websiteweb-backend
-    servicePort: 8080

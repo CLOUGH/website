@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Input } from '@angular/core';
 
 @Component({
   selector: 'app-main-layout',
@@ -7,10 +7,15 @@ import { Component, OnInit, HostListener } from '@angular/core';
 })
 export class MainLayoutComponent implements OnInit {
   transparentNavBar = false;
-
+  navbarFixedBehaviour = 'onScroll';
+  fixedTop = false;
   constructor() { }
 
   ngOnInit() {
+  }
+  @Input('navbarFixedBehaviour')
+  set setTopType(value: string) {
+    this.navbarFixedBehaviour = value;
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -19,8 +24,25 @@ export class MainLayoutComponent implements OnInit {
 
     if (rootElement.scrollTop > 100) {
       this.transparentNavBar = true;
+      switch (this.navbarFixedBehaviour) {
+        case 'onScroll':
+          this.fixedTop = false;
+          break;
+        case 'always':
+          this.fixedTop = true;
+          break;
+      }
+
     } else {
       this.transparentNavBar = false;
+      switch (this.navbarFixedBehaviour) {
+        case 'onScroll':
+          this.fixedTop = true;
+          break;
+        case 'always':
+          this.fixedTop = true;
+          break;
+      }
     }
   }
 

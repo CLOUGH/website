@@ -10,6 +10,6 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   declarations: [MainLayoutComponent, AdminLayoutComponent],
-  exports: [MainLayoutComponent, AdminLayoutComponent,CommonModule],
+  exports: [MainLayoutComponent, AdminLayoutComponent],
 })
 export class CoreModule { }

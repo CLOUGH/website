@@ -16,13 +16,13 @@ import { CoreModule } from './core/core.module';
     AboutPageComponent
   ],
   imports: [
+    CoreModule,
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
     MatExpansionModule,
     MatToolbarModule,
     AppRoutingModule,
-    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

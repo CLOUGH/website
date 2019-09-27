@@ -1,25 +1,4 @@
 steps:
-  #install angular
-- name: 'gcr.io/cloud-builders/npm'
-  id: 'Install Angular'
-  args:
-    - 'install'
-    - '-g'
-    - '@angular/cli'
-
-# Install Dependencies
-- name: 'gcr.io/cloud-builders/npm'
-  id: 'Install Project Dependencies'
-  args:
-    - 'install'
-
-# This step run the unit tests
-# - name: 'gcr.io/cloud-builders/npm'
-#   id: 'Test'
-#   args:
-#     - 'run'
-#     - 'test-phantomjs'
-
   # This step builds the container image.
 - name: 'gcr.io/cloud-builders/docker'
   id: 'Build'
@@ -51,8 +30,8 @@ steps:
 - name: 'gcr.io/cloud-builders/kubectl'
   id: 'Deploy on Kubernetes'
   env:
-    - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-    - 'CLOUDSDK_CONTAINER_CLUSTER=main-micro-cluster'
+    - 'CLOUDSDK_COMPUTE_ZONE=${_COMPUTE_ZONE}'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=${_CONTAINER_CLUSTER}'
     - 'SHORT_SHA=$SHORT_SHA'
   args:
     - 'apply'

@@ -13,7 +13,8 @@ import { MomentModule } from 'ngx-moment';
     CommonModule,
     PostRoutingModule,
     SharedModule,
-    MomentModule
+    MomentModule,
+    SharedModule
 
   ],
   exports: [PostPreviewComponent]

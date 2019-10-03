@@ -3,6 +3,7 @@ import { of, Observable, range } from 'rxjs';
 import * as faker from 'faker';
 
 import { Post } from '../post/post';
+import { ILink } from './../../store/link/link';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { Post } from '../post/post';
 export class PageService {
   pages = [{
     path: '',
+    name: 'Home',
     sections: [
       {
         hero: {
@@ -145,5 +147,14 @@ export class PageService {
     });
 
     return of(page);
+  }
+
+  getLinks(): Observable<ILink[]> {
+    return of(this.pages.map(page => {
+      return {
+        url: page.path,
+        label: page.name
+      };
+    }));
   }
 }

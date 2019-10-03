@@ -7,7 +7,6 @@ import { PageDetailComponent } from './page-detail/page-detail.component';
 import { PostModule } from './../post/post.module';
 import { ProjectModule } from '../project/project.module';
 import { SharedModule } from '../../shared/shared.module';
-import { MomentModule } from 'ngx-moment';
 
 
 @NgModule({

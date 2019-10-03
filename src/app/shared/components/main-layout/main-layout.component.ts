@@ -1,4 +1,9 @@
+import { Store, select } from '@ngrx/store';
 import { Component, OnInit, HostListener, Input } from '@angular/core';
+
+import { ILink } from './../../../store/link/link';
+import { IAppState } from './../../../store/app/app.state';
+import { selectLinks } from '../../../store/link/link.selector';
 
 @Component({
   selector: 'app-main-layout',
@@ -9,9 +14,16 @@ export class MainLayoutComponent implements OnInit {
   transparentNavBar = false;
   navbarFixedBehaviour = 'onScroll';
   fixedTop = false;
-  constructor() { }
+  links: ILink[] = [];
+  constructor(
+    private store: Store<IAppState>,
+  ) { }
 
   ngOnInit() {
+    this.store.pipe(select(selectLinks)).subscribe((links: ILink[])=>{
+      console.log({links});
+      this.links = links;
+    });
   }
   @Input('navbarFixedBehaviour')
   set setTopType(value: string) {

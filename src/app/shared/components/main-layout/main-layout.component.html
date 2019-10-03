@@ -9,14 +9,8 @@
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavId">
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-              <a class="nav-link" routerLink="/">Home</a>
-            </li>
-            <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" [routerLink]="['/blog']">Blog</a>
-            </li>
-            <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" routerLink="/about">About</a>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngFor="let link of links" >
+              <a class="nav-link" [routerLink]="[link.url]">{{link.label}}</a>
             </li>
           </ul>
         </div>

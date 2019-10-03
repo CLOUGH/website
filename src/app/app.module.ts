@@ -8,7 +8,7 @@ import { MatExpansionModule } from '@angular/material';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AboutPageComponent } from './pages/about-page/about-page.component';
-import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +16,7 @@ import { CoreModule } from './core/core.module';
     AboutPageComponent
   ],
   imports: [
-    CoreModule,
+    SharedModule,
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,

@@ -1,5 +1,5 @@
 <app-main-layout>
-  <div *ngFor="let section of sections; let i=index">
+  <div *ngFor="let section of page && page.sections; let i=index">
     <section class="column" [ngClass]="{'bg-light': i%2}" *ngIf="section.columns">
       <div class="container ">
         <h2 class="display-2 mb-5 pt-3" [innerHTML]="section.name"></h2>

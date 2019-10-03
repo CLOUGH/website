@@ -1,21 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { of, Observable, range } from 'rxjs';
 import * as faker from 'faker';
-import { Post } from '../../models/post';
-import { range } from 'rxjs';
 
-@Component({
-  selector: 'app-home-page',
-  templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.scss']
+import { Post } from '../post/post';
+
+@Injectable({
+  providedIn: 'root'
 })
-export class HomePageComponent implements OnInit {
-  sections: any[];
-
-  constructor() { }
-
-  ngOnInit() {
-    // sections
-    this.sections = [
+export class PageService {
+  pages = [{
+    path: '',
+    sections: [
       {
         hero: {
           image: 'assets/marius-masalar-132751-unsplash.jpg',
@@ -139,7 +134,16 @@ export class HomePageComponent implements OnInit {
           };
         })
       }
-    ];
+    ]
+  }];
 
+  constructor() { }
+
+  findPage(path: string): Observable<any> {
+    const page = this.pages.find(page => {
+      return page.path === path;
+    });
+
+    return of(page);
   }
 }

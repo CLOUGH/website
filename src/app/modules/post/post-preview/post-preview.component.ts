@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { post } from 'selenium-webdriver/http';
-import { Post } from '../../models/post';
+import { Post } from '../post';
 
 @Component({
   selector: 'app-post-preview',
@@ -8,10 +7,10 @@ import { Post } from '../../models/post';
   styleUrls: ['./post-preview.component.scss']
 })
 export class PostPreviewComponent implements OnInit {
-
   @Input() post: Post;
 
   constructor() { }
+
 
   ngOnInit() {
   }

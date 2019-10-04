@@ -21,7 +21,6 @@ export class MainLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.store.pipe(select(selectLinks)).subscribe((links: ILink[])=>{
-      console.log({links});
       this.links = links;
     });
   }

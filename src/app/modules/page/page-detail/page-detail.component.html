@@ -9,7 +9,7 @@
             <div *ngIf="column.content.type=='progressbar'">
               <div *ngFor="let progressBar of column.content.progressBars">
                 <span>{{progressBar.name}}</span>
-                <progressbar [value]="progressBar.value">{{progressBar.value}}%</progressbar>
+                <!-- <progressbar [value]="progressBar.value">{{progressBar.value}}%</progressbar> -->
               </div>
             </div>
           </div>

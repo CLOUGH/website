@@ -23,7 +23,6 @@ export class LinkEffect {
     ofType<GetLinks>(ELinkActions.GetLinks),
     switchMap(() => this.pagesService.getLinks()),
     switchMap((links: ILink[]) => {
-      console.log(links)
       return of(new GetLinksSuccess(links));
     })
   );

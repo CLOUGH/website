@@ -16,6 +16,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LinkEffect } from './store/link/link.effects';
 import { appReducers } from './store/app/app.reducer';
+import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -43,9 +44,10 @@ import { appReducers } from './store/app/app.reducer';
         persist: true
       }
     }),
-    MomentModule
+    MomentModule,
+    JwtModule
   ],
-  providers: [],
+  providers: [JwtHelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

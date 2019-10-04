@@ -8,7 +8,7 @@ const routes: Routes = [
   // { path: 'about', component: AboutPageComponent },
   // { path: 'about', component: AboutPageComponent },
 
-  { path: 'admin', pathMatch: 'full', loadChildren: './modules/admin/admin.module#AdminModule' },
+  { path: 'admin', loadChildren: './modules/admin/admin.module#AdminModule' },
   { path: 'error', loadChildren: './modules/error/error.module#ErrorModule' },
   { path: '', loadChildren: './modules/page/page.module#PageModule' },
 ];

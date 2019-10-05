@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { switchMap, map, withLatestFrom } from 'rxjs/operators';
 
 import { IAppState } from '../app/app.state';
-import { PageService } from './../../modules/page/page.service';
+import { PageService } from '../../modules/page/services/page.service';
 import { ELinkActions, GetLinks, GetLinksSuccess } from './link.action';
 
 @Injectable()

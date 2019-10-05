@@ -1,5 +1,4 @@
 import { MomentModule } from 'ngx-moment';
-import { environment } from './../environments/environment.prod';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,6 +9,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule  } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
@@ -17,10 +17,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { LinkEffect } from './store/link/link.effects';
 import { appReducers } from './store/app/app.reducer';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
-
+import { CoreModule } from './core/core.module';
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +28,6 @@ import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
     FlexLayoutModule,
     MatExpansionModule,
     MatToolbarModule,
-    SharedModule,
     AppRoutingModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot([
@@ -45,7 +44,9 @@ import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
       }
     }),
     MomentModule,
-    JwtModule
+    JwtModule,
+    FontAwesomeModule,
+    CoreModule
   ],
   providers: [JwtHelperService],
   bootstrap: [AppComponent]

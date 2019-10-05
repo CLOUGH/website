@@ -1,0 +1,30 @@
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+  <div class="sidebar-sticky">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link active" [routerLink]="['/admin']">
+          <fa-icon [icon]="faTachometerAlt"></fa-icon>
+          Dashboard <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/admin/pages">
+          <fa-icon [icon]="faFile"></fa-icon>
+          Pages
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/admin/posts">
+          <fa-icon [icon]="faBloggerB"></fa-icon>
+          Posts
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/admin/projects">
+          <fa-icon [icon]="faCamera"></fa-icon>
+          Project
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

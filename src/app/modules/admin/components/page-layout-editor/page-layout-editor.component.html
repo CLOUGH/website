@@ -1,0 +1,21 @@
+<div class="page-preview-toolbar text-right">
+  <div class="btn-group" dropdown>
+    <button id="add-section-dropdown-btn" dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle"
+      aria-controls="dropdown-basic">Add Section<span class="caret"></span>
+    </button>
+    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="add-section-dropdown-btn">
+      <li role="menuitem"><button class="dropdown-item" (click)="addSection('full screen hero')">Full Screen Hero</button></li>
+      <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
+      <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+      <li class="divider dropdown-divider"></li>
+      <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="page-preview card mt-1">
+  <div *ngFor="let section of sections" >
+    <app-full-screen-hero [section]="section"></app-full-screen-hero>
+
+  </div>
+</div>

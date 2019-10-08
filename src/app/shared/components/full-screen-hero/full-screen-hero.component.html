@@ -1,0 +1,6 @@
+<section class="full screen hero" *ngIf="section.hero" [style.background-image]="'url('+section.hero.image+')'">
+  <div class="text-area">
+    <ckeditor [editor]="Editor" [data]="section.hero.content" ></ckeditor>
+  </div>
+</section>
+<pre>{{ section | json }}</pre>

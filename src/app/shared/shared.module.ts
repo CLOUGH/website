@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MomentModule } from 'ngx-moment';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { QuillModule } from 'ngx-quill';
 import { EditorModule } from '@tinymce/tinymce-angular';
+import { ModalModule } from 'ngx-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { FullScreenHeroComponent } from './components/full-screen-hero/full-screen-hero.component';
@@ -15,13 +15,10 @@ import { FullScreenHeroComponent } from './components/full-screen-hero/full-scre
     CommonModule,
     RouterModule,
     FontAwesomeModule,
-    CKEditorModule,
     EditorModule,
-    QuillModule.forRoot({
-      modules: {
-        syntax: true,
-      }
-    })
+    ModalModule.forRoot(),
+    FormsModule
+
   ],
   declarations: [MainLayoutComponent, FullScreenHeroComponent],
   exports: [MainLayoutComponent, FullScreenHeroComponent]

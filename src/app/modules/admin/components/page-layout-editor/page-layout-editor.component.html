@@ -14,8 +14,8 @@
   </div>
 </div>
 <div class="page-preview card mt-1">
-  <div *ngFor="let section of sections" >
-    <app-full-screen-hero [section]="section"></app-full-screen-hero>
+  <div *ngFor="let section of sections;let i = index" >
+    <app-full-screen-hero [(section)]="section" (removeSection)="removeSection(i)"></app-full-screen-hero>
 
   </div>
 </div>

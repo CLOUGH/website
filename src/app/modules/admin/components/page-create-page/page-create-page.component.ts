@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 
 @Component({
   selector: 'app-page-create-page',
@@ -7,7 +6,6 @@ import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
   styleUrls: ['./page-create-page.component.scss']
 })
 export class PageCreatePageComponent implements OnInit {
-  public Editor = InlineEditor;
 
   constructor() { }
 

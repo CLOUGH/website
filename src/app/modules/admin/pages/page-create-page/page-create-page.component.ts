@@ -12,7 +12,7 @@ export class PageCreatePageComponent implements OnInit {
   ngOnInit() {
   }
 
-  createPage() {
+  public createPage() {
 
   }
 

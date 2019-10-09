@@ -9,13 +9,6 @@ export class PageCreatePageComponent implements OnInit {
 
   constructor() { }
 
-  public onReady(editor) {
-    editor.ui.getEditableElement().parentElement.insertBefore(
-      editor.ui.view.toolbar.element,
-      editor.ui.getEditableElement()
-    );
-  }
-
   ngOnInit() {
   }
 

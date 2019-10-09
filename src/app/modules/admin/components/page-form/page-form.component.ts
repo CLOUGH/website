@@ -1,12 +1,12 @@
-import { Section, HeroSection, Link } from './../../../../core/models/section';
 import { Component, OnInit } from '@angular/core';
+import { HeroSection, Section } from './../../../../core/models/section';
 
 @Component({
-  selector: 'app-page-layout-editor',
-  templateUrl: './page-layout-editor.component.html',
-  styleUrls: ['./page-layout-editor.component.scss']
+  selector: 'app-page-form',
+  templateUrl: './page-form.component.html',
+  styleUrls: ['./page-form.component.scss']
 })
-export class PageLayoutEditorComponent implements OnInit {
+export class PageFormComponent implements OnInit {
   public sections: Section[] = [];
 
   constructor() { }

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageLayoutEditorComponent } from './page-layout-editor.component';
+import { PageFormComponent } from './page-form.component';
 
-describe('PageLayoutEditorComponent', () => {
-  let component: PageLayoutEditorComponent;
-  let fixture: ComponentFixture<PageLayoutEditorComponent>;
+describe('PageFormComponent', () => {
+  let component: PageFormComponent;
+  let fixture: ComponentFixture<PageFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageLayoutEditorComponent ]
+      declarations: [ PageFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageLayoutEditorComponent);
+    fixture = TestBed.createComponent(PageFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

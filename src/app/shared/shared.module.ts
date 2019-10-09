@@ -1,18 +1,26 @@
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MomentModule } from 'ngx-moment';
+import { EditorModule } from '@tinymce/tinymce-angular';
+import { ModalModule } from 'ngx-bootstrap';
+import { FormsModule } from '@angular/forms';
 
-import { environment } from './../../environments/environment.prod';
-import { MainLayoutComponent } from './components/main-layout/main-layout.component';
-import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { FullScreenHeroComponent } from './components/full-screen-hero/full-screen-hero.component';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
+    FontAwesomeModule,
+    EditorModule,
+    ModalModule.forRoot(),
+    FormsModule
+
   ],
-  declarations: [MainLayoutComponent, AdminLayoutComponent],
-  exports: [MainLayoutComponent, AdminLayoutComponent],
+  declarations: [MainLayoutComponent, FullScreenHeroComponent],
+  exports: [MainLayoutComponent, FullScreenHeroComponent]
 })
 export class SharedModule { }

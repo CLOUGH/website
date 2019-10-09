@@ -1,0 +1,36 @@
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+  <div class="sidebar-sticky">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/admin']">
+          <fa-icon [icon]="faTachometerAlt"></fa-icon>
+          Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/admin/pages" routerLinkActive="active">
+          <fa-icon [icon]="faFile"></fa-icon>
+          Pages
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/admin/posts" routerLinkActive="active">
+          <fa-icon [icon]="faBloggerB"></fa-icon>
+          Posts
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/admin/projects" routerLinkActive="active">
+          <fa-icon [icon]="faCamera"></fa-icon>
+          Project
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/admin/gallary" routerLinkActive="active">
+          <fa-icon [icon]="faImages"></fa-icon>
+          Gallary
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

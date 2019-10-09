@@ -7,6 +7,5 @@ export const selectLinkState = (state: IAppState) => state.link;
 export const selectLinks = createSelector(
   selectLinkState,
   (state: ILinkState) => {
-    console.log({state});
     return state.links;
 });

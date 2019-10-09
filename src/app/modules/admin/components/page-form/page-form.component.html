@@ -1,0 +1,50 @@
+<form id=formId (ngSubmit)="createPage()" #refForm="ngForm">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelpText" placeholder="">
+    <small id="nameHelpText" class="form-text text-muted">The name of the page</small>
+  </div>
+  <div class="form-group">
+    <label for="path">Path</label>
+    <input type="text" class="form-control" name="path" id="path" aria-describedby="pathHelpText" placeholder="">
+    <small id="pathHelpText" class="form-text text-muted">The path for the page</small>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" name="description" id="description" rows="3"
+      aria-describedby="descriptionHelpText"></textarea>
+    <small id="descriptionHelpText" class="form-text text-muted">A short description of the page's purpose</small>
+  </div>
+
+  <h2 class="display-5">Page Layout</h2>
+  <div class="page-preview-toolbar ">
+    <div class="btn-group" dropdown>
+      <button id="add-section-dropdown-btn" dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle"
+        aria-controls="dropdown-basic">Add Section<span class="caret"></span>
+      </button>
+      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
+        aria-labelledby="add-section-dropdown-btn">
+        <li role="menuitem"><button class="dropdown-item" (click)="addSection('full screen hero')">Full Screen
+            Hero</button></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Text</a></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Column</a></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Progress Bar</a>
+        <li role="menuitem"><a class="dropdown-item" href="#">Post</a>
+        <li role="menuitem"><a class="dropdown-item" href="#">Projects</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-preview card mt-1">
+    <div *ngFor="let section of sections;let i = index">
+      <app-full-screen-hero [(section)]="section" (removeSection)="removeSection(i)"></app-full-screen-hero>
+
+    </div>
+  </div>
+
+  <div class="text-right">
+    <button type="submit" class="btn btn-primary mt-5 ">Create Page</button>
+  </div>
+
+</form>

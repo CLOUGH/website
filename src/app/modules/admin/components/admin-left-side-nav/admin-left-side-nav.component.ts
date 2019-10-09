@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faTachometerAlt, faCamera } from '@fortawesome/free-solid-svg-icons';
+import { faTachometerAlt, faCamera,faImages } from '@fortawesome/free-solid-svg-icons';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 import { faBloggerB } from '@fortawesome/free-brands-svg-icons';
 
@@ -13,6 +13,7 @@ export class AdminLeftSideNavComponent implements OnInit {
   faFile = faFile;
   faBloggerB = faBloggerB;
   faCamera = faCamera;
+  faImages = faImages;
 
   constructor() { }
 

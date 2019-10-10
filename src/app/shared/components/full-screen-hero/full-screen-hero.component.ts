@@ -1,6 +1,6 @@
 import { HeroSection } from './../../../core/models/section';
 import { Component, OnInit, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
-import { faImage,faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 
 @Component({
@@ -14,6 +14,7 @@ export class FullScreenHeroComponent implements OnInit {
   public tinymceConfig = {
     base_url: '/tinymce', // Root for resources
     suffix: '.min',
+    plugins: 'code'
   };
   public modalRef: BsModalRef | null;
   public deleteModalRef: BsModalRef | null;

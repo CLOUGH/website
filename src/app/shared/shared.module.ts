@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { FullScreenHeroComponent } from './components/full-screen-hero/full-screen-hero.component';
+import { TextSectionComponent } from './components/text-section/text-section.component';
+import { InlineEditorComponent } from './components/inline-editor/inline-editor.component';
 
 @NgModule({
   imports: [
@@ -20,7 +22,7 @@ import { FullScreenHeroComponent } from './components/full-screen-hero/full-scre
     FormsModule
 
   ],
-  declarations: [MainLayoutComponent, FullScreenHeroComponent],
-  exports: [MainLayoutComponent, FullScreenHeroComponent]
+  declarations: [MainLayoutComponent, FullScreenHeroComponent, TextSectionComponent, InlineEditorComponent],
+  exports: [MainLayoutComponent, FullScreenHeroComponent,TextSectionComponent]
 })
 export class SharedModule { }

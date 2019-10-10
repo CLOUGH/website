@@ -17,7 +17,6 @@ export class FullScreenHeroComponent implements OnInit {
     plugins: 'code'
   };
   public modalRef: BsModalRef | null;
-  public deleteModalRef: BsModalRef | null;
   public imageUrl: string;
 
   @Input() public section: HeroSection;
@@ -42,9 +41,6 @@ export class FullScreenHeroComponent implements OnInit {
     this.modalRef = this.modalService.show(templateRef);
     this.imageUrl = this.section.image;
   }
-  public promptDeleteOption(templateRef: TemplateRef<any>) {
-    this.deleteModalRef = this.modalService.show(templateRef);
-  }
 
   public saveImageUrl() {
     this.sectionChange.emit({
@@ -52,10 +48,5 @@ export class FullScreenHeroComponent implements OnInit {
       image: this.imageUrl
     });
     this.modalRef.hide();
-  }
-
-  public deleteSection() {
-    this.removeSection.emit(true);
-    this.deleteModalRef.hide();
   }
 }

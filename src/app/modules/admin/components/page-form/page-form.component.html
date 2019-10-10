@@ -28,18 +28,23 @@
         <li role="menuitem"><button class="dropdown-item" (click)="addSection('full screen hero')">Full Screen
             Hero</button></li>
         <li role="menuitem"><button class="dropdown-item" (click)="addTextSection()">Text</button></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Column</a></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Progress Bar</a>
-        <li role="menuitem"><a class="dropdown-item" href="#">Post</a>
-        <li role="menuitem"><a class="dropdown-item" href="#">Projects</a>
-        </li>
+        <!-- <li role="menuitem"><a class="dropdown-item" href="#">Column</a></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Progress Bar</a></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Post</a></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Projects</a> </li> -->
       </ul>
     </div>
   </div>
   <div class="page-preview card mt-1">
-    <div *ngFor="let section of sections;let i = index">
-      <app-full-screen-hero *ngIf="section.type=='hero'" [(section)]="section" (removeSection)="removeSection(i)" ></app-full-screen-hero>
-      <app-text-section *ngIf="section.type=='text'" [(section)]="section" (removeSection)="removeSection(i)"></app-text-section>
+    <div *ngFor="let section of sections;let i = index" class="sections">
+      <button type="button" class="btn btn-secondary btn-sm delete-section-btn"
+        (click)="promptDeleteOption(removeSectionModal)">
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
+      <app-full-screen-hero *ngIf="section.type=='hero'" [(section)]="section" (removeSection)="removeSection(i)">
+      </app-full-screen-hero>
+      <app-text-section *ngIf="section.type=='text'" [(section)]="section" (removeSection)="removeSection(i)">
+      </app-text-section>
     </div>
   </div>
 
@@ -48,3 +53,19 @@
   </div>
 
 </form>
+
+<ng-template #removeSectionModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete Section</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Are you sure you want to delete this section?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="deleteSection()">Yes</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="deleteModalRef.hide()">No</button>
+  </div>
+</ng-template>

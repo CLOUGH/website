@@ -1,4 +1,4 @@
-<form id=formId (ngSubmit)="createPage()" #refForm="ngForm">
+<form id=formId (ngSubmit)="submitForm()" #refForm="ngForm">
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelpText" placeholder="">
@@ -27,7 +27,7 @@
         aria-labelledby="add-section-dropdown-btn">
         <li role="menuitem"><button class="dropdown-item" (click)="addSection('full screen hero')">Full Screen
             Hero</button></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Text</a></li>
+        <li role="menuitem"><button class="dropdown-item" (click)="addTextSection()">Text</button></li>
         <li role="menuitem"><a class="dropdown-item" href="#">Column</a></li>
         <li role="menuitem"><a class="dropdown-item" href="#">Progress Bar</a>
         <li role="menuitem"><a class="dropdown-item" href="#">Post</a>
@@ -38,8 +38,8 @@
   </div>
   <div class="page-preview card mt-1">
     <div *ngFor="let section of sections;let i = index">
-      <app-full-screen-hero [(section)]="section" (removeSection)="removeSection(i)"></app-full-screen-hero>
-
+      <app-full-screen-hero *ngIf="section.type=='hero'" [(section)]="section" (removeSection)="removeSection(i)" ></app-full-screen-hero>
+      <app-text-section *ngIf="section.type=='text'" [(section)]="section" (removeSection)="removeSection(i)"></app-text-section>
     </div>
   </div>
 

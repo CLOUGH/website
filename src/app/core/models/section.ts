@@ -9,9 +9,9 @@ export interface Link {
 
 export interface HeroSection extends Section {
   image: string;
-  links: {
-    text: string;
-    link: string;
-  }[];
+  content: string;
+}
+
+export interface TextSection extends Section {
   content: string;
 }

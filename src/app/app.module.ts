@@ -1,3 +1,4 @@
+
 import { MomentModule } from 'ngx-moment';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -11,6 +12,7 @@ import { StoreRouterConnectingModule  } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+
 import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +20,7 @@ import { LinkEffect } from './store/link/link.effects';
 import { appReducers } from './store/app/app.reducer';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { CoreModule } from './core/core.module';
+import { GraphqlModule } from './graphql.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -46,7 +49,8 @@ import { CoreModule } from './core/core.module';
     MomentModule,
     JwtModule,
     FontAwesomeModule,
-    CoreModule
+    CoreModule,
+    GraphqlModule
   ],
   providers: [JwtHelperService],
   bootstrap: [AppComponent]

@@ -18,15 +18,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td scope="row">Home</td>
-      <td>/</td>
+    <tr *ngFor="let page of data | async">
+      <td scope="row">{{page.name}}</td>
+      <td>{{page.path}}</td>
+      <td>{{page.description}}</td>
       <td>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum enim vitae accusamus vero alias excepturi
-          dolor ipsa quos fuga facere. Tempora eum doloremque nihil nisi omnis nobis impedit ipsum blanditiis.</p>
-      </td>
-      <td>
-        <a [routerLink]="['/admin/pages', 1]" class="btn btn-outline-primary btn-sm">Edit</a>
+        <a [routerLink]="['/admin/pages', page.id]" class="btn btn-outline-primary btn-sm">Edit</a>
       </td>
     </tr>
   </tbody>

@@ -9,6 +9,6 @@
     <li class="breadcrumb-item active" aria-current="page">Edit</li>
   </ol>
 </nav>
-<div class="mt-4">
-  <app-page-form></app-page-form>
+<div class="mt-4 pb-5">
+  <app-page-form [page]="page" (pageChange)="updatePage($event)" [submitButtonLabel]="'Edit Page'" *ngIf="page"></app-page-form>
 </div>

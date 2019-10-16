@@ -1,18 +1,18 @@
 <form id=formId (ngSubmit)="submitForm()" #refForm="ngForm">
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelpText" placeholder="">
+    <input [(ngModel)]="page.name"  type="text" class="form-control" name="name" id="name" aria-describedby="nameHelpText" placeholder="">
     <small id="nameHelpText" class="form-text text-muted">The name of the page</small>
   </div>
   <div class="form-group">
     <label for="path">Path</label>
-    <input type="text" class="form-control" name="path" id="path" aria-describedby="pathHelpText" placeholder="">
+    <input [(ngModel)]="page.path" type="text" class="form-control" name="path" id="path" aria-describedby="pathHelpText" placeholder="">
     <small id="pathHelpText" class="form-text text-muted">The path for the page</small>
   </div>
 
   <div class="form-group">
     <label for="description">Description</label>
-    <textarea class="form-control" name="description" id="description" rows="3"
+    <textarea [(ngModel)]="page.description" class="form-control" name="description" id="description" rows="3"
       aria-describedby="descriptionHelpText"></textarea>
     <small id="descriptionHelpText" class="form-text text-muted">A short description of the page's purpose</small>
   </div>
@@ -49,7 +49,7 @@
   </div>
 
   <div class="text-right">
-    <button type="submit" class="btn btn-primary mt-5 ">Create Page</button>
+    <button type="submit" class="btn btn-primary mt-5 ">{{submitButtonLabel}}</button>
   </div>
 
 </form>

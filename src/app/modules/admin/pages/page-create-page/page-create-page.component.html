@@ -9,6 +9,7 @@
     <li class="breadcrumb-item active" aria-current="page">New</li>
   </ol>
 </nav>
+<div class="mb-5" >
+  <app-page-form [page]="page" [submitButtonLabel]="'Create Page'" (pageChange)="createPage($event)"></app-page-form>
+</div>
 
-
-<app-page-form></app-page-form>

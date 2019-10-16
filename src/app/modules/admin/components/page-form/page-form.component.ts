@@ -1,6 +1,6 @@
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input, Output, EventEmitter } from '@angular/core';
 import { HeroSection, Section, TextSection } from './../../../../core/models/section';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,6 +10,11 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./page-form.component.scss']
 })
 export class PageFormComponent implements OnInit {
+
+  @Input() public page: any;
+  @Input() public submitButtonLabel: any;
+  @Output() public pageChange: EventEmitter<any> = new EventEmitter();
+
   public sections: Section[] = [];
   public faTrash = faTrash;
   public deleteModalRef: BsModalRef | null;
@@ -60,6 +65,7 @@ export class PageFormComponent implements OnInit {
   }
 
   public submitForm(){
+    this.pageChange.emit(this.page);
   }
 
   public promptDeleteOption(templateRef: TemplateRef<any>) {

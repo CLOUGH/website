@@ -18,13 +18,35 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let page of data | async">
+    <tr *ngFor="let page of pages;let i = index;">
       <td scope="row">{{page.name}}</td>
       <td>{{page.path}}</td>
       <td>{{page.description}}</td>
-      <td>
-        <a [routerLink]="['/admin/pages', page.id]" class="btn btn-outline-primary btn-sm">Edit</a>
+      <td class="text-center">
+        <a [routerLink]="['/admin/pages', page.id]" class="btn btn-outline-primary btn-sm">
+          <fa-icon [icon]="faPencil"></fa-icon>
+        </a>
+        <button (click)="promptDeleteModal(deleteModalTemplate, i)" type="button" class="btn btn-outline-danger btn-sm">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
       </td>
     </tr>
   </tbody>
 </table>
+
+
+<ng-template #deleteModalTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Delete Page</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="pageDeletingIndex>=0">
+    <p>Are you sure that you want to remove <b>{{pages[pageDeletingIndex].name}}</b> page.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="deletePage()">Yes</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="deleteModalTemplate.hide()">No</button>
+  </div>
+</ng-template>

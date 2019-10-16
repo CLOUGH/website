@@ -28,7 +28,7 @@ export class PageFormComponent implements OnInit {
     switch (sectionType) {
       case 'full screen hero':
 
-        this.sections.push({
+        this.page.sections.push({
           type: 'hero',
           image: 'assets/placeholder.jpg',
           content: `
@@ -47,7 +47,7 @@ export class PageFormComponent implements OnInit {
   }
 
   public addTextSection () {
-    this.sections.push({
+    this.page.sections.push({
       type: 'text',
       content: `
         <div class="bg-light pt-5 pb-5">
@@ -74,6 +74,6 @@ export class PageFormComponent implements OnInit {
 
   public deleteSection(index) {
     this.deleteModalRef.hide();
-    this.sections.splice(index,1);
+    this.page.sections.splice(index,1);
   }
 }

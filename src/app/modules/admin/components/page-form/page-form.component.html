@@ -36,7 +36,7 @@
     </div>
   </div>
   <div class="page-preview card mt-1">
-    <div *ngFor="let section of sections;let i = index" class="sections">
+    <div *ngFor="let section of page.sections;let i = index" class="sections">
       <button type="button" class="btn btn-secondary btn-sm delete-section-btn"
         (click)="promptDeleteOption(removeSectionModal)">
         <fa-icon [icon]="faTrash"></fa-icon>

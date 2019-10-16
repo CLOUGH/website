@@ -13,7 +13,7 @@ export class PageFormComponent implements OnInit {
 
   @Input() public page: any;
   @Input() public submitButtonLabel: any;
-  @Output() public pageChange: EventEmitter<any> = new EventEmitter();
+  @Output() public submitPage: EventEmitter<any> = new EventEmitter();
 
   public sections: Section[] = [];
   public faTrash = faTrash;
@@ -65,7 +65,7 @@ export class PageFormComponent implements OnInit {
   }
 
   public submitForm(){
-    this.pageChange.emit(this.page);
+    this.submitPage.emit(this.page);
   }
 
   public promptDeleteOption(templateRef: TemplateRef<any>) {

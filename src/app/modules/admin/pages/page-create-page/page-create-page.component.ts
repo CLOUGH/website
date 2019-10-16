@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { Subscription } from 'rxjs';
 import gql from 'graphql-tag';
+import { Router } from '@angular/router';
 
 const createPageMutation = gql`
   mutation updatePage( $page: PageInput!) {
@@ -31,7 +32,7 @@ export class PageCreatePageComponent implements OnInit {
     description: '',
     sections: []
   };
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo, private router: Router) { }
 
   ngOnInit() {
   }
@@ -44,6 +45,7 @@ export class PageCreatePageComponent implements OnInit {
       })
       .subscribe(({ data, errors }) => {
         this.page = data.createPage;
+        this.router.navigateByUrl('/admin/pages');
       })
       .unsubscribe();
   }

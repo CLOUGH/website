@@ -11,6 +11,8 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { FullScreenHeroComponent } from './components/full-screen-hero/full-screen-hero.component';
 import { TextSectionComponent } from './components/text-section/text-section.component';
 import { InlineEditorComponent } from './components/inline-editor/inline-editor.component';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { DeletedPipe } from './pipes/deleted.pipe';
 
 @NgModule({
   imports: [
@@ -22,7 +24,7 @@ import { InlineEditorComponent } from './components/inline-editor/inline-editor.
     FormsModule
 
   ],
-  declarations: [MainLayoutComponent, FullScreenHeroComponent, TextSectionComponent, InlineEditorComponent],
-  exports: [MainLayoutComponent, FullScreenHeroComponent,TextSectionComponent]
+  declarations: [MainLayoutComponent, FullScreenHeroComponent, TextSectionComponent, InlineEditorComponent, SafeHtmlPipe, DeletedPipe],
+  exports: [MainLayoutComponent, FullScreenHeroComponent,TextSectionComponent,DeletedPipe]
 })
 export class SharedModule { }

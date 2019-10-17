@@ -22,6 +22,8 @@ export class MainLayoutComponent implements OnInit {
   ngOnInit() {
     this.store.pipe(select(selectLinks)).subscribe((links: ILink[])=>{
       this.links = links;
+      console.log({links});
+
     });
   }
   @Input('navbarFixedBehaviour')

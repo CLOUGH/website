@@ -18,6 +18,7 @@ export class PageFormComponent implements OnInit {
   public sections: Section[] = [];
   public faTrash = faTrash;
   public deleteModalRef: BsModalRef | null;
+  public sectionDeletingIndex = -1;
 
   constructor(private modalService: BsModalService) { }
 
@@ -68,12 +69,23 @@ export class PageFormComponent implements OnInit {
     this.submitPage.emit(this.page);
   }
 
-  public promptDeleteOption(templateRef: TemplateRef<any>) {
+  public promptDeleteOption(templateRef: TemplateRef<any>, index) {
     this.deleteModalRef = this.modalService.show(templateRef);
+    this.sectionDeletingIndex = index;
   }
 
   public deleteSection(index) {
     this.deleteModalRef.hide();
-    this.page.sections.splice(index, 1);
+    this.page.sections[this.sectionDeletingIndex].deleted = true;
+    if (!this.page.sections[this.sectionDeletingIndex].id) {
+      this.page.sections.splice(this.sectionDeletingIndex, 1);
+    }
+    this.sectionDeletingIndex = -1;
+
+  }
+
+  public sectionUpdated(section, index) {
+    console.log({ section })
+    this.page.sections[index] = section;
   }
 }

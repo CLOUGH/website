@@ -20,6 +20,7 @@ export class FullScreenHeroComponent implements OnInit {
   public imageUrl: string;
 
   @Input() public section: HeroSection;
+  @Input() public readonly: boolean;
   @Output() public sectionChange: EventEmitter<HeroSection> = new EventEmitter();
   @Output() public removeSection: EventEmitter<boolean> = new EventEmitter();
 
@@ -30,7 +31,7 @@ export class FullScreenHeroComponent implements OnInit {
 
 
   public updateContent(event) {
-
+    console.log(event.editor.getContent())
     this.sectionChange.emit({
       ...this.section,
       content: event.editor.getContent()

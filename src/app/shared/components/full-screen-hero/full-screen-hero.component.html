@@ -1,9 +1,10 @@
 <section class="full screen hero" *ngIf="section.type=='hero'" [style.background-image]="'url('+section.image+')'">
   <div class="text-area">
-    <editor [init]="tinymceConfig" [inline]="true" [initialValue]="section.content" (onKeyUp)="updateContent($event)">
+    <div [innerHTML]="section.content| safeHtml" *ngIf="readonly" ></div>
+    <editor [init]="tinymceConfig" [inline]="true" [initialValue]="section.content" (onKeyUp)="updateContent($event)" *ngIf="!readonly">
     </editor>
   </div>
-  <div class="section-toolbar">
+  <div class="section-toolbar" *ngIf="!readonly">
     <button type="button" class="btn btn-primary btn-sm" (click)="openGallary(template)">
       <fa-icon [icon]="faImage"></fa-icon>
     </button>
@@ -29,7 +30,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-primary" (click)="saveImageUrl()">Save</button>
-    <button type="button" class="btn btn-outline-secondary" (click)="deleteModalRef.hide()">Cancel</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modalRef.hide()">Cancel</button>
   </div>
 </ng-template>
 

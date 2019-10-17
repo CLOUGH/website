@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class TextSectionComponent implements OnInit {
   @Input() public section: TextSection;
+  @Input() public readonly: Boolean;
   @Output() public sectionChange: EventEmitter<TextSection> = new EventEmitter();
   @Output() public removeSection: EventEmitter<boolean> = new EventEmitter();
 

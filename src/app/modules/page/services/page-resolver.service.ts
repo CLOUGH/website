@@ -39,11 +39,6 @@ export class PageResolverService implements Resolve<any> {
     return this.apollo.query<any>({
       query: PageQuery,
       variables: { path }
-    }).subscribe(({ data }) => {
-      return data.pageByPath;
-    }, (error) => {
-      console.error(error);
-      this.router.navigateByUrl('error/404', { skipLocationChange: false });
-    });
+    }).pipe(map(data => data.data.pageByPath))
   }
 }

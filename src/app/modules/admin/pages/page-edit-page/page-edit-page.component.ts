@@ -68,7 +68,7 @@ export class PageEditPageComponent implements OnInit, OnDestroy {
     const { __typename, id, ...page } = event;
 
     page.sections = page.sections.map((data) => {
-      const { __typename, ...section } = data;
+      const { __typename, links, ...section } = data;
       return section;
     });
     this.apollo

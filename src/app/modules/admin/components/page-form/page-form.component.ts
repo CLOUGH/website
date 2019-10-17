@@ -46,7 +46,7 @@ export class PageFormComponent implements OnInit {
     }
   }
 
-  public addTextSection () {
+  public addTextSection() {
     this.page.sections.push({
       type: 'text',
       content: `
@@ -64,7 +64,7 @@ export class PageFormComponent implements OnInit {
 
   }
 
-  public submitForm(){
+  public submitForm() {
     this.submitPage.emit(this.page);
   }
 
@@ -74,6 +74,6 @@ export class PageFormComponent implements OnInit {
 
   public deleteSection(index) {
     this.deleteModalRef.hide();
-    this.page.sections.splice(index,1);
+    this.page.sections.splice(index, 1);
   }
 }

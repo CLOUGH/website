@@ -65,11 +65,16 @@ export class PageEditPageComponent implements OnInit, OnDestroy {
   }
 
   public updatePage(event) {
-    const {__typename, page } = event;
+    const { __typename, id, ...page } = event;
+
+    page.sections = page.sections.map((data) => {
+      const { __typename, ...section } = data;
+      return section;
+    });
     this.apollo
       .mutate<any>({
         mutation: updatePageQuery,
-        variables: { id: this.page.id, page}
+        variables: { id: this.page.id, page }
       })
       .subscribe(({ data, errors }) => {
         this.page = data.updatePage;

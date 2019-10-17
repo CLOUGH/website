@@ -14,6 +14,6 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new GetPages`());
+    this.store.dispatch(new GetPages());
   }
 }

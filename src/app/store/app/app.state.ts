@@ -1,10 +1,10 @@
-import { ILinkState, initialLinkState } from './../link/link.state';
+import { PageState, initialPagesState } from '../page/page.state';
 export interface IAppState {
-  link: ILinkState;
+  pages: PageState;
 }
 
 export const initialAppState: IAppState = {
-  link: initialLinkState
+  pages: initialPagesState
 }
 
 export function getIntialState(): IAppState {

@@ -20,7 +20,7 @@ import { ApolloModule, Apollo, APOLLO_OPTIONS } from 'apollo-angular';
 import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LinkEffect } from './store/link/link.effects';
+import { PageEffect } from './store/page/page.effects';
 import { appReducers } from './store/app/app.reducer';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { CoreModule } from './core/core.module';
@@ -37,7 +37,7 @@ import { CoreModule } from './core/core.module';
     AppRoutingModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot([
-      LinkEffect
+      PageEffect
     ]),
     StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
     StoreDevtoolsModule.instrument({

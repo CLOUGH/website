@@ -3,7 +3,7 @@ import { of, Observable, range } from 'rxjs';
 import * as faker from 'faker';
 
 import { Post } from '../../post/post';
-import { ILink } from '../../../store/link/link';
+import { Page } from '../../../core/models/page';
 
 @Injectable({
   providedIn: 'root'
@@ -147,14 +147,5 @@ export class PageService {
     });
 
     return of(page);
-  }
-
-  getLinks(): Observable<ILink[]> {
-    return of(this.pages.map(page => {
-      return {
-        url: page.path,
-        label: page.name
-      };
-    }));
   }
 }

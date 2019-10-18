@@ -1,8 +1,7 @@
 <section class="full screen hero" *ngIf="section.type=='hero'" [style.background-image]="'url('+section.image+')'">
   <div class="text-area">
     <div [innerHTML]="section.content| safeHtml" *ngIf="readonly" ></div>
-    <editor [init]="tinymceConfig" [inline]="true" [initialValue]="section.content" (onKeyUp)="updateContent($event)" *ngIf="!readonly">
-    </editor>
+    <app-inline-editor [(content)]="section.content" *ngIf="!readonly" (contentChange)="updateContent($event)"></app-inline-editor>
   </div>
   <div class="section-toolbar" *ngIf="!readonly">
     <button type="button" class="btn btn-primary btn-sm" (click)="openGallary(template)">

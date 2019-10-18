@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminLeftSideNavComponent } from './components/admin-left-side-nav/admin-left-side-nav.component';
@@ -38,7 +39,9 @@ import { PageFormComponent } from './components/page-form/page-form.component';
     FontAwesomeModule,
     FormsModule,
     SharedModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    DragDropModule
+
   ]
 })
 export class AdminModule { }

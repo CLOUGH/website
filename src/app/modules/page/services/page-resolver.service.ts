@@ -35,7 +35,7 @@ export class PageResolverService implements Resolve<any> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const path = route.url.join('/');
+    const path = '/' + route.url.join('/');
     return this.apollo.query<any>({
       query: PageQuery,
       variables: { path }

@@ -14,7 +14,6 @@ export class PageDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe((res) => {
-      console.log(res.page);
       this.page = res.page;
     });
   }

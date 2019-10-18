@@ -17,3 +17,12 @@
     opacity: 1;
   }
 }
+
+.move-handle {
+  position: absolute;
+  right: 50px;
+  color: #ccc;
+  cursor: move;
+  z-index: 1;
+  margin: 20px;
+}

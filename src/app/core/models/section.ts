@@ -1,6 +1,8 @@
 export interface Section {
   type: string;
   deleted?: boolean;
+  updated?: boolean;
+  order: number;
 }
 
 export interface Link {

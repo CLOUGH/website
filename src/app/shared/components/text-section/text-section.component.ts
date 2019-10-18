@@ -11,12 +11,15 @@ export class TextSectionComponent implements OnInit {
   @Input() public readonly: Boolean;
   @Output() public sectionChange: EventEmitter<TextSection> = new EventEmitter();
   @Output() public removeSection: EventEmitter<boolean> = new EventEmitter();
-
   constructor() { }
-
-
 
   ngOnInit() {
   }
 
+  public updateContent(content) {
+    this.sectionChange.emit({
+      ...this.section,
+      content
+    });
+  }
 }

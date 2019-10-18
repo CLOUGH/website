@@ -11,11 +11,6 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 export class FullScreenHeroComponent implements OnInit {
   public faImage = faImage;
   public faTrash = faTrash;
-  public tinymceConfig = {
-    base_url: '/tinymce', // Root for resources
-    suffix: '.min',
-    plugins: 'code'
-  };
   public modalRef: BsModalRef | null;
   public imageUrl: string;
 
@@ -30,11 +25,11 @@ export class FullScreenHeroComponent implements OnInit {
   }
 
 
-  public updateContent(event) {
-    console.log(event.editor.getContent())
+  public updateContent(content) {
     this.sectionChange.emit({
       ...this.section,
-      content: event.editor.getContent()
+      updated: true,
+      content: content
     });
   }
 
@@ -46,7 +41,8 @@ export class FullScreenHeroComponent implements OnInit {
   public saveImageUrl() {
     this.sectionChange.emit({
       ...this.section,
-      image: this.imageUrl
+      image: this.imageUrl,
+      updated: true,
     });
     this.modalRef.hide();
   }

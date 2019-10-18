@@ -36,15 +36,22 @@
     </div>
   </div>
   <div class="page-preview card mt-1">
-    <div *ngFor="let section of page.sections;let i = index" class="sections" [hidden]="section.deleted">
-      <button type="button" class="btn btn-secondary btn-sm delete-section-btn"
-        (click)="promptDeleteOption(removeSectionModal, i)">
-        <fa-icon [icon]="faTrash"></fa-icon>
-      </button>
-      <app-full-screen-hero *ngIf="section.type=='hero'" [section]="section" (sectionChange)="sectionUpdated($event, i)" (removeSection)="removeSection(i)">
-      </app-full-screen-hero>
-      <app-text-section *ngIf="section.type=='text'" [section]="section" (sectionChange)="sectionUpdated($event, i)" (removeSection)="removeSection(i)">
-      </app-text-section>
+    <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let section of page.sections;let i = index" class="sections" [hidden]="section.deleted" cdkDrag>
+
+        <div class="move-handle" cdkDragHandle>
+          <fa-icon [icon]="faArrowsAlt"></fa-icon>
+        </div>
+
+        <button type="button" class="btn btn-secondary btn-sm delete-section-btn"
+          (click)="promptDeleteOption(removeSectionModal, i)">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+        <app-full-screen-hero *ngIf="section.type=='hero'" [section]="section" (sectionChange)="sectionUpdated($event, i)" (removeSection)="removeSection(i)">
+        </app-full-screen-hero>
+        <app-text-section *ngIf="section.type=='text'" [section]="section" (sectionChange)="sectionUpdated($event, i)" (removeSection)="removeSection(i)">
+        </app-text-section>
+      </div>
     </div>
   </div>
 

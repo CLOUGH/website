@@ -2,7 +2,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 import { Component, OnInit, TemplateRef, Input, Output, EventEmitter } from '@angular/core';
 import { HeroSection, Section, TextSection } from './../../../../core/models/section';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faArrowsAlt } from '@fortawesome/free-solid-svg-icons';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-page-form',
@@ -17,6 +18,7 @@ export class PageFormComponent implements OnInit {
 
   public sections: Section[] = [];
   public faTrash = faTrash;
+  public faArrowsAlt = faArrowsAlt;
   public deleteModalRef: BsModalRef | null;
   public sectionDeletingIndex = -1;
 
@@ -30,6 +32,7 @@ export class PageFormComponent implements OnInit {
       case 'full screen hero':
 
         this.page.sections.push({
+          order: this.page.sections.length - 1,
           type: 'hero',
           image: 'assets/placeholder.jpg',
           content: `
@@ -49,6 +52,7 @@ export class PageFormComponent implements OnInit {
 
   public addTextSection() {
     this.page.sections.push({
+      order: this.page.sections.length - 1,
       type: 'text',
       content: `
         <div class="bg-light pt-5 pb-5">
@@ -76,7 +80,12 @@ export class PageFormComponent implements OnInit {
 
   public deleteSection(index) {
     this.deleteModalRef.hide();
-    this.page.sections[this.sectionDeletingIndex].deleted = true;
+    this.page.sections[this.sectionDeletingIndex] = {
+      ...this.page.sections[this.sectionDeletingIndex],
+      updated: true,
+      deleted: true
+    };
+
     if (!this.page.sections[this.sectionDeletingIndex].id) {
       this.page.sections.splice(this.sectionDeletingIndex, 1);
     }
@@ -85,7 +94,19 @@ export class PageFormComponent implements OnInit {
   }
 
   public sectionUpdated(section, index) {
-    console.log({ section })
-    this.page.sections[index] = section;
+    this.page.sections[index] = {
+      ...section,
+      updated: true
+    };
+  }
+
+  drop(event: CdkDragDrop<Section[]>) {
+    moveItemInArray(this.page.sections, event.previousIndex, event.currentIndex);
+    this.page.sections = this.page.sections.map((section, index) => {
+      return { ...section, order: index, updated:true }
+    });
+
+    console.log({section: this.page.sections});
+
   }
 }

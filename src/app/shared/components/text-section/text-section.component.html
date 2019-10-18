@@ -1,4 +1,4 @@
 <div class="wrapper">
-  <app-inline-editor [(content)]="section.content" *ngIf="!readonly"></app-inline-editor>
+  <app-inline-editor [content]="section.content" *ngIf="!readonly" (contentChange)="updateContent($event)"></app-inline-editor>
   <div [innerHTML]="section.content | safeHtml" *ngIf="readonly" ></div>
 </div>

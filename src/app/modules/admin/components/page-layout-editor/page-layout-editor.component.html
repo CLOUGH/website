@@ -13,9 +13,13 @@
           <li role="menuitem"><button class="dropdown-item" (click)="addTextSection()">Text</button></li>
         </ul>
       </div>
-      <button type="button" class="btn btn-sm full-screen-btn btn-outline-primary ml-3"
+      <button *ngIf="!isFullScreen" type="button" class="btn btn-sm full-screen-btn btn-outline-primary ml-3"
         (click)="expandToFullScreen(fullScreenModal)" tooltip="Go fullscreen" placement="bottom">
         <fa-icon [icon]="faExpand"></fa-icon>
+      </button>
+      <button *ngIf="isFullScreen" type="button" class="btn btn-sm full-screen-btn btn-outline-primary ml-3"
+        (click)="fullScreenModal.hide()" tooltip="Close fullscreen mode" placement="bottom">
+        <fa-icon [icon]="faCompress"></fa-icon>
       </button>
     </div>
     <div cdkDropList (cdkDropListDropped)="drop($event)">

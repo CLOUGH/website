@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core';
-import { faTrash, faArrowsAlt, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faArrowsAlt, faExpand, faCompress } from '@fortawesome/free-solid-svg-icons';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap';
 
@@ -16,6 +16,7 @@ export class PageLayoutEditorComponent implements OnInit {
   @ViewChild(ModalDirective, { static: false }) fullScreenModal: ModalDirective;
   public faTrash = faTrash;
   public faExpand = faExpand;
+  public faCompress = faCompress;
   public faArrowsAlt = faArrowsAlt;
   public sectionDeletingIndex = -1;
   public isFullScreen = false;

@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, TemplateRef, ViewChild } from '@angular/core';
-import { faTrash, faArrowsAlt, faExpand, faCompress } from '@fortawesome/free-solid-svg-icons';
+import { Component, OnInit, Input, TemplateRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import { faTrash, faArrowsAlt, faExpand, faCompress,faSave } from '@fortawesome/free-solid-svg-icons';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap';
 
-import { HeroSection, Section, TextSection } from './../../../../core/models/section';
+import { HeroSection, Section, TextSection, VideoFullScreenHeroSection } from './../../../../core/models/section';
 @Component({
   selector: 'app-page-layout-editor',
   templateUrl: './page-layout-editor.component.html',
@@ -11,6 +11,8 @@ import { HeroSection, Section, TextSection } from './../../../../core/models/sec
 })
 export class PageLayoutEditorComponent implements OnInit {
   @Input() sections: Array<Section>;
+  @Output() sectionsChange: EventEmitter<Array<Section>> = new EventEmitter<Array<Section>>();
+  @Output() save: EventEmitter<null> = new EventEmitter();
   public deleteModalRef: BsModalRef | null;
   public fullScreenModalRef: BsModalRef | null;
   @ViewChild(ModalDirective, { static: false }) fullScreenModal: ModalDirective;
@@ -18,6 +20,7 @@ export class PageLayoutEditorComponent implements OnInit {
   public faExpand = faExpand;
   public faCompress = faCompress;
   public faArrowsAlt = faArrowsAlt;
+  public faSave = faSave;
   public sectionDeletingIndex = -1;
   public isFullScreen = false;
 
@@ -65,6 +68,18 @@ export class PageLayoutEditorComponent implements OnInit {
       `
     } as TextSection);
   }
+  public addFullScreenVideoHero() {
+
+    this.sections.push({
+      order: this.sections.length - 1,
+      type:  'video full screen hero',
+      video: '/assets/demo2.mov',
+      content: `
+        <h1 class="display-1">Hero Heading</h1>
+        <h4 class="display-5">Sub heading. Usually a description of the page or section.</h4>
+      `,
+    } as VideoFullScreenHeroSection);
+  }
   public promptDeleteOption(templateRef: TemplateRef<any>, index) {
     this.deleteModalRef = this.modalService.show(templateRef);
     this.sectionDeletingIndex = index;
@@ -82,7 +97,7 @@ export class PageLayoutEditorComponent implements OnInit {
       this.sections.splice(this.sectionDeletingIndex, 1);
     }
     this.sectionDeletingIndex = -1;
-
+    this.sectionsChange.emit(this.sections);
   }
 
   public sectionUpdated(section, index) {
@@ -90,6 +105,7 @@ export class PageLayoutEditorComponent implements OnInit {
       ...section,
       updated: true
     };
+    this.sectionsChange.emit(this.sections);
   }
 
   private drop(event: CdkDragDrop<Section[]>) {
@@ -97,6 +113,7 @@ export class PageLayoutEditorComponent implements OnInit {
     this.sections = this.sections.map((section, index) => {
       return { ...section, order: index, updated: true }
     });
+    this.sectionsChange.emit(this.sections);
   }
 
   public expandToFullScreen(templateRef: TemplateRef<any>) {

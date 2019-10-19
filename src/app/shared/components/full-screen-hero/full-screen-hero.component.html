@@ -4,7 +4,7 @@
     <app-inline-editor [(content)]="section.content" *ngIf="!readonly" (contentChange)="updateContent($event)"></app-inline-editor>
   </div>
   <div class="section-toolbar" *ngIf="!readonly">
-    <button type="button" class="btn btn-primary btn-sm" (click)="openGallary(template)">
+    <button type="button" class="btn btn-primary btn-sm" (click)="openGallery(template)">
       <fa-icon [icon]="faImage"></fa-icon>
     </button>
   </div>

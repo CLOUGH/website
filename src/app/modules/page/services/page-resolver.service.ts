@@ -14,9 +14,12 @@ const PageQuery = gql`
       description
       path
       sections {
+        id
         type
         content
         image
+        video
+        order
       }
     }
   }

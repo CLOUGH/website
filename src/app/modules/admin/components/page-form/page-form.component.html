@@ -20,7 +20,7 @@
   </div>
 
   <h2 class="display-5 mt-5 mb-4">Page Editor</h2>
-  <app-page-layout-editor [sections]="page.sections"></app-page-layout-editor>
+  <app-page-layout-editor [(sections)]="page.sections" (save)="submitForm()"></app-page-layout-editor>
 
   <div class="text-right">
     <button type="submit" class="btn btn-primary mt-5 ">{{submitButtonLabel}}</button>

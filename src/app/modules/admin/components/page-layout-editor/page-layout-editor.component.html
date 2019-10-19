@@ -1,5 +1,6 @@
 <ng-template #pagePreviewContent>
   <div class="page-preview" [class.full-screen]="isFullScreen">
+    <!-- Toolbar -->
     <div class="page-preview-toolbar">
       <div class="btn-group" dropdown>
         <button id="add-section-dropdown-btn" dropdownToggle type="button"
@@ -11,6 +12,7 @@
           <li role="menuitem"><button class="dropdown-item" (click)="addSection('full screen hero')">Full Screen
               Hero</button></li>
           <li role="menuitem"><button class="dropdown-item" (click)="addTextSection()">Text</button></li>
+          <li role="menuitem"><button class="dropdown-item" (click)="addFullScreenVideoHero()">Fullscreen Video Hero</button></li>
         </ul>
       </div>
       <button *ngIf="!isFullScreen" type="button" class="btn btn-sm full-screen-btn btn-outline-primary ml-3"
@@ -21,7 +23,12 @@
         (click)="fullScreenModal.hide()" tooltip="Close fullscreen mode" placement="bottom">
         <fa-icon [icon]="faCompress"></fa-icon>
       </button>
+      <button *ngIf="isFullScreen" type="button" class="btn btn-sm full-screen-btn btn-outline-primary ml-3"
+        (click)="save.emit()" tooltip="Save page" placement="bottom">
+        <fa-icon [icon]="faSave"></fa-icon>
+      </button>
     </div>
+
     <div cdkDropList (cdkDropListDropped)="drop($event)">
       <div *ngFor="let section of sections;let i = index" class="sections" [hidden]="section.deleted" cdkDrag>
         <div class="section-toolbar">
@@ -43,6 +50,9 @@
         <app-text-section *ngIf="section.type=='text'" [section]="section" (sectionChange)="sectionUpdated($event, i)"
           (removeSection)="removeSection(i)">
         </app-text-section>
+        <app-video-full-screen-hero *ngIf="section.type=='video full screen hero'" [section]="section" (sectionChange)="sectionUpdated($event, i)"
+          (removeSection)="removeSection(i)">
+        </app-video-full-screen-hero >
       </div>
     </div>
   </div>

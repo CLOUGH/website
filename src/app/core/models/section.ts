@@ -15,6 +15,10 @@ export interface HeroSection extends Section {
   image: string;
   content: string;
 }
+export interface VideoFullScreenHeroSection extends Section {
+  video: string;
+  content: string;
+}
 
 export interface TextSection extends Section {
   content: string;

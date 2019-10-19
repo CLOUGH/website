@@ -17,6 +17,7 @@ const PagesQuery = gql`
         type
         content
         image
+        video
         order
       }
     }
@@ -35,6 +36,7 @@ const updatePageQuery = gql`
         type
         content
         image
+        video
         order
       }
     }

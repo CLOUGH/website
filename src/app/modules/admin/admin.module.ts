@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule,TooltipModule } from 'ngx-bootstrap';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AdminRoutingModule } from './admin-routing.module';
@@ -18,6 +18,7 @@ import { AdminPageHeadingComponent } from './components/admin-page-heading/admin
 import { PageEditPageComponent } from './pages/page-edit-page/page-edit-page.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PageFormComponent } from './components/page-form/page-form.component';
+import { PageLayoutEditorComponent } from './components/page-layout-editor/page-layout-editor.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { PageFormComponent } from './components/page-form/page-form.component';
     PageCreatePageComponent,
     AdminTopNavbarComponent,
     AdminPageHeadingComponent,
-    PageFormComponent
+    PageFormComponent,
+    PageLayoutEditorComponent
   ], imports: [
     CommonModule,
     AdminRoutingModule,
@@ -40,8 +42,9 @@ import { PageFormComponent } from './components/page-form/page-form.component';
     FormsModule,
     SharedModule,
     BsDropdownModule.forRoot(),
-    DragDropModule
-
+    DragDropModule,
+    TooltipModule.forRoot(),
+    ModalModule.forRoot()
   ]
 })
 export class AdminModule { }

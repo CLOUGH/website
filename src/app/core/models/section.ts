@@ -1,4 +1,5 @@
 export interface Section {
+  id?: string;
   type: string;
   deleted?: boolean;
   updated?: boolean;

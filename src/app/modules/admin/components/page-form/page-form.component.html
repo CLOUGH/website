@@ -1,12 +1,14 @@
 <form id=formId (ngSubmit)="submitForm()" #refForm="ngForm">
   <div class="form-group">
     <label for="name">Name</label>
-    <input [(ngModel)]="page.name"  type="text" class="form-control" name="name" id="name" aria-describedby="nameHelpText" placeholder="">
+    <input [(ngModel)]="page.name" type="text" class="form-control" name="name" id="name"
+      aria-describedby="nameHelpText" placeholder="">
     <small id="nameHelpText" class="form-text text-muted">The name of the page</small>
   </div>
   <div class="form-group">
     <label for="path">Path</label>
-    <input [(ngModel)]="page.path" type="text" class="form-control" name="path" id="path" aria-describedby="pathHelpText" placeholder="">
+    <input [(ngModel)]="page.path" type="text" class="form-control" name="path" id="path"
+      aria-describedby="pathHelpText" placeholder="">
     <small id="pathHelpText" class="form-text text-muted">The path for the page</small>
   </div>
 
@@ -17,62 +19,11 @@
     <small id="descriptionHelpText" class="form-text text-muted">A short description of the page's purpose</small>
   </div>
 
-  <h2 class="display-5">Page Layout</h2>
-  <div class="page-preview-toolbar ">
-    <div class="btn-group" dropdown>
-      <button id="add-section-dropdown-btn" dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle"
-        aria-controls="dropdown-basic">Add Section<span class="caret"></span>
-      </button>
-      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
-        aria-labelledby="add-section-dropdown-btn">
-        <li role="menuitem"><button class="dropdown-item" (click)="addSection('full screen hero')">Full Screen
-            Hero</button></li>
-        <li role="menuitem"><button class="dropdown-item" (click)="addTextSection()">Text</button></li>
-        <!-- <li role="menuitem"><a class="dropdown-item" href="#">Column</a></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Progress Bar</a></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Post</a></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Projects</a> </li> -->
-      </ul>
-    </div>
-  </div>
-  <div class="page-preview card mt-1">
-    <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-      <div *ngFor="let section of page.sections;let i = index" class="sections" [hidden]="section.deleted" cdkDrag>
-
-        <div class="move-handle" cdkDragHandle>
-          <fa-icon [icon]="faArrowsAlt"></fa-icon>
-        </div>
-
-        <button type="button" class="btn btn-secondary btn-sm delete-section-btn"
-          (click)="promptDeleteOption(removeSectionModal, i)">
-          <fa-icon [icon]="faTrash"></fa-icon>
-        </button>
-        <app-full-screen-hero *ngIf="section.type=='hero'" [section]="section" (sectionChange)="sectionUpdated($event, i)" (removeSection)="removeSection(i)">
-        </app-full-screen-hero>
-        <app-text-section *ngIf="section.type=='text'" [section]="section" (sectionChange)="sectionUpdated($event, i)" (removeSection)="removeSection(i)">
-        </app-text-section>
-      </div>
-    </div>
-  </div>
+  <h2 class="display-5 mt-5 mb-4">Page Editor</h2>
+  <app-page-layout-editor [sections]="page.sections"></app-page-layout-editor>
 
   <div class="text-right">
     <button type="submit" class="btn btn-primary mt-5 ">{{submitButtonLabel}}</button>
   </div>
 
 </form>
-
-<ng-template #removeSectionModal>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Delete Section</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    Are you sure you want to delete this section?
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary" (click)="deleteSection()">Yes</button>
-    <button type="button" class="btn btn-outline-secondary" (click)="deleteModalRef.hide()">No</button>
-  </div>
-</ng-template>

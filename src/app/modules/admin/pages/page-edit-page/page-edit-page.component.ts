@@ -12,6 +12,8 @@ const PagesQuery = gql`
       name
       path
       description
+      published
+      status
       sections {
         id
         type
@@ -31,6 +33,8 @@ const updatePageQuery = gql`
       name
       path
       description
+      published
+      status
       sections {
         id
         type
@@ -64,7 +68,10 @@ export class PageEditPageComponent implements OnInit, OnDestroy {
         variables: { id: this.route.snapshot.paramMap.get('id') }
       })
       .subscribe(({ data, loading, errors }) => {
-        this.page = data.page;
+        this.page = {
+          ...data.page,
+          published: new Date(data.page.published)
+        };
       });
   }
 
@@ -94,7 +101,10 @@ export class PageEditPageComponent implements OnInit, OnDestroy {
           );
         } else {
           this.toastr.success('Successfully updated page', 'Success');
-          this.page = data.updatePage;
+          this.page = {
+            ...data.updatePage,
+            published: new Date(data.updatePage.published)
+          };
         }
       }, (error) => {
         this.toastr.error(

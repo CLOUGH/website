@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule, ModalModule,TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule,TooltipModule, BsDatepickerModule,TimepickerModule   } from 'ngx-bootstrap';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AdminRoutingModule } from './admin-routing.module';
@@ -44,7 +44,9 @@ import { PageLayoutEditorComponent } from './components/page-layout-editor/page-
     BsDropdownModule.forRoot(),
     DragDropModule,
     TooltipModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    TimepickerModule.forRoot()
   ]
 })
 export class AdminModule { }

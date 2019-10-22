@@ -1,9 +1,27 @@
-<form id=formId (ngSubmit)="submitForm()" #refForm="ngForm">
+<form id=formId #refForm="ngForm">
   <div class="form-group">
     <label for="name">Name</label>
     <input [(ngModel)]="page.name" type="text" class="form-control" name="name" id="name"
       aria-describedby="nameHelpText" placeholder="">
     <small id="nameHelpText" class="form-text text-muted">The name of the page</small>
+  </div>
+  <div class="form-group">
+    <label for="status">Status</label>
+    <select class="form-control" name="status" id="status" [(ngModel)]="page.status">
+      <option>Draft</option>
+      <option>Pending Revision</option>
+      <option>Approved</option>
+    </select>
+  </div>
+  <div class="row">
+    <div class="form-group col">
+      <label for="publish">Publish</label>
+      <input type="text" [bsValue]="currentDate" bsDatepicker autocomplete="false"  [bsConfig]="datePickerConfig"
+        class="form-control" name="publish" id="publish" aria-describedby="publishDateHelp" placeholder="Publish date"
+        [(ngModel)]="page.published">
+      <small id="publishDateHelp" class="form-text text-muted">Date the page should publish</small>
+    </div>
+    <timepicker [(ngModel)]="page.published" class="col"></timepicker>
   </div>
   <div class="form-group">
     <label for="path">Path</label>
@@ -23,7 +41,7 @@
   <app-page-layout-editor [(sections)]="page.sections" (save)="submitForm()"></app-page-layout-editor>
 
   <div class="text-right">
-    <button type="submit" class="btn btn-primary mt-5 ">{{submitButtonLabel}}</button>
+    <button type="button" class="btn btn-primary mt-5 " (click)="submitForm()">{{submitButtonLabel}}</button>
   </div>
 
 </form>

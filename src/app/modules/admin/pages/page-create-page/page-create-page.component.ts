@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import gql from 'graphql-tag';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import * as  moment from 'moment';
 
 const createPageMutation = gql`
   mutation updatePage( $page: PageInput!) {
@@ -12,6 +13,8 @@ const createPageMutation = gql`
       name
       path
       description
+      published
+      status
       sections {
         id
         type
@@ -32,6 +35,7 @@ export class PageCreatePageComponent implements OnInit {
     name: '',
     path: '',
     description: '',
+    published:new Date(),
     sections: []
   };
   constructor(
@@ -44,7 +48,7 @@ export class PageCreatePageComponent implements OnInit {
   }
 
   public createPage(page) {
-    console.log('reachj123adfaa')
+
     this.apollo
       .mutate<any>({
         mutation: createPageMutation,

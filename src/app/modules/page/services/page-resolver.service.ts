@@ -13,6 +13,8 @@ const PageQuery = gql`
       name
       description
       path
+      published
+      status
       sections {
         id
         type

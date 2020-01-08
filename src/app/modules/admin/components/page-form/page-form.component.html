@@ -21,7 +21,7 @@
         [(ngModel)]="page.published">
       <small id="publishDateHelp" class="form-text text-muted">Date the page should publish</small>
     </div>
-    <timepicker [(ngModel)]="page.published" class="col"></timepicker>
+    <app-time-picker [(timestamp)]="page.published" class="col"></app-time-picker>
   </div>
   <div class="form-group">
     <label for="path">Path</label>

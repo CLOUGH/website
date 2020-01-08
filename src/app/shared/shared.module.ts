@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MomentModule } from 'ngx-moment';
 import { EditorModule } from '@tinymce/tinymce-angular';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule, TimepickerModule } from 'ngx-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
@@ -14,6 +14,7 @@ import { InlineEditorComponent } from './components/inline-editor/inline-editor.
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { DeletedPipe } from './pipes/deleted.pipe';
 import { VideoFullScreenHeroComponent } from './components/video-full-screen-hero/video-full-screen-hero.component';
+import { TimePickerComponent } from './components/time-picker/time-picker.component';
 
 @NgModule({
   imports: [
@@ -22,10 +23,26 @@ import { VideoFullScreenHeroComponent } from './components/video-full-screen-her
     FontAwesomeModule,
     EditorModule,
     ModalModule.forRoot(),
-    FormsModule
+    FormsModule,    
+    TimepickerModule.forRoot()
 
   ],
-  declarations: [MainLayoutComponent, FullScreenHeroComponent, TextSectionComponent, InlineEditorComponent, SafeHtmlPipe, DeletedPipe, VideoFullScreenHeroComponent],
-  exports: [MainLayoutComponent, FullScreenHeroComponent,TextSectionComponent,DeletedPipe,VideoFullScreenHeroComponent]
+  declarations: [MainLayoutComponent,
+    FullScreenHeroComponent,
+    TextSectionComponent,
+    InlineEditorComponent,
+    SafeHtmlPipe,
+    DeletedPipe,
+    VideoFullScreenHeroComponent,
+    TimePickerComponent
+  ],
+  exports: [
+    MainLayoutComponent,
+    FullScreenHeroComponent,
+    TextSectionComponent,
+    DeletedPipe,
+    VideoFullScreenHeroComponent,
+    TimePickerComponent
+  ]
 })
 export class SharedModule { }

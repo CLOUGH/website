@@ -12,6 +12,6 @@ steps:
     - 'MAINTENANCE_MODE=${_MAINTENANCE_MODE}'
   args: ['run','build']
 
-- name: gcr.io/my-website-a3970/firebase@sha256:48b2e9463a3d3977d1b4fe9ad6c86ec3a7dddeb1bbdf0b510ad6ea6f4d591ec0
+- name: gcr.io/$PROJECT_ID/firebase
   id: 'Deploy to Firebase'
   args: ['deploy', '--project=$PROJECT_ID', '--only=hosting']

@@ -4,6 +4,7 @@
   "private": true,
   "main": "function.js",
   "scripts": {
+    "create-env": "printenv > .env",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -17,6 +18,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "bootstrap": "^5.0.0-beta3",
     "classnames": "^2.3.1",
+    "create-env": "^1.1.1",
     "cross-env": "^7.0.3",
     "firebase-admin": "^9.9.0",
     "firebase-functions": "^3.14.1",

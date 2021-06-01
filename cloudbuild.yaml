@@ -7,9 +7,13 @@ steps:
     args: ["install"]
 
   - name: "gcr.io/cloud-builders/npm"
-    id: "Build the project"
+    id: "Generate .env file"    
     env:
       - "MAINTENANCE_MODE=${_MAINTENANCE_MODE}"
+    args: ["run", "create-env"]
+
+  - name: "gcr.io/cloud-builders/npm"
+    id: "Build the project"
     args: ["run", "build"]
 
   - name: "gcr.io/$PROJECT_ID/firebase"

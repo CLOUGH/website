@@ -4,7 +4,16 @@
 steps:
 - name: node
   entrypoint: npm
+  id: 'Installing dependencies'
   args: ['install']
+
 - name: node
   entrypoint: npm
-  args: ['run','deploy']
+  id: 'Compiling/Building project'
+  env:
+    - 'MAINTENANCE_MODE=${_MAINTENANCE_MODE}'
+  args: ['run','build']
+
+- name: gcr.io/my-website-a3970/firebase
+  id: 'Deploying to Firebase'
+  args: ['deploy', '--project=my-website-a3970', '--only=hosting']

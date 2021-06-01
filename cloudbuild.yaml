@@ -18,4 +18,4 @@ steps:
 
   - name: "gcr.io/$PROJECT_ID/firebase"
     id: "Deploy to Firebase"
-    args: ["deploy", "--project=$PROJECT_ID", "--only", "functions:nextServer,hosting"]
+    args: ["deploy","--debug",  "--project=$PROJECT_ID", "--only", "functions:nextServer"]

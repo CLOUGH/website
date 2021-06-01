@@ -12,6 +12,7 @@ export default function Maintenance() {
             <div className="container text-center">
                 <h1 className="display-5">The Site Is Currently Under Construction</h1>
                 <p className="lead">If you need to get in touch, please feel free to reach out using the following social media links</p>
+                <p className="lead">If you need to get in touch, please feel free to reach out using the following social media links</p>
                 <div className={styles.contactIcons}>
                     <a href="https://twitter.com/warren_clough" target="_blank" >
                         <FontAwesomeIcon icon={faTwitter} />

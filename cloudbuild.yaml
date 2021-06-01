@@ -27,5 +27,5 @@ steps:
       - functions
       - deploy
       - nextServer
-      - --source=./function.js
+      - --source=.
       - --trigger-http

@@ -2,7 +2,7 @@
   "name": "website",
   "version": "0.1.0",
   "private": true,
-  "main": "index.js",
+  "main": "function.js",
   "scripts": {
     "create-env": "printenv > .env",
     "dev": "next dev",

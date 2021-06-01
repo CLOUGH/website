@@ -20,6 +20,12 @@ steps:
     id: "Deploy to Firebase"
     args: ["deploy", "--project=$PROJECT_ID", "--only=hosting"]
 
-  - name: "gcr.io/$PROJECT_ID/firebase"
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     id: "Deploy cloud functions"
-    args: ["deploy", "--project=$PROJECT_ID", "--only", "functions"]
+    args:
+      - gcloud
+      - functions
+      - deploy
+      - nextServer
+      - --source=./function.js
+      - --trigger-http

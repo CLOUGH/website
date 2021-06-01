@@ -1,0 +1,14 @@
+.main {
+    background-image: url('../images/xandro-vandewalle-TRTqLbpShkM-unsplash.jpg');
+    background-size: cover;
+    min-height: 100vh;
+    color: white;
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+
+}
+.contactIcons a {
+    padding: 10px;
+    text-decoration: none;
+}

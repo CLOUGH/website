@@ -1,0 +1,17 @@
+# In this directory, run the following command to build this builder.
+# $ gcloud builds submit . --config=cloudbuild.yaml
+
+steps:
+  - name: gcr.io/cloud-builders/npm
+    id: "Instal dependencies"
+    args: ["install"]
+
+  - name: gcr.io/cloud-builders/npm
+    id: "Build the project"
+    env:
+      - "MAINTENANCE_MODE=${_MAINTENANCE_MODE}"
+    args: ["run", "build"]
+
+  - name: gcr.io/$PROJECT_ID/firebase
+    id: "Deploy to Firebase"
+    args: ["deploy", "--project=$PROJECT_ID", "--only=hosting"]

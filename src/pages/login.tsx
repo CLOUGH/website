@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from 'next/image';
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../context/AuthUserContext";
+import { useRouter } from "next/dist/client/router";
 
 const LoginPageStyledWrapper = styled.div`
     display: flex;
@@ -40,14 +42,23 @@ interface LoginCredentials {
 }
 
 export default function Login() {
+    const {signInWithEmailAndPassword, authUser} = useAuth();
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [loginError, setLoginError] = useState<any>(null);
+    const router = useRouter();
+
+
     const onSubmit = (loginCredentials: LoginCredentials) => {
         console.log({loginCredentials});
-        
-        // auth.signInWithEmailAndPassword(loginCredentials.email, loginCredentials.password)
-        //     .then(response => {
-        //         console.log({response});
-        //     }).catch(error => console.log({error}));
+        setLoginError(null);
+        signInWithEmailAndPassword(loginCredentials.email, loginCredentials.password)
+            .then(authUser => {
+                console.log({authUser})
+                router.push('/admin');
+            }).catch(error => {
+                console.error({error})
+                setLoginError(error);
+            });
     };
 
     return (
@@ -55,6 +66,11 @@ export default function Login() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>WC</h1>
                 <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+                {loginError && (
+                    <div className="alert alert-danger">
+                        {loginError.message}
+                    </div>
+                )}
 
                 <div className="form-floating">
                     <input type="email"

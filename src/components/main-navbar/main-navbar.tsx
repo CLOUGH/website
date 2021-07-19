@@ -9,7 +9,7 @@ interface Props {}
 
 
 const StyledNavbar = styled.div`
-    font-size: 12px;
+    font-size: 16px;
 `;
 
 export const MainNavbar: React.FC<Props> = (props) => {

@@ -1,7 +1,5 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/storage';
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -16,13 +14,7 @@ export const firebaseConfig = {
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
+  console.log('Firebase initialize');
 }
 
-export const app = firebase.app();
-export const auth = firebase.auth();
-// export const db = firebase.firestore();
-export const now = firebase.firestore.Timestamp.now();
-export const storage = firebase.storage();
-
-
-console.log(app.name ? 'Firebase Mode Activated!' : 'Firebase not working :(');
+export default firebase;

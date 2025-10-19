@@ -3,12 +3,14 @@ FROM golang:1.23-alpine AS builder
 
 WORKDIR /app
 
-# Copy go mod files
-COPY go.mod go.sum ./
-RUN go mod download
-
 # Copy source code
 COPY . .
+
+# Ensure dependencies are correct
+RUN go mod tidy
+
+# Download dependencies
+RUN go mod download
 
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
@@ -21,10 +23,9 @@ RUN apk --no-cache add ca-certificates
 
 WORKDIR /app
 
-# Copy the binary from builder
+# Copy the binary and necessary files from the builder stage
 COPY --from=builder /app/main .
 COPY --from=builder /app/web ./web
-COPY --from=builder /app/my-website-a3970-firebase-adminsdk-eg16v-52260bb1dc.json ./
 
 # Expose port (Cloud Run will set PORT env var)
 EXPOSE 8080

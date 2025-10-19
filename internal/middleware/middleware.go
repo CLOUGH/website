@@ -14,7 +14,7 @@ func CORS() gin.HandlerFunc {
 			"https://warrenclough.com",
 			"https://www.warrenclough.com",
 		}
-		
+
 		allowed := false
 		for _, allowedOrigin := range allowedOrigins {
 			if origin == allowedOrigin {
@@ -22,7 +22,7 @@ func CORS() gin.HandlerFunc {
 				break
 			}
 		}
-		
+
 		if allowed {
 			c.Header("Access-Control-Allow-Origin", origin)
 		}
@@ -47,28 +47,29 @@ func SecurityHeaders() gin.HandlerFunc {
 		c.Header("X-Frame-Options", "DENY")
 		c.Header("X-XSS-Protection", "1; mode=block")
 		c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
-		
+
 		// HSTS for HTTPS
 		if c.Request.TLS != nil {
 			c.Header("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
 		}
-		
+
 		// Content Security Policy
 		csp := "default-src 'self'; " +
-			"script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com https://fonts.googleapis.com; " +
+			"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com https://fonts.googleapis.com https://www.youtube.com https://youtube.com; " +
 			"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; " +
 			"font-src 'self' https://fonts.gstatic.com data:; " +
 			"img-src 'self' data: https: blob:; " +
-			"connect-src 'self'; " +
-			"frame-src 'self' https://www.youtube.com; " +
+			"connect-src 'self' https://www.youtube.com https://youtube.com; " +
+			"frame-src 'self' https://www.youtube.com https://youtube.com; " +
+			"manifest-src 'self'; " +
 			"object-src 'none'; " +
 			"base-uri 'self'; " +
 			"form-action 'self';"
 		c.Header("Content-Security-Policy", csp)
-		
+
 		// Permissions Policy
 		c.Header("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()")
-		
+
 		c.Next()
 	}
 }

@@ -293,11 +293,40 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
-    <link rel="manifest" href="/static/manifest.json">
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#a78bfa">
     
     <!-- Alpine.js Data & Intersection Observer -->
     <script>
+        // Fix passive event listener warnings
+        (function() {
+            if (typeof EventTarget !== "undefined") {
+                let supportsPassive = false;
+                try {
+                    const opts = Object.defineProperty({}, 'passive', {
+                        get: function() {
+                            supportsPassive = true;
+                        }
+                    });
+                    window.addEventListener("test", null, opts);
+                } catch (e) {}
+                
+                if (supportsPassive) {
+                    const addEvent = EventTarget.prototype.addEventListener;
+                    EventTarget.prototype.addEventListener = function(type, listener, options) {
+                        if (type === 'touchstart' || type === 'touchmove' || type === 'wheel' || type === 'mousewheel') {
+                            if (typeof options === 'boolean') {
+                                options = { capture: options, passive: true };
+                            } else if (typeof options === 'object' && options.passive === undefined) {
+                                options.passive = true;
+                            }
+                        }
+                        return addEvent.call(this, type, listener, options);
+                    };
+                }
+            }
+        })();
+        
         // Project data for modal
         window.projectData = {
             'poe-recipe': {

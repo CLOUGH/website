@@ -1,0 +1,20 @@
+{{define "content"}}
+<section class="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div class="max-w-md w-full text-center">
+        <div class="mb-8">
+            <div class="text-6xl text-primary-600 mb-4">⚠️</div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Oops! Something went wrong</h1>
+            <p class="text-lg text-gray-600 mb-8">{{.error}}</p>
+        </div>
+        
+        <div class="space-y-4">
+            <a href="/" class="block bg-primary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors">
+                Go Home
+            </a>
+            <a href="javascript:history.back()" class="block text-primary-600 hover:text-primary-700 font-semibold">
+                Go Back
+            </a>
+        </div>
+    </div>
+</section>
+{{end}}

@@ -1,0 +1,1315 @@
+{{define "home.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <meta name="description" content="{{.meta.description}}">
+    <meta name="keywords" content="{{.meta.keywords}}">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Custom CSS Variables for Modern Dark Theme -->
+    <style>
+        :root {
+            --background: 0.97 0.005 240;
+            --foreground: 0.25 0.02 240;
+            --card: 1 0 0;
+            --card-foreground: 0.25 0.02 240;
+            --primary: 0.65 0.15 195;
+            --primary-foreground: 0.98 0.005 240;
+            --secondary: 0.92 0.01 240;
+            --secondary-foreground: 0.25 0.02 240;
+            --muted: 0.55 0.02 240;
+            --muted-foreground: 0.55 0.02 240;
+            --accent: 0.65 0.15 195;
+            --accent-foreground: 0.98 0.005 240;
+            --border: 0.88 0.01 240;
+            --input: 0.88 0.01 240;
+            --ring: 0.65 0.15 195;
+            --radius: 0.5rem;
+        }
+
+        .dark {
+            --background: 0.12 0.03 250;
+            --foreground: 0.95 0.01 240;
+            --card: 0.15 0.03 250;
+            --card-foreground: 0.95 0.01 240;
+            --primary: 0.65 0.20 285;
+            --primary-foreground: 0.12 0.03 250;
+            --secondary: 0.20 0.03 250;
+            --secondary-foreground: 0.95 0.01 240;
+            --muted: 0.40 0.03 250;
+            --muted-foreground: 0.60 0.03 250;
+            --accent: 0.65 0.20 285;
+            --accent-foreground: 0.12 0.03 250;
+            --border: 0.22 0.03 250;
+            --input: 0.22 0.03 250;
+            --ring: 0.65 0.20 285;
+        }
+
+        .bg-background { background-color: oklch(var(--background)); }
+        .text-foreground { color: oklch(var(--foreground)); }
+        .bg-card { background-color: oklch(var(--card)); }
+        .text-card-foreground { color: oklch(var(--card-foreground)); }
+        .bg-primary { background-color: oklch(var(--primary)); }
+        .text-primary { color: oklch(var(--primary)); }
+        .text-primary-foreground { color: oklch(var(--primary-foreground)); }
+        .bg-secondary { background-color: oklch(var(--secondary)); }
+        .text-secondary-foreground { color: oklch(var(--secondary-foreground)); }
+        .text-muted-foreground { color: oklch(var(--muted-foreground)); }
+        .bg-accent { background-color: oklch(var(--accent)); }
+        .text-accent-foreground { color: oklch(var(--accent-foreground)); }
+        .border-border { border-color: oklch(var(--border)); }
+        .bg-input { background-color: oklch(var(--input)); }
+        .ring-ring { --tw-ring-color: oklch(var(--ring)); }
+
+        /* Animated Geometric Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: oklch(var(--primary));
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: particleFloat 15s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) { top: 10%; left: 20%; animation-duration: 18s; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 20%; left: 80%; animation-duration: 22s; animation-delay: 2s; }
+        .particle:nth-child(3) { top: 35%; left: 40%; animation-duration: 20s; animation-delay: 4s; }
+        .particle:nth-child(4) { top: 50%; left: 10%; animation-duration: 25s; animation-delay: 1s; }
+        .particle:nth-child(5) { top: 60%; left: 90%; animation-duration: 19s; animation-delay: 3s; }
+        .particle:nth-child(6) { top: 75%; left: 50%; animation-duration: 23s; animation-delay: 5s; }
+        .particle:nth-child(7) { top: 15%; left: 60%; animation-duration: 21s; animation-delay: 2.5s; }
+        .particle:nth-child(8) { top: 45%; left: 25%; animation-duration: 24s; animation-delay: 1.5s; }
+        .particle:nth-child(9) { top: 70%; left: 70%; animation-duration: 20s; animation-delay: 3.5s; }
+        .particle:nth-child(10) { top: 30%; left: 85%; animation-duration: 22s; animation-delay: 0.5s; }
+        .particle:nth-child(11) { top: 85%; left: 15%; animation-duration: 19s; animation-delay: 4.5s; }
+        .particle:nth-child(12) { top: 55%; left: 65%; animation-duration: 21s; animation-delay: 2s; }
+        .particle:nth-child(13) { top: 25%; left: 5%; animation-duration: 23s; animation-delay: 3s; }
+        .particle:nth-child(14) { top: 65%; left: 35%; animation-duration: 20s; animation-delay: 1.5s; }
+        .particle:nth-child(15) { top: 40%; left: 75%; animation-duration: 24s; animation-delay: 4s; }
+        .particle:nth-child(16) { top: 80%; left: 55%; animation-duration: 18s; animation-delay: 2.5s; }
+        .particle:nth-child(17) { top: 5%; left: 45%; animation-duration: 22s; animation-delay: 0.5s; }
+        .particle:nth-child(18) { top: 90%; left: 80%; animation-duration: 25s; animation-delay: 3.5s; }
+        .particle:nth-child(19) { top: 12%; left: 30%; animation-duration: 19s; animation-delay: 1s; }
+        .particle:nth-child(20) { top: 48%; left: 95%; animation-duration: 21s; animation-delay: 5s; }
+
+        @keyframes particleFloat {
+            0%, 100% {
+                transform: translate(0, 0);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translate(50px, -50px);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translate(-30px, 30px);
+                opacity: 0.2;
+            }
+            75% {
+                transform: translate(40px, 40px);
+                opacity: 0.5;
+            }
+        }
+
+        /* Particle Grid */
+        .particle-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 49px, oklch(var(--primary) / 0.03) 49px, oklch(var(--primary) / 0.03) 50px),
+                repeating-linear-gradient(90deg, transparent, transparent 49px, oklch(var(--primary) / 0.03) 49px, oklch(var(--primary) / 0.03) 50px);
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        /* Content needs to be above background */
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+
+        /* Section animation */
+        section {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
+        section:nth-child(5) { animation-delay: 0.5s; }
+        section:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section heading fixed on right */
+        .section-heading {
+            position: fixed;
+            right: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            display: none;
+        }
+
+        @media (min-width: 1536px) {
+            .section-heading {
+                display: block;
+            }
+        }
+
+        .section-nav-item {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            padding: 1rem 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .section-nav-item:hover,
+        .section-nav-item.active {
+            opacity: 1;
+            color: oklch(var(--primary));
+        }
+
+        .section-nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 0;
+            background: oklch(var(--primary));
+            transition: height 0.3s ease;
+        }
+
+        .section-nav-item.active::before {
+            height: 60%;
+        }
+    </style>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'oklch(var(--background))',
+                        foreground: 'oklch(var(--foreground))',
+                        card: {
+                            DEFAULT: 'oklch(var(--card))',
+                            foreground: 'oklch(var(--card-foreground))',
+                        },
+                        primary: {
+                            DEFAULT: 'oklch(var(--primary))',
+                            foreground: 'oklch(var(--primary-foreground))',
+                        },
+                        secondary: {
+                            DEFAULT: 'oklch(var(--secondary))',
+                            foreground: 'oklch(var(--secondary-foreground))',
+                        },
+                        muted: {
+                            DEFAULT: 'oklch(var(--muted))',
+                            foreground: 'oklch(var(--muted-foreground))',
+                        },
+                        accent: {
+                            DEFAULT: 'oklch(var(--accent))',
+                            foreground: 'oklch(var(--accent-foreground))',
+                        },
+                        border: 'oklch(var(--border))',
+                        input: 'oklch(var(--input))',
+                        ring: 'oklch(var(--ring))',
+                    },
+                    fontFamily: {
+                        'sans': ['Space Grotesk', 'system-ui', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#a78bfa">
+    
+    <!-- Alpine.js Data & Intersection Observer -->
+    <script>
+        // Project data for modal
+        window.projectData = {
+            'poe-recipe': {
+                title: 'Path of Exile Recipe Helper',
+                description: 'Fun gaming side project built for personal use as a game add-on for Path of Exile.',
+                fullDescription: 'Desktop application that integrates with Path of Exile\'s public API to automatically scan player inventory, generate a visual copy with intelligent highlighting of items eligible for chaos recipes and other crafting recipes. Built with Electron for cross-platform compatibility and Angular for a responsive, game-like UI. Features real-time inventory syncing, recipe pattern matching, and visual item categorization.',
+                technologies: ['Electron', 'Angular', 'TypeScript', 'REST API'],
+                github: 'https://github.com/clough/poe-recipe',
+                screenshots: [
+                    'https://github.com/CLOUGH/poe-recipe/raw/main/src/assets/screenshots/Screenshot-2021-01-19-214704.png',
+                    'https://github.com/CLOUGH/poe-recipe/raw/main/src/assets/screenshots/Screenshot-2021-01-19-214751.png',
+                    'https://github.com/CLOUGH/poe-recipe/raw/main/src/assets/screenshots/Screenshot-2021-01-19-214814.png',
+                ]
+            },
+            'opengl-snake': {
+                title: 'OpenGL Snake Game',
+                description: 'One of my first public projects from university where I learned OpenGL and computer graphics fundamentals.',
+                fullDescription: 'Built a classic Snake game from scratch using modern OpenGL, implementing custom rendering pipelines, collision detection, and game state management. This project taught me low-level graphics programming, shader development, and game loop architecture. Features smooth animations, score tracking, and increasing difficulty levels. Implemented using C++ with OpenGL 3.3+ core profile, custom GLSL shaders for rendering, and efficient vertex buffer management.',
+                technologies: ['OpenGL', 'C++', 'GLSL Shaders', 'Game Development'],
+                video: 'https://www.youtube.com/watch?v=voOTQlxe6oo',
+                github: 'https://github.com/clough/snake',
+                screenshots: [
+                ]
+            },
+            'go-trader': {
+                title: 'Go Trader - Jamaica Stock Exchange',
+                description: 'Side project built to learn Go and HTMX while exploring financial data visualization.',
+                fullDescription: 'Real-time stock market application that pulls data from the Jamaica Stock Exchange API and visualizes it with custom-built interactive charts using D3.js. Built as a learning project to master Go\'s concurrency patterns, HTMX for dynamic updates, and D3.js for data visualization. Features include live stock data fetching, historical price tracking, custom candlestick and line charts, search functionality, and responsive design. Demonstrates modern web development patterns with minimal JavaScript and server-side rendering.',
+                technologies: ['Go', 'HTMX', 'D3.js', 'REST API', 'Stock Market Data'],
+                github: 'https://github.com/clough/go-trader',
+                screenshots: [
+                    '/static/go-trader-home-page.png',
+                    '/static/go-trader-stock-page.png',
+                    '/static/go-trader-stock-detail-page.png'
+                ]
+            },
+            'hrmnext-recruitment': {
+                title: 'HRMNext Recruitment Platform',
+                description: 'Public-facing SaaS recruitment solution developed at Epic Technologies for modern hiring workflows.',
+                fullDescription: 'Enterprise recruitment platform that enables recruiters to create job openings, specify requirements, setup and conduct interviews with real-time messaging, manage interview stages, and send invitations. Features seamless integration with Epic\'s HRMNext 4D Solution for comprehensive HR management. Built as a multi-tenant SaaS application with role-based access control, real-time collaboration features, and automated workflow management. Supports custom interview stages, candidate tracking, and detailed analytics for hiring teams.',
+                technologies: ['AngularJS', 'Laravel', '4D', 'Real-time Messaging', 'SaaS'],
+                liveUrl: 'https://recruit.etechja.com/',
+                screenshots: [
+                    '/static/hrmnext-home.png',
+                    '/static/hrmnext-home-login.png'
+                ]
+            },
+            'ncb-credit-card': {
+                title: 'NCB Credit Card Application Portal',
+                description: 'Public-facing web application for NCB (National Commercial Bank) credit card applications.',
+                fullDescription: 'Enterprise-grade credit card application portal built for NCB to streamline the credit card application process. Customers can apply for credit cards online with a secure, user-friendly interface that guides them through the application steps. Built with modern microservices architecture using React for the frontend and Spring/Java backend, deployed on Kubernetes for high availability and scalability. Features include real-time form validation, document upload, application tracking, and integration with NCB\'s core banking systems. Implements strict security measures for handling sensitive financial data and PCI compliance.',
+                technologies: ['React', 'Spring Boot', 'Java', 'Kubernetes', 'Microservices'],
+                liveUrl: 'https://creditcard.jncb.com/',
+                screenshots: [
+                    '/static/credit-card-web-portal.png'
+                ]
+            }
+        };
+
+        // Intersection Observer for sidebar navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.section-nav-item');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionId = entry.target.id;
+                        navLinks.forEach(link => {
+                            const isActive = link.getAttribute('href') === `#${sectionId}`;
+                            
+                            if (isActive) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</head>
+<body class="dark bg-background text-foreground font-sans antialiased" style="background-image: url('/static/xandro-vandewalle-TRTqLbpShkM-unsplash.jpg'); background-size: cover; background-position: center; background-attachment: fixed;" x-data="{ modalOpen: false, selectedProject: null, currentSlide: 0, fullscreenImage: false }">
+    <!-- Animated Particle Background -->
+    <div class="animated-bg">
+        <div class="particle-grid"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Fixed Sidebar Navigation -->
+    <nav class="fixed left-0 top-0 hidden h-screen w-80 flex-col justify-between p-12 lg:flex">
+        <div>
+            <h1 class="mb-2 text-5xl font-bold tracking-tight text-foreground">Warren Clough</h1>
+            <h2 class="mb-4 text-xl font-medium text-primary">Senior Software Engineer</h2>
+            <p class="mb-12 text-muted-foreground leading-relaxed">
+                I build exceptional digital experiences that blend beautiful design with powerful functionality.
+            </p>
+
+            <ul class="space-y-4">
+                <li>
+                    <a href="#about" class="group flex items-center gap-3 text-sm font-medium uppercase tracking-widest transition-all">
+                        <span class="h-px w-8 bg-muted-foreground group-hover:w-16 group-hover:bg-foreground transition-all"></span>
+                        <span class="text-muted-foreground group-hover:text-foreground transition-colors">About</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#technologies" class="group flex items-center gap-3 text-sm font-medium uppercase tracking-widest transition-all">
+                        <span class="h-px w-8 bg-muted-foreground group-hover:w-16 group-hover:bg-foreground transition-all"></span>
+                        <span class="text-muted-foreground group-hover:text-foreground transition-colors">Tech Stack</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#experience" class="group flex items-center gap-3 text-sm font-medium uppercase tracking-widest transition-all">
+                        <span class="h-px w-8 bg-muted-foreground group-hover:w-16 group-hover:bg-foreground transition-all"></span>
+                        <span class="text-muted-foreground group-hover:text-foreground transition-colors">Experience</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#projects" class="group flex items-center gap-3 text-sm font-medium uppercase tracking-widest transition-all">
+                        <span class="h-px w-8 bg-muted-foreground group-hover:w-16 group-hover:bg-foreground transition-all"></span>
+                        <span class="text-muted-foreground group-hover:text-foreground transition-colors">Projects</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#contact" class="group flex items-center gap-3 text-sm font-medium uppercase tracking-widest transition-all">
+                        <span class="h-px w-8 bg-muted-foreground group-hover:w-16 group-hover:bg-foreground transition-all"></span>
+                        <span class="text-muted-foreground group-hover:text-foreground transition-colors">Contact</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="flex gap-6">
+            <a href="https://github.com/clough" target="_blank" rel="noopener noreferrer" class="text-muted-foreground transition-colors hover:text-primary" aria-label="GitHub">
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+            </a>
+            <a href="https://linkedin.com/in/clough-warren" target="_blank" rel="noopener noreferrer" class="text-muted-foreground transition-colors hover:text-primary" aria-label="LinkedIn">
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+            </a>
+            <a href="mailto:clough.warren@gmail.com" class="text-muted-foreground transition-colors hover:text-primary" aria-label="Email">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Right Side Section Navigation -->
+    <div class="section-heading">
+        <nav class="flex flex-col gap-6">
+            <a href="#about" class="section-nav-item relative" data-section="about">About</a>
+            <a href="#technologies" class="section-nav-item relative" data-section="technologies">Tech</a>
+            <a href="#experience" class="section-nav-item relative" data-section="experience">Work</a>
+            <a href="#projects" class="section-nav-item relative" data-section="projects">Projects</a>
+            <a href="#contact" class="section-nav-item relative" data-section="contact">Contact</a>
+        </nav>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="lg:ml-80">
+<!-- Hero Section -->
+<section class="flex min-h-screen items-center px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h1 class="mb-6 text-6xl font-bold tracking-tight text-foreground md:text-7xl lg:text-8xl">
+            Hi, I'm <span class="text-primary">Warren Clough</span>
+        </h1>
+        <p class="text-xl text-muted-foreground leading-relaxed md:text-2xl">
+            A passionate Senior Software Engineer specializing in enterprise-grade solutions. I build scalable, high-performance applications using Java, Spring Boot, Laravel, React, and cloud-native architectures. With professional experience in insurance, human resources, and fintech sectors, I transform complex business requirements into elegant, mission-critical systems.
+        </p>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="min-h-screen px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h2 class="mb-8 text-3xl font-bold text-foreground">About Me</h2>
+        <div class="space-y-4 text-muted-foreground leading-relaxed">
+            <p>
+                I'm a Full-Stack Software Engineer with a passion for building elegant, scalable solutions that make a real impact. My journey in software development has been driven by an insatiable curiosity for how things work and a desire to create technology that enhances people's lives. I thrive at the intersection of beautiful design and robust engineering, where pixel-perfect user interfaces meet bulletproof backend systems.
+            </p>
+            <p>
+                With over 10 years of professional experience across insurance, human resources, and fintech industries, I've specialized in architecting and delivering enterprise-grade applications serving thousands of users daily. My professional expertise centers on Java/Spring Boot and Laravel/PHP ecosystems, building mission-critical systems that meet the rigorous demands of enterprise environments—high availability, security, scalability, and maintainability. I'm passionate about simple, elegant solutions that solve complex problems, which draws me to explore Go for its minimalist philosophy and powerful concurrency model in side projects.
+            </p>
+            <p>
+                Throughout my career, I've had the privilege of working with diverse teams across startups, digital agencies, and established tech companies. These experiences have taught me the importance of clear communication, collaborative problem-solving, and writing code that not only works today but remains maintainable tomorrow. I believe great software is built by great teams, and I'm committed to fostering environments where innovation thrives.
+            </p>
+            <p>
+                Beyond coding, I'm passionate about mentoring aspiring developers and sharing knowledge with my team. When I'm not at my keyboard, you'll find me gaming, 3D printing custom projects, or tinkering with electronics and Arduino boards. I love the intersection of software and hardware, and I'm always exploring emerging technologies and experimenting with new frameworks. I believe continuous learning isn't just important—it's essential in our rapidly evolving field.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Technologies Section -->
+<section id="technologies" class="min-h-screen px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h2 class="mb-8 text-3xl font-bold text-foreground">Technologies I Work With</h2>
+        <p class="mb-6 text-muted-foreground">I believe in choosing the right tool for the job. Here's my technical toolkit:</p>
+        
+        <div class="space-y-8">
+            <div>
+                <h3 class="text-lg font-semibold text-foreground mb-3">Languages & Frameworks</h3>
+                <ul class="grid grid-cols-2 gap-3 text-sm text-muted-foreground md:grid-cols-3">
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Java & Spring Boot
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> PHP & Laravel
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Go (Golang)
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Python
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> React
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Angular & AngularJS
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> TypeScript & JavaScript
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> C++ & OpenGL
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Unreal Engine
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> HTMX
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> 4D Language
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Hibernate & JPA
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Electron
+                    </li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold text-foreground mb-3">Cloud & DevOps</h3>
+                <ul class="grid grid-cols-2 gap-3 text-sm text-muted-foreground md:grid-cols-3">
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Kubernetes
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Docker
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Google Cloud Platform
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Firebase
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Apache Kafka
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> GitLab CI/CD
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Octopus Deploy
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> GitHub Actions
+                    </li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold text-foreground mb-3">Databases & Tools</h3>
+                <ul class="grid grid-cols-2 gap-3 text-sm text-muted-foreground md:grid-cols-3">
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> PostgreSQL
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Oracle SQL
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> MySQL
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> MongoDB
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Redis
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> D3.js Visualization
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> REST APIs
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Microservices
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Maven & Gradle
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Git & GitLab
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Jira
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> Tailwind CSS
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> JUnit & Mockito
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> GLSL Shaders
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience Section -->
+<section id="experience" class="min-h-screen px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h2 class="mb-12 text-3xl font-bold text-foreground">Experience</h2>
+        <div class="space-y-12">
+            <div class="border-l-4 border-primary pl-6 transition-all hover:border-l-8">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                    <div>
+                        <h3 class="text-xl font-semibold text-foreground">Senior Developer Analyst</h3>
+                        <p class="text-lg text-primary font-medium">National Commercial Bank of Jamaica</p>
+                    </div>
+                    <div class="text-muted-foreground mt-2 md:mt-0">
+                        2018 - Present
+                    </div>
+                </div>
+                <p class="text-muted-foreground mb-3">Jamaica • Full-time</p>
+                <div class="space-y-2 text-foreground mb-4">
+                    <p>• Technical Lead for NCB's Consumer Loans & Credit Card team, delivering enterprise solutions for loan and credit card applications processing millions in transactions daily</p>
+                    <p>• Design and build Java microservices with Kubernetes, implementing scalable cloud-native architectures for critical banking operations</p>
+                    <p>• Develop modern front-end applications with React, creating intuitive user experiences for banking customers and internal staff</p>
+                    <p>• Perform root cause analysis and resolution for production issues, ensuring 99.9% uptime for mission-critical financial systems</p>
+                    <p>• Mentor development team members on best practices, code quality, and architectural patterns for enterprise banking applications</p>
+                    <p>• Support and enhance core banking systems, working with PostgreSQL and integrating with legacy financial platforms</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">Java</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">React</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">Kubernetes</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">PostgreSQL</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">Oracle</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">GCP</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">Microservices</span>
+                </div>
+            </div>
+            
+            <div class="border-l-4 border-primary pl-6 transition-all hover:border-l-8">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                    <div>
+                        <h3 class="text-xl font-semibold text-foreground">Senior Software Developer</h3>
+                        <p class="text-lg text-primary font-medium">Epic Technologies</p>
+                    </div>
+                    <div class="text-muted-foreground mt-2 md:mt-0">
+                        2014 - 2018
+                    </div>
+                </div>
+                <p class="text-muted-foreground mb-3">Jamaica • Full-time</p>
+                <div class="space-y-2 text-foreground mb-4">
+                    <p>• Technical Lead for the company's Human Resource Management system and insurance product data migration tools, managing full development lifecycle</p>
+                    <p>• Designed and built enterprise web applications using Laravel/PHP and Angular, creating scalable solutions for HR and payroll management serving multiple organizations</p>
+                    <p>• Developed desktop applications with 4D platform, delivering robust tools for complex business operations and data processing</p>
+                    <p>• Mentored junior developers on coding best practices, architecture patterns, and professional software development methodologies</p>
+                    <p>• Provided technical support and maintenance for the company's payroll software product, ensuring system reliability and data integrity</p>
+                    <p>• Implemented data migration strategies for insurance products, safely transferring critical business data with zero data loss</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">PHP</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">Laravel</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">Angular</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">4D</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">JavaScript</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">PostgreSQL</span>
+                </div>
+            </div>
+            
+            <div class="border-l-4 border-primary pl-6 transition-all hover:border-l-8">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                    <div>
+                        <h3 class="text-xl font-semibold text-foreground">Software Developer / Web Developer</h3>
+                        <p class="text-lg text-primary font-medium">Epic Technologies & Alteroo Consulting Group</p>
+                    </div>
+                    <div class="text-muted-foreground mt-2 md:mt-0">
+                        2010 - 2014
+                    </div>
+                </div>
+                <p class="text-muted-foreground mb-3">Jamaica • Part-time / Contract</p>
+                <div class="space-y-2 text-foreground mb-4">
+                    <p>• Resolved bugs and extended features for Epic Technologies' insurance software product, ensuring system stability and enhanced functionality</p>
+                    <p>• Customized Plone CMS to client specifications and designs at Alteroo Consulting Group, delivering tailored web solutions</p>
+                    <p>• Gained hands-on experience with enterprise insurance systems, including policy management, claims processing, and business workflows</p>
+                    <p>• Developed proficiency in web technologies and CMS platforms while working on client projects and internal tools</p>
+                    <p>• Collaborated with senior developers to understand insurance domain requirements and implement technical solutions</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">PHP</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">Python</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">Plone CMS</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">JavaScript</span>
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">PostgreSQL</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="min-h-screen px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h2 class="mb-12 text-3xl font-bold text-foreground">Projects</h2>
+        <div class="space-y-16">
+            <div class="group cursor-pointer relative grid gap-4 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4" data-project="poe-recipe" @click.prevent="modalOpen = true; selectedProject = 'poe-recipe'; currentSlide = 0">
+                <div class="z-10 sm:col-span-3">
+                    <div class="relative block overflow-hidden rounded-lg border border-border bg-card transition-all group-hover:border-primary/50">
+                        <img 
+                            src="https://github.com/CLOUGH/poe-recipe/raw/main/src/assets/screenshots/Screenshot-2021-01-19-214751.png" 
+                            alt="Path of Exile Recipe Helper Screenshot"
+                            class="w-full h-full object-cover aspect-video"
+                            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'aspect-video bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center\'><div class=\'text-4xl\'>🎮</div></div>';"
+                        />
+                    </div>
+                </div>
+                <div class="z-10 sm:col-span-5">
+                    <h3 class="font-medium leading-snug text-foreground">
+                        <a href="https://github.com/clough/poe-recipe" target="_blank" rel="noopener noreferrer" class="inline-flex items-baseline gap-1 text-xl font-semibold leading-tight text-foreground hover:text-primary focus-visible:text-primary group/link">
+                            <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
+                            <span>
+                                Path of Exile Recipe Helper
+                                <svg class="ml-1 inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </h3>
+                    <p class="mt-2 text-sm leading-relaxed text-muted-foreground">Fun gaming side project built for personal use as a game add-on for Path of Exile. Desktop application that integrates with Path of Exile's public API to automatically scan player inventory, generate a visual copy with intelligent highlighting of items eligible for chaos recipes and other crafting recipes. Built with Electron for cross-platform compatibility and Angular for a responsive, game-like UI. Features real-time inventory syncing, recipe pattern matching, and visual item categorization.</p>
+                    <ul class="mt-2 flex flex-wrap gap-2" aria-label="Technologies used">
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                Electron
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                Angular
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                TypeScript
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                REST API
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="group cursor-pointer relative grid gap-4 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4" data-project="go-trader" @click.prevent="modalOpen = true; selectedProject = 'go-trader'; currentSlide = 0">
+                <div class="z-10 sm:col-span-3">
+                    <div class="relative block overflow-hidden rounded-lg border border-border bg-card transition-all group-hover:border-primary/50">
+                        <img 
+                            src="/static/go-trader-home-page.png" 
+                            alt="Go Trader - Jamaica Stock Exchange Screenshot"
+                            class="w-full h-full object-cover aspect-video"
+                            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'aspect-video bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center\'><div class=\'text-4xl\'>📈</div></div>';"
+                        />
+                    </div>
+                </div>
+                <div class="z-10 sm:col-span-5">
+                    <h3 class="font-medium leading-snug text-foreground">
+                        <a href="https://github.com/clough/go-trader" target="_blank" rel="noopener noreferrer" class="inline-flex items-baseline gap-1 text-xl font-semibold leading-tight text-foreground hover:text-primary focus-visible:text-primary group/link">
+                            <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
+                            <span>
+                                Go Trader - Jamaica Stock Exchange
+                                <svg class="ml-1 inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </h3>
+                    <p class="mt-2 text-sm leading-relaxed text-muted-foreground">Side project built to learn Go and HTMX while exploring financial data visualization. Real-time stock market application that pulls data from the Jamaica Stock Exchange API and visualizes it with custom-built interactive charts using D3.js. Features include live stock data fetching, historical price tracking, custom candlestick and line charts, search functionality, and responsive design. Demonstrates modern web development patterns with minimal JavaScript and server-side rendering.</p>
+                    <ul class="mt-2 flex flex-wrap gap-2" aria-label="Technologies used">
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                Go
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                HTMX
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                D3.js
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                REST API
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="group cursor-pointer relative grid gap-4 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4" data-project="hrmnext-recruitment" @click.prevent="modalOpen = true; selectedProject = 'hrmnext-recruitment'; currentSlide = 0">
+                <div class="z-10 sm:col-span-3">
+                    <div class="relative block overflow-hidden rounded-lg border border-border bg-card transition-all group-hover:border-primary/50">
+                        <img 
+                            src="/static/hrmnext-home.png" 
+                            alt="HRMNext Recruitment Platform Screenshot"
+                            class="w-full h-full object-cover aspect-video"
+                            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'aspect-video bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center\'><div class=\'text-4xl\'>💼</div></div>';"
+                        />
+                    </div>
+                </div>
+                <div class="z-10 sm:col-span-5">
+                    <h3 class="font-medium leading-snug text-foreground">
+                        <a href="https://recruit.etechja.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-baseline gap-1 text-xl font-semibold leading-tight text-foreground hover:text-primary focus-visible:text-primary group/link">
+                            <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
+                            <span>
+                                HRMNext Recruitment Platform
+                                <svg class="ml-1 inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </h3>
+                    <p class="mt-2 text-sm leading-relaxed text-muted-foreground">Public-facing SaaS recruitment solution developed at Epic Technologies for modern hiring workflows. Enterprise platform that enables recruiters to create job openings, specify requirements, setup and conduct interviews with real-time messaging, manage interview stages, and send invitations. Features seamless integration with Epic's HRMNext 4D Solution for comprehensive HR management. Built as a multi-tenant SaaS application with role-based access control and automated workflow management.</p>
+                    <ul class="mt-2 flex flex-wrap gap-2" aria-label="Technologies used">
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                AngularJS
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                Laravel
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                4D
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                SaaS
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="group cursor-pointer relative grid gap-4 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4" data-project="ncb-credit-card" @click.prevent="modalOpen = true; selectedProject = 'ncb-credit-card'; currentSlide = 0">
+                <div class="z-10 sm:col-span-3">
+                    <div class="relative block overflow-hidden rounded-lg border border-border bg-card transition-all group-hover:border-primary/50">
+                        <img 
+                            src="/static/credit-card-web-portal.png" 
+                            alt="NCB Credit Card Application Portal Screenshot"
+                            class="w-full h-full object-cover aspect-video"
+                            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'aspect-video bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center\'><div class=\'text-4xl\'>💳</div></div>';"
+                        />
+                    </div>
+                </div>
+                <div class="z-10 sm:col-span-5">
+                    <h3 class="font-medium leading-snug text-foreground">
+                        <a href="https://creditcard.jncb.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-baseline gap-1 text-xl font-semibold leading-tight text-foreground hover:text-primary focus-visible:text-primary group/link">
+                            <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
+                            <span>
+                                NCB Credit Card Application Portal
+                                <svg class="ml-1 inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </h3>
+                    <p class="mt-2 text-sm leading-relaxed text-muted-foreground">Public-facing web application for NCB (National Commercial Bank) credit card applications. Enterprise-grade portal that streamlines the credit card application process with a secure, user-friendly interface. Built with modern microservices architecture using React and Spring/Java backend, deployed on Kubernetes for high availability and scalability. Features real-time form validation, document upload, application tracking, and integration with NCB's core banking systems with strict PCI compliance.</p>
+                    <ul class="mt-2 flex flex-wrap gap-2" aria-label="Technologies used">
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                React
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                Spring Boot
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                Java
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                Kubernetes
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="group cursor-pointer relative grid gap-4 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4" data-project="opengl-snake" @click.prevent="modalOpen = true; selectedProject = 'opengl-snake'; currentSlide = 0">
+                <div class="z-10 sm:col-span-3">
+                    <div class="relative block overflow-hidden rounded-lg border border-border bg-card transition-all group-hover:border-primary/50">
+                        <div class="aspect-video relative">
+                            <iframe 
+                                class="w-full h-full" 
+                                src="https://www.youtube.com/embed/voOTQlxe6oo" 
+                                title="OpenGL Snake Game"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="z-10 sm:col-span-5">
+                    <h3 class="font-medium leading-snug text-foreground">
+                        <a href="https://www.youtube.com/watch?v=voOTQlxe6oo" target="_blank" rel="noopener noreferrer" class="inline-flex items-baseline gap-1 text-xl font-semibold leading-tight text-foreground hover:text-primary focus-visible:text-primary group/link">
+                            <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
+                            <span>
+                                OpenGL Snake Game
+                                <svg class="ml-1 inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </h3>
+                    <p class="mt-2 text-sm leading-relaxed text-muted-foreground">One of my first public projects from university where I learned OpenGL and computer graphics fundamentals. Built a classic Snake game from scratch using modern OpenGL, implementing custom rendering pipelines, collision detection, and game state management. This project taught me low-level graphics programming, shader development, and game loop architecture. Features smooth animations, score tracking, and increasing difficulty levels.</p>
+                    <ul class="mt-2 flex flex-wrap gap-2" aria-label="Technologies used">
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                OpenGL
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                C++
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                GLSL Shaders
+                            </div>
+                        </li>
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                Game Development
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Professional Disclaimer Section -->
+<section class="px-6 py-16 lg:px-24">
+    <div class="max-w-3xl">
+        <div class="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-8">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                    <svg class="h-8 w-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-foreground mb-3">Confidential Professional Work</h3>
+                    <div class="space-y-3 text-muted-foreground leading-relaxed">
+                        <p>
+                            The majority of my professional projects involve <span class="text-foreground font-medium">private, confidential, and sensitive systems</span> developed for enterprise clients in the financial services, insurance, and human resources sectors.
+                        </p>
+                        <p>
+                            Due to <span class="text-foreground font-medium">non-disclosure agreements (NDAs)</span> and client confidentiality requirements, I am unable to showcase these projects publicly or discuss their technical implementations in detail.
+                        </p>
+                        <p class="text-sm italic pt-2">
+                            The projects displayed above represent a selection of public-facing work and personal projects that I'm able to share. For discussions about my confidential professional experience, please reach out directly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="min-h-screen px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h2 class="mb-8 text-3xl font-bold text-foreground">Let's Build Something Amazing</h2>
+        <div class="space-y-4 text-muted-foreground leading-relaxed">
+            <p class="text-lg">
+                I'm always excited to connect with fellow developers, discuss innovative projects, or explore new opportunities. Whether you need technical consultation, want to discuss a project opportunity, or just want to chat about the latest in web development—I'd love to hear from you!
+            </p>
+            <p>
+                Currently <span class="text-primary font-medium">open to new opportunities</span> including full-time positions, contract work, and technical advisory roles. I'm particularly interested in projects involving Java/Spring Boot, Laravel, Angular, and cloud-native architectures. With strong experience in Angular, I'm passionate about building modern, reactive enterprise applications. I'm also eager to work on Go projects professionally, drawn by its elegant simplicity and philosophy of building clean, maintainable systems.
+            </p>
+            <p>
+                Drop me an email at{" "}
+                <a href="mailto:clough.warren@gmail.com" class="text-primary hover:underline font-medium">
+                    clough.warren@gmail.com
+                </a>{" "}
+                or connect with me on LinkedIn and GitHub. I typically respond within 24 hours!
+            </p>
+        </div>
+        
+        <div class="mt-12 flex gap-4">
+            <a href="/static/MyResume-20250830-compressed.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                View Resume
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+            </a>
+            <a href="/contact" class="inline-flex items-center gap-2 border-2 border-primary bg-primary/10 text-primary px-6 py-3 rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-colors">
+                Send Message
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+    </main>
+
+    <!-- Alpine.js Project Modal -->
+    <div x-show="modalOpen" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-black/90 backdrop-blur-sm"
+         @click="modalOpen = false"
+         style="display: none;">
+        
+        <div @click.stop
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-90"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-90"
+             class="bg-card border border-border rounded-2xl max-w-7xl w-full max-h-[90vh] overflow-y-auto relative">
+            
+            <!-- Close Button -->
+            <button @click="modalOpen = false" 
+                    class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center hover:bg-primary hover:border-primary hover:rotate-90 transition-all duration-300">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <!-- Modal Content -->
+            <div x-show="selectedProject">
+                <template x-if="selectedProject && window.projectData[selectedProject]">
+                    <div class="grid md:grid-cols-2 gap-0">
+                        <!-- Left Side: Large Image/Video Showcase -->
+                        <div class="bg-black/50 p-6 flex flex-col justify-center gap-4 max-h-[90vh]">
+                            <!-- Video Embed (if exists) -->
+                            <template x-if="window.projectData[selectedProject]?.video">
+                                <div class="aspect-video w-full rounded-lg overflow-hidden">
+                                    <iframe 
+                                        :src="'https://www.youtube.com/embed/' + window.projectData[selectedProject]?.video.split('v=')[1]?.split('&')[0]"
+                                        class="w-full h-full" 
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowfullscreen>
+                                    </iframe>
+                                </div>
+                            </template>
+                            
+                            <!-- Screenshot Carousel -->
+                            <div class="flex-1 relative" x-show="window.projectData[selectedProject]?.screenshots?.length > 0">
+                                <!-- Main Carousel Image -->
+                                <div class="relative overflow-hidden rounded-lg">
+                                    <template x-for="(screenshot, index) in window.projectData[selectedProject]?.screenshots" :key="index">
+                                        <div x-show="currentSlide === index"
+                                             x-transition:enter="transition ease-out duration-300"
+                                             x-transition:enter-start="opacity-0 transform translate-x-full"
+                                             x-transition:enter-end="opacity-100 transform translate-x-0"
+                                             x-transition:leave="transition ease-in duration-300"
+                                             x-transition:leave-start="opacity-100 transform translate-x-0"
+                                             x-transition:leave-end="opacity-0 transform -translate-x-full"
+                                             class="absolute inset-0">
+                                            <img :src="screenshot" 
+                                                 :alt="`Screenshot ${index + 1}`"
+                                                 class="w-full h-[600px] object-contain bg-black/30"
+                                                 loading="lazy" />
+                                        </div>
+                                    </template>
+                                    <!-- Spacer for height -->
+                                    <div class="h-[600px]"></div>
+                                    
+                                    <!-- Fullscreen Button -->
+                                    <button @click="fullscreenImage = true"
+                                            class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/80 border border-primary/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 z-10">
+                                        <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Previous Button -->
+                                    <button @click="currentSlide = currentSlide === 0 ? window.projectData[selectedProject].screenshots.length - 1 : currentSlide - 1"
+                                            x-show="window.projectData[selectedProject]?.screenshots?.length > 1"
+                                            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/80 border border-primary/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 z-10">
+                                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Next Button -->
+                                    <button @click="currentSlide = currentSlide === window.projectData[selectedProject].screenshots.length - 1 ? 0 : currentSlide + 1"
+                                            x-show="window.projectData[selectedProject]?.screenshots?.length > 1"
+                                            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/80 border border-primary/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 z-10">
+                                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </button>
+                                    
+                                    <!-- Dot Indicators -->
+                                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" x-show="window.projectData[selectedProject]?.screenshots?.length > 1">
+                                        <template x-for="(screenshot, index) in window.projectData[selectedProject]?.screenshots" :key="index">
+                                            <button @click="currentSlide = index"
+                                                    class="w-2.5 h-2.5 rounded-full transition-all duration-300"
+                                                    :class="currentSlide === index ? 'bg-primary w-8' : 'bg-white/40 hover:bg-white/60'">
+                                            </button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Side: Project Details -->
+                        <div class="p-8 flex flex-col">
+                            <!-- Title -->
+                            <h2 class="text-3xl font-bold text-foreground mb-4 pr-12" x-text="window.projectData[selectedProject]?.title"></h2>
+                            
+                            <!-- Short Description -->
+                            <p class="text-lg text-primary mb-4" x-text="window.projectData[selectedProject]?.description"></p>
+                            
+                            <!-- Full Description -->
+                            <p class="text-muted-foreground leading-relaxed mb-6" x-text="window.projectData[selectedProject]?.fullDescription"></p>
+                            
+                            <!-- Technologies -->
+                            <div class="mb-6" x-show="window.projectData[selectedProject]?.technologies?.length > 0">
+                                <h3 class="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider">Technologies</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <template x-for="tech in window.projectData[selectedProject]?.technologies" :key="tech">
+                                        <span class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary" x-text="tech"></span>
+                                    </template>
+                                </div>
+                            </div>
+                            
+                            <!-- Links -->
+                            <div class="flex flex-wrap gap-3 mt-auto">
+                                <template x-if="window.projectData[selectedProject]?.github">
+                                    <a :href="window.projectData[selectedProject]?.github" 
+                                       target="_blank" 
+                                       rel="noopener noreferrer"
+                                       class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium text-sm">
+                                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                        </svg>
+                                        View Source
+                                    </a>
+                                </template>
+                                
+                                <template x-if="window.projectData[selectedProject]?.liveUrl">
+                                    <a :href="window.projectData[selectedProject]?.liveUrl" 
+                                       target="_blank" 
+                                       rel="noopener noreferrer"
+                                       class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium text-sm">
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                        </svg>
+                                        View Live Site
+                                    </a>
+                                </template>
+                                
+                                <template x-if="window.projectData[selectedProject]?.video">
+                                    <a :href="window.projectData[selectedProject]?.video" 
+                                       target="_blank" 
+                                       rel="noopener noreferrer"
+                                       class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-foreground hover:bg-primary/10 hover:border-primary transition-colors font-medium text-sm">
+                                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                        </svg>
+                                        Watch Video
+                                    </a>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Image Viewer -->
+    <div x-show="fullscreenImage"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="fullscreenImage = false"
+         class="fixed inset-0 z-[60] bg-black flex items-center justify-center p-4"
+         style="display: none;">
+        
+        <!-- Close Button -->
+        <button @click="fullscreenImage = false"
+                class="absolute top-6 right-6 w-12 h-12 rounded-full bg-black/80 border border-primary flex items-center justify-center hover:bg-primary hover:rotate-90 transition-all duration-300 z-10">
+            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <!-- Navigation Buttons -->
+        <button @click.stop="currentSlide = currentSlide === 0 ? window.projectData[selectedProject].screenshots.length - 1 : currentSlide - 1"
+                x-show="window.projectData[selectedProject]?.screenshots?.length > 1"
+                class="absolute left-6 w-14 h-14 rounded-full bg-black/80 border border-primary/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 z-10">
+            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+
+        <button @click.stop="currentSlide = currentSlide === window.projectData[selectedProject].screenshots.length - 1 ? 0 : currentSlide + 1"
+                x-show="window.projectData[selectedProject]?.screenshots?.length > 1"
+                class="absolute right-6 w-14 h-14 rounded-full bg-black/80 border border-primary/50 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 z-10">
+            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+
+        <!-- Fullscreen Image -->
+        <div @click.stop class="relative max-w-[95vw] max-h-[95vh]">
+            <template x-for="(screenshot, index) in window.projectData[selectedProject]?.screenshots" :key="index">
+                <img x-show="currentSlide === index"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     :src="screenshot"
+                     :alt="`Screenshot ${index + 1}`"
+                     class="max-w-full max-h-[95vh] object-contain"
+                     loading="lazy" />
+            </template>
+            
+            <!-- Dot Indicators -->
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2" x-show="window.projectData[selectedProject]?.screenshots?.length > 1">
+                <template x-for="(screenshot, index) in window.projectData[selectedProject]?.screenshots" :key="index">
+                    <button @click.stop="currentSlide = index"
+                            class="w-3 h-3 rounded-full transition-all duration-300"
+                            :class="currentSlide === index ? 'bg-primary w-10' : 'bg-white/40 hover:bg-white/60'">
+                    </button>
+                </template>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{{end}}

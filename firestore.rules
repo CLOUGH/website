@@ -1,0 +1,34 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Blog posts - read only for public
+    match /blog_posts/{postId} {
+      allow read: if true;
+      allow write: if false; // Only allow writes through admin SDK
+    }
+    
+    // Portfolio projects - read only for public
+    match /portfolio_projects/{projectId} {
+      allow read: if true;
+      allow write: if false; // Only allow writes through admin SDK
+    }
+    
+    // Resume data - read only for public
+    match /resume/{resumeId} {
+      allow read: if true;
+      allow write: if false; // Only allow writes through admin SDK
+    }
+    
+    // Contact form submissions - write only for public
+    match /contact_submissions/{submissionId} {
+      allow read: if false; // Only allow reads through admin SDK
+      allow write: if true;
+    }
+    
+    // Newsletter subscriptions - write only for public
+    match /newsletter_subscriptions/{subscriptionId} {
+      allow read: if false; // Only allow reads through admin SDK
+      allow write: if true;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background with solid fallback under gradient -->
+  <rect width="32" height="32" rx="7" fill="#8b5cf6"/>
+  <rect width="32" height="32" rx="7" fill="url(#g)"/>
+
+  <!-- WC monogram: bold, pixel-aligned, compact -->
+  <!-- W -->
+  <path d="M6.5 8.5 L8.8 23.5 L11.8 14.5 L14.8 23.5 L17.1 8.5" 
+        stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- C -->
+  <path d="M26 12.5 A6.8 6.8 0 1 0 26 19.5" 
+        stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+</svg>

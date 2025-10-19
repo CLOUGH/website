@@ -7,9 +7,28 @@ import (
 // CORS middleware for cross-origin requests
 func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		// Restrict CORS to your domain in production
+		origin := c.Request.Header.Get("Origin")
+		allowedOrigins := []string{
+			"http://localhost:8080",
+			"https://warrenclough.com",
+			"https://www.warrenclough.com",
+		}
+		
+		allowed := false
+		for _, allowedOrigin := range allowedOrigins {
+			if origin == allowedOrigin {
+				allowed = true
+				break
+			}
+		}
+		
+		if allowed {
+			c.Header("Access-Control-Allow-Origin", origin)
+		}
+		c.Header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization")
+		c.Header("Access-Control-Allow-Credentials", "true")
 
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
@@ -23,10 +42,33 @@ func CORS() gin.HandlerFunc {
 // SecurityHeaders adds security headers
 func SecurityHeaders() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// Basic security headers
 		c.Header("X-Content-Type-Options", "nosniff")
 		c.Header("X-Frame-Options", "DENY")
 		c.Header("X-XSS-Protection", "1; mode=block")
 		c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
+		
+		// HSTS for HTTPS
+		if c.Request.TLS != nil {
+			c.Header("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
+		}
+		
+		// Content Security Policy
+		csp := "default-src 'self'; " +
+			"script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com https://fonts.googleapis.com; " +
+			"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; " +
+			"font-src 'self' https://fonts.gstatic.com data:; " +
+			"img-src 'self' data: https: blob:; " +
+			"connect-src 'self'; " +
+			"frame-src 'self' https://www.youtube.com; " +
+			"object-src 'none'; " +
+			"base-uri 'self'; " +
+			"form-action 'self';"
+		c.Header("Content-Security-Policy", csp)
+		
+		// Permissions Policy
+		c.Header("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()")
+		
 		c.Next()
 	}
 }

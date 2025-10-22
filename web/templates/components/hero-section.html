@@ -1,0 +1,28 @@
+{{define "hero-section"}}
+<section class="flex min-h-screen items-center px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h1 class="mb-6 text-6xl font-bold tracking-tight text-foreground md:text-7xl lg:text-8xl">
+            {{if .Data.hero_text}}{{.Data.hero_text}}{{else}}{{.Title}}{{end}}
+        </h1>
+        <p class="text-xl text-muted-foreground leading-relaxed md:text-2xl">
+            {{.Content}}
+        </p>
+        {{if .Data.hero_buttons}}
+        <div class="mt-8 flex gap-4 flex-wrap">
+            {{range .Data.hero_buttons}}
+            <a href="{{.url}}" 
+               {{if .target}}target="{{.target}}"{{end}}
+               class="{{if eq .style "primary"}}bg-primary text-primary-foreground hover:bg-primary/90{{else if eq .style "secondary"}}border-2 border-primary bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground{{else}}border border-border bg-background hover:bg-primary/10{{end}} inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors">
+                {{.text}}
+                {{if .icon}}
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{.icon}}"></path>
+                </svg>
+                {{end}}
+            </a>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+</section>
+{{end}}

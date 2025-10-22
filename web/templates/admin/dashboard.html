@@ -1,0 +1,272 @@
+{{define "admin/dashboard.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK compat mode -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <script>
+        // Firebase config - loaded from environment variables
+        const firebaseConfig = {
+            apiKey: "{{.FirebaseConfig.APIKey}}",
+            authDomain: "{{.FirebaseConfig.AuthDomain}}",
+            projectId: "{{.FirebaseConfig.ProjectID}}",
+            storageBucket: "{{.FirebaseConfig.StorageBucket}}",
+            messagingSenderId: "{{.FirebaseConfig.MessagingSenderID}}",
+            appId: "{{.FirebaseConfig.AppID}}"
+        };
+        
+        if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "") {
+            firebase.initializeApp(firebaseConfig);
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-semibold text-gray-900">Content Management</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-700">{{.user_name}}</span>
+                    <button onclick="signOut()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Tabs -->
+        <div class="mb-8" x-data="{ activeTab: 'sections' }">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8">
+                    <button @click="activeTab = 'sections'" :class="activeTab === 'sections' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                        Content Sections
+                    </button>
+                    <button @click="activeTab = 'projects'" :class="activeTab === 'projects' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                        Projects
+                    </button>
+                    <button @click="activeTab = 'experience'" :class="activeTab === 'experience' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                        Work Experience
+                    </button>
+                    <button @click="activeTab = 'skills'" :class="activeTab === 'skills' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                        Tech Skills
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Content Sections Tab -->
+            <div x-show="activeTab === 'sections'" class="mt-6">
+                <div class="bg-white shadow rounded-lg">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Content Sections</h3>
+                            <button 
+                                hx-get="/admin/content-sections/form?type=hero" 
+                                hx-target="#section-form-modal" 
+                                hx-trigger="click"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                Add Section
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white">
+                        <div id="sections-list">
+                            {{range .sections}}
+                            <div class="px-4 py-4 border-b border-gray-200 flex justify-between items-center">
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">{{.Title}}</h4>
+                                    <p class="text-sm text-gray-500">{{.Type}} • Order: {{.Order}} • {{if .Visible}}Visible{{else}}Hidden{{end}}</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button 
+                                        hx-get="/admin/content-sections/form?id={{.ID}}" 
+                                        hx-target="#section-form-modal"
+                                        class="text-blue-600 hover:text-blue-900 text-sm">
+                                        Edit
+                                    </button>
+                                    <button 
+                                        hx-delete="/admin/content-sections/{{.ID}}"
+                                        hx-confirm="Are you sure you want to delete this section?"
+                                        hx-target="closest div"
+                                        hx-swap="outerHTML"
+                                        class="text-red-600 hover:text-red-900 text-sm">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                            {{end}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Tab -->
+            <div x-show="activeTab === 'projects'" class="mt-6">
+                <div class="bg-white shadow rounded-lg">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Projects</h3>
+                            <button 
+                                hx-get="/admin/projects/form" 
+                                hx-target="#project-form-modal"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                Add Project
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white">
+                        <div id="projects-list">
+                            {{range .projects}}
+                            <div class="px-4 py-4 border-b border-gray-200 flex justify-between items-center">
+                                <div class="flex-1">
+                                    <h4 class="text-sm font-medium text-gray-900">{{.Title}}</h4>
+                                    <p class="text-sm text-gray-500">{{.Description}}</p>
+                                    <p class="text-xs text-gray-400 mt-1">Order: {{.Order}} • {{if .Visible}}Visible{{else}}Hidden{{end}}</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button 
+                                        hx-get="/admin/projects/form?id={{.ID}}"
+                                        hx-target="#project-form-modal"
+                                        class="text-blue-600 hover:text-blue-900 text-sm">
+                                        Edit
+                                    </button>
+                                    <button 
+                                        hx-delete="/admin/projects/{{.ID}}"
+                                        hx-confirm="Are you sure you want to delete this project?"
+                                        hx-target="closest div"
+                                        hx-swap="outerHTML"
+                                        class="text-red-600 hover:text-red-900 text-sm">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                            {{end}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experience Tab -->
+            <div x-show="activeTab === 'experience'" class="mt-6">
+                <div class="bg-white shadow rounded-lg">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Work Experience</h3>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                Add Experience
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white">
+                        {{range .experiences}}
+                        <div class="px-4 py-4 border-b border-gray-200 flex justify-between items-center">
+                            <div class="flex-1">
+                                <h4 class="text-sm font-medium text-gray-900">{{.Position}} at {{.Company}}</h4>
+                                <p class="text-sm text-gray-500">{{.Duration}}</p>
+                                <p class="text-xs text-gray-400 mt-1">Order: {{.Order}} • {{if .Visible}}Visible{{else}}Hidden{{end}}</p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="text-blue-600 hover:text-blue-900 text-sm">Edit</button>
+                                <button class="text-red-600 hover:text-red-900 text-sm">Delete</button>
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Tab -->
+            <div x-show="activeTab === 'skills'" class="mt-6">
+                <div class="bg-white shadow rounded-lg">
+                    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">Tech Skills</h3>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                Add Skill
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white">
+                        {{range .skills}}
+                        <div class="px-4 py-4 border-b border-gray-200 flex justify-between items-center">
+                            <div class="flex-1">
+                                <h4 class="text-sm font-medium text-gray-900">{{.Name}}</h4>
+                                <p class="text-sm text-gray-500">{{.Category}} • Level: {{.Level}}%</p>
+                                <p class="text-xs text-gray-400 mt-1">Order: {{.Order}} • {{if .Visible}}Visible{{else}}Hidden{{end}}</p>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="text-blue-600 hover:text-blue-900 text-sm">Edit</button>
+                                <button class="text-red-600 hover:text-red-900 text-sm">Delete</button>
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Section Form -->
+    <div id="section-form-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+        <!-- Content will be loaded here via HTMX -->
+    </div>
+
+    <!-- Modal for Project Form -->
+    <div id="project-form-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+        <!-- Content will be loaded here via HTMX -->
+    </div>
+
+    <script>
+        // Check authentication on page load
+        const token = localStorage.getItem('firebaseToken');
+        if (!token) {
+            window.location.href = '/admin/login';
+        }
+
+        // Add Authorization header to all HTMX requests
+        document.body.addEventListener('htmx:configRequest', function(evt) {
+            evt.detail.headers['Authorization'] = 'Bearer ' + token;
+        });
+
+        function signOut() {
+            firebase.auth().signOut().then(() => {
+                localStorage.removeItem('firebaseToken');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                window.location.href = '/admin/login';
+            }).catch((error) => {
+                console.error('Sign out error:', error);
+            });
+        }
+
+        // Handle modal display
+        document.body.addEventListener('htmx:afterRequest', function(evt) {
+            if (evt.detail.target.id.includes('modal')) {
+                evt.detail.target.classList.remove('hidden');
+            }
+        });
+
+        // Close modal on click outside
+        document.addEventListener('click', function(e) {
+            if (e.target.id.includes('modal')) {
+                e.target.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
+{{end}}

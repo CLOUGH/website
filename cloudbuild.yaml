@@ -1,0 +1,39 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'build' 
+      - '-t' 
+      - 'us-docker.pkg.dev/$PROJECT_ID/gcr.io/warren-clough-website'
+      - '.'
+
+  # Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      - 'push' 
+      - 'us-docker.pkg.dev/$PROJECT_ID/gcr.io/warren-clough-website'
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'warren-clough-website'
+      - '--image=us-docker.pkg.dev/$PROJECT_ID/gcr.io/warren-clough-website'
+      - '--region=us-central1'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--port=8080'
+      - '--memory=512Mi'
+      - '--concurrency=1000'
+      - '--timeout=300'
+      - '--set-env-vars=GIN_MODE=release,FIREBASE_PROJECT_ID=$PROJECT_ID,SMTP_HOST=smtp.gmail.com,SMTP_PORT=587,ADMIN_EMAILS=clough.warren@gmail.com'
+      - '--set-secrets=SMTP_USERNAME=smtp-username:latest,SMTP_PASSWORD=smtp-password:latest,GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account:latest'
+
+# Store the Docker image in Artifact Registry
+images:
+  - 'us-docker.pkg.dev/$PROJECT_ID/gcr.io/warren-clough-website'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

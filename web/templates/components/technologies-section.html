@@ -1,0 +1,44 @@
+{{define "technologies-section"}}
+<section id="{{.Slug}}" class="min-h-screen px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h2 class="mb-8 text-3xl font-bold text-foreground">{{.Title}}</h2>
+        {{if .Subtitle}}
+        <p class="mb-6 text-muted-foreground">{{.Subtitle}}</p>
+        {{end}}
+        
+        {{if .Data.categories}}
+        <div class="space-y-8">
+            {{range $category, $techs := .Data.categories}}
+            <div>
+                <h3 class="text-lg font-semibold text-foreground mb-3">{{$category}}</h3>
+                <ul class="grid grid-cols-2 gap-3 text-sm text-muted-foreground md:grid-cols-3">
+                    {{range $techs}}
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> {{.}}
+                    </li>
+                    {{end}}
+                </ul>
+            </div>
+            {{end}}
+        </div>
+        {{else if .Data.skill_categories}}
+        <div class="space-y-8">
+            {{range $category, $skills := .Data.skill_categories}}
+            <div>
+                <h3 class="text-lg font-semibold text-foreground mb-3">{{$category}}</h3>
+                <ul class="grid grid-cols-2 gap-3 text-sm text-muted-foreground md:grid-cols-3">
+                    {{range $skills}}
+                    <li class="flex items-center gap-2">
+                        <span class="text-primary text-xl">▹</span> {{if .Name}}{{.Name}}{{else}}{{.}}{{end}}
+                    </li>
+                    {{end}}
+                </ul>
+            </div>
+            {{end}}
+        </div>
+        {{else}}
+        <div class="text-muted-foreground">{{.Content | html}}</div>
+        {{end}}
+    </div>
+</section>
+{{end}}

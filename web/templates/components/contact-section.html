@@ -1,0 +1,120 @@
+{{define "contact-section"}}
+<section id="{{.Slug}}" class="min-h-screen px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h2 class="mb-8 text-3xl font-bold text-foreground">{{.Title}}</h2>
+        <div class="space-y-4 text-muted-foreground leading-relaxed">
+            {{if .Data.intro}}
+                {{range .Data.intro}}
+                <p class="text-lg">{{.}}</p>
+                {{end}}
+            {{else if .Data.paragraphs}}
+                {{range .Data.paragraphs}}
+                <p {{if .highlight}}class="text-lg"{{end}}>
+                    {{if .highlight}}<span class="text-primary font-medium">{{.highlight}}</span>{{end}}
+                    {{if .text}}{{.text}}{{else}}{{.}}{{end}}
+                    {{if .email}}
+                    <a href="mailto:{{.email}}" class="text-primary hover:underline font-medium">{{.email}}</a>
+                    {{end}}
+                </p>
+                {{end}}
+            {{else}}
+                <div>{{.Content | html}}</div>
+            {{end}}
+            {{if .Data.call_to_action}}
+            <p class="text-base">{{.Data.call_to_action}}</p>
+            {{end}}
+        </div>
+        
+        {{if .Data.contact_form.enabled}}
+        <div class="mt-12">
+            <form hx-post="{{.Data.contact_form.action}}" hx-target="#contact-result" hx-swap="innerHTML" class="space-y-6">
+                {{if has .Data.contact_form.fields "name"}}
+                <div>
+                    <label for="name" class="block text-sm font-medium text-foreground mb-2">Name</label>
+                    <input type="text" id="name" name="name" required 
+                           class="w-full px-3 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                {{end}}
+                
+                {{if has .Data.contact_form.fields "email"}}
+                <div>
+                    <label for="email" class="block text-sm font-medium text-foreground mb-2">Email</label>
+                    <input type="email" id="email" name="email" required 
+                           class="w-full px-3 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                {{end}}
+                
+                {{if has .Data.contact_form.fields "subject"}}
+                <div>
+                    <label for="subject" class="block text-sm font-medium text-foreground mb-2">Subject</label>
+                    <input type="text" id="subject" name="subject" required 
+                           class="w-full px-3 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                {{end}}
+                
+                {{if has .Data.contact_form.fields "message"}}
+                <div>
+                    <label for="message" class="block text-sm font-medium text-foreground mb-2">Message</label>
+                    <textarea id="message" name="message" rows="5" required 
+                              class="w-full px-3 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-vertical"></textarea>
+                </div>
+                {{end}}
+                
+                <button type="submit" 
+                        class="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                    Send Message
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </button>
+                
+                <div id="contact-result" class="mt-4"></div>
+            </form>
+        </div>
+        {{end}}
+        
+        {{if .Data.buttons}}
+        <div class="mt-12 flex gap-4 flex-wrap">
+            {{range .Data.buttons}}
+            {{if eq .text "Send Message"}}
+            <button @click="$dispatch('open-contact-form')"
+               class="{{if eq .type "secondary"}}border-2 border-primary bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground{{else}}bg-primary text-primary-foreground hover:bg-primary/90{{end}} inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors">
+                {{.text}}
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+            </button>
+            {{else}}
+            <a href="{{.url}}" 
+               {{if .target}}target="{{.target}}"{{end}}
+               class="{{if eq .type "primary"}}bg-primary text-primary-foreground hover:bg-primary/90{{else if eq .style "primary"}}bg-primary text-primary-foreground hover:bg-primary/90{{else}}border-2 border-primary bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground{{end}} inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors">
+                {{.text}}
+                {{if .icon}}
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{.icon}}"></path>
+                </svg>
+                {{end}}
+            </a>
+            {{end}}
+            {{end}}
+        </div>
+        {{end}}
+        
+        {{if .Data.social_links}}
+        <div class="mt-8 flex gap-6">
+            {{range .Data.social_links}}
+            <a href="{{.url}}" target="_blank" rel="noopener noreferrer" class="text-muted-foreground transition-colors hover:text-primary" aria-label="{{.name}}">
+                {{if .icon}}
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="{{.icon}}"/>
+                </svg>
+                {{else}}
+                {{.name}}
+                {{end}}
+            </a>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+</section>
+{{end}}

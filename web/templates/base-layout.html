@@ -1,0 +1,146 @@
+{{define "base-layout"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{if .Page}}{{.Page.Title}}{{else}}Warren Clough - Software Developer{{end}}</title>
+    <meta name="description" content="{{if .Page}}{{.Page.Description}}{{else}}Senior Software Engineer specializing in full-stack development{{end}}">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Custom CSS Variables for Modern Dark Theme -->
+    <style>
+        :root {
+            --background: 0.97 0.005 240;
+            --foreground: 0.25 0.02 240;
+            --card: 1 0 0;
+            --card-foreground: 0.25 0.02 240;
+            --primary: 0.65 0.15 195;
+            --primary-foreground: 0.98 0.005 240;
+            --secondary: 0.92 0.01 240;
+            --secondary-foreground: 0.25 0.02 240;
+            --muted: 0.55 0.02 240;
+            --muted-foreground: 0.55 0.02 240;
+            --accent: 0.65 0.15 195;
+            --accent-foreground: 0.98 0.005 240;
+            --border: 0.88 0.01 240;
+            --input: 0.88 0.01 240;
+            --ring: 0.65 0.15 195;
+            --radius: 0.5rem;
+        }
+
+        .dark {
+            --background: 0.15 0.02 240;
+            --foreground: 0.85 0.01 240;
+            --card: 0.18 0.02 240;
+            --card-foreground: 0.85 0.01 240;
+            --primary: 0.65 0.15 195;
+            --primary-foreground: 0.15 0.02 240;
+            --secondary: 0.25 0.02 240;
+            --secondary-foreground: 0.85 0.01 240;
+            --muted: 0.55 0.02 240;
+            --muted-foreground: 0.55 0.02 240;
+            --accent: 0.65 0.15 195;
+            --accent-foreground: 0.15 0.02 240;
+            --border: 0.25 0.02 240;
+            --input: 0.25 0.02 240;
+            --ring: 0.65 0.15 195;
+        }
+
+        .bg-background { background-color: oklch(var(--background)); }
+        .text-foreground { color: oklch(var(--foreground)); }
+        .bg-card { background-color: oklch(var(--card)); }
+        .text-card-foreground { color: oklch(var(--card-foreground)); }
+        .bg-primary { background-color: oklch(var(--primary)); }
+        .text-primary { color: oklch(var(--primary)); }
+        .text-primary-foreground { color: oklch(var(--primary-foreground)); }
+        .bg-secondary { background-color: oklch(var(--secondary)); }
+        .text-secondary-foreground { color: oklch(var(--secondary-foreground)); }
+        .text-muted-foreground { color: oklch(var(--muted-foreground)); }
+        .bg-accent { background-color: oklch(var(--accent)); }
+        .text-accent-foreground { color: oklch(var(--accent-foreground)); }
+        .border-border { border-color: oklch(var(--border)); }
+        .bg-input { background-color: oklch(var(--input)); }
+        .ring-ring { --tw-ring-color: oklch(var(--ring)); }
+
+        /* Active navigation indicator */
+        .section-nav-item.active span:first-child {
+            width: 4rem;
+            background-color: oklch(var(--foreground));
+        }
+        .section-nav-item.active span:last-child {
+            color: oklch(var(--foreground));
+        }
+    </style>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'oklch(var(--background))',
+                        foreground: 'oklch(var(--foreground))',
+                        card: {
+                            DEFAULT: 'oklch(var(--card))',
+                            foreground: 'oklch(var(--card-foreground))',
+                        },
+                        primary: {
+                            DEFAULT: 'oklch(var(--primary))',
+                            foreground: 'oklch(var(--primary-foreground))',
+                        },
+                        secondary: {
+                            DEFAULT: 'oklch(var(--secondary))',
+                            foreground: 'oklch(var(--secondary-foreground))',
+                        },
+                        muted: {
+                            DEFAULT: 'oklch(var(--muted))',
+                            foreground: 'oklch(var(--muted-foreground))',
+                        },
+                        accent: {
+                            DEFAULT: 'oklch(var(--accent))',
+                            foreground: 'oklch(var(--accent-foreground))',
+                        },
+                        border: 'oklch(var(--border))',
+                        input: 'oklch(var(--input))',
+                        ring: 'oklch(var(--ring))',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body class="dark bg-background text-foreground font-sans antialiased">
+    {{template "home-navigation" .}}
+    
+    <!-- Main Content -->
+    <main class="lg:ml-80">
+        {{template "home-content" .}}
+    </main>
+
+    {{template "home-modals" .}}
+    {{template "home-scripts" .}}
+</body>
+</html>
+{{end}}

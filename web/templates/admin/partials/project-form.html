@@ -1,0 +1,99 @@
+{{define "admin/partials/project-form.html"}}
+<div class="flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full p-6 max-h-screen overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-medium text-gray-900">
+                {{if .project.ID}}Edit Project{{else}}Add Project{{end}}
+            </h3>
+            <button onclick="closeProjectModal()" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <form hx-post="{{if .project.ID}}/admin/projects/{{.project.ID}}{{else}}/admin/projects{{end}}" 
+              hx-target="#projects-list" 
+              hx-swap="innerHTML"
+              hx-on="htmx:afterRequest: closeProjectModal()">
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                    <input type="text" name="title" id="title" value="{{.project.Title}}" required 
+                           class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" id="description" rows="3" required
+                              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{.project.Description}}</textarea>
+                </div>
+
+                <div>
+                    <label for="technologies" class="block text-sm font-medium text-gray-700">Technologies (comma-separated)</label>
+                    <input type="text" name="technologies" id="technologies" value="{{range $i, $tech := .project.Technologies}}{{if $i}}, {{end}}{{$tech}}{{end}}" 
+                           placeholder="Go, React, PostgreSQL, Docker"
+                           class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="demo_url" class="block text-sm font-medium text-gray-700">Demo URL</label>
+                        <input type="url" name="demo_url" id="demo_url" value="{{.project.DemoURL}}" 
+                               class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div>
+                        <label for="code_url" class="block text-sm font-medium text-gray-700">Code URL</label>
+                        <input type="url" name="code_url" id="code_url" value="{{.project.CodeURL}}" 
+                               class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="image_url" class="block text-sm font-medium text-gray-700">Image URL</label>
+                    <input type="url" name="image_url" id="image_url" value="{{.project.ImageURL}}" 
+                           class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+
+                <div>
+                    <label for="features" class="block text-sm font-medium text-gray-700">Key Features (comma-separated)</label>
+                    <textarea name="features" id="features" rows="2" 
+                              placeholder="Real-time updates, User authentication, Responsive design"
+                              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{range $i, $feature := .project.Features}}{{if $i}}, {{end}}{{$feature}}{{end}}</textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="order" class="block text-sm font-medium text-gray-700">Order</label>
+                        <input type="number" name="order" id="order" value="{{.project.Order}}" min="1" required 
+                               class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" name="visible" id="visible" value="true" {{if .project.Visible}}checked{{end}}
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="visible" class="ml-2 block text-sm text-gray-900">Visible</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <button type="button" onclick="closeProjectModal()" 
+                        class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Cancel
+                </button>
+                <button type="submit" 
+                        class="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700">
+                    {{if .project.ID}}Update{{else}}Create{{end}}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function closeProjectModal() {
+        document.getElementById('project-form-modal').classList.add('hidden');
+    }
+</script>
+{{end}}

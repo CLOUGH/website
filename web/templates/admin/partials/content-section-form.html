@@ -1,0 +1,83 @@
+{{define "admin/partials/content-section-form.html"}}
+<div class="flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-medium text-gray-900">
+                {{if .section.ID}}Edit Content Section{{else}}Add Content Section{{end}}
+            </h3>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <form hx-post="{{if .section.ID}}/admin/content-sections/{{.section.ID}}{{else}}/admin/content-sections{{end}}" 
+              hx-target="#sections-list" 
+              hx-swap="innerHTML"
+              hx-on="htmx:afterRequest: closeModal()">
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="type" class="block text-sm font-medium text-gray-700">Section Type</label>
+                    <select name="type" id="type" required class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        <option value="hero" {{if eq .section.Type "hero"}}selected{{end}}>Hero</option>
+                        <option value="about" {{if eq .section.Type "about"}}selected{{end}}>About</option>
+                        <option value="projects" {{if eq .section.Type "projects"}}selected{{end}}>Projects</option>
+                        <option value="experience" {{if eq .section.Type "experience"}}selected{{end}}>Experience</option>
+                        <option value="skills" {{if eq .section.Type "skills"}}selected{{end}}>Skills</option>
+                        <option value="contact" {{if eq .section.Type "contact"}}selected{{end}}>Contact</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                    <input type="text" name="title" id="title" value="{{.section.Title}}" required 
+                           class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+
+                <div>
+                    <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+                    <textarea name="content" id="content" rows="4" 
+                              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{.section.Content}}</textarea>
+                </div>
+
+                <div>
+                    <label for="subtitle" class="block text-sm font-medium text-gray-700">Subtitle</label>
+                    <input type="text" name="subtitle" id="subtitle" value="{{.section.Subtitle}}" 
+                           class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="order" class="block text-sm font-medium text-gray-700">Order</label>
+                        <input type="number" name="order" id="order" value="{{.section.Order}}" min="1" required 
+                               class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" name="visible" id="visible" value="true" {{if .section.Visible}}checked{{end}}
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="visible" class="ml-2 block text-sm text-gray-900">Visible</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <button type="button" onclick="closeModal()" 
+                        class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Cancel
+                </button>
+                <button type="submit" 
+                        class="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700">
+                    {{if .section.ID}}Update{{else}}Create{{end}}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function closeModal() {
+        document.getElementById('section-form-modal').classList.add('hidden');
+    }
+</script>
+{{end}}

@@ -1,0 +1,57 @@
+{{define "experience-section"}}
+<section id="{{.Slug}}" class="min-h-screen px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h2 class="mb-12 text-3xl font-bold text-foreground">{{.Title}}</h2>
+        {{if .Data.experiences}}
+        <div class="space-y-12">
+            {{range .Data.experiences}}
+            <div class="border-l-4 border-primary pl-6 transition-all hover:border-l-8">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
+                    <div>
+                        <h3 class="text-xl font-semibold text-foreground">{{if .position}}{{.position}}{{else}}{{.Position}}{{end}}</h3>
+                        <p class="text-lg text-primary font-medium">{{if .company}}{{.company}}{{else}}{{.Company}}{{end}}</p>
+                    </div>
+                    <div class="text-muted-foreground mt-2 md:mt-0">
+                        {{if .start_date}}{{.start_date}}{{else}}{{.StartDate}}{{end}}{{if .end_date}} - {{.end_date}}{{else if .EndDate}} - {{.EndDate}}{{else}} - Present{{end}}
+                    </div>
+                </div>
+                {{if .location}}{{$loc := .location}}{{else if .Location}}{{$loc := .Location}}{{end}}
+                {{if .employment}}
+                <p class="text-muted-foreground mb-3">{{if .location}}{{.location}}{{else if .Location}}{{.Location}}{{end}} • {{.employment}}</p>
+                {{else if .Location}}
+                <p class="text-muted-foreground mb-3">{{.Location}} • Full-time</p>
+                {{end}}
+                <div class="space-y-2 text-foreground mb-4">
+                    {{if .description}}
+                        {{range .description}}
+                        <p>• {{.}}</p>
+                        {{end}}
+                    {{else if .Description}}
+                        {{range .Description}}
+                        <p>• {{.}}</p>
+                        {{end}}
+                    {{end}}
+                </div>
+                {{if .technologies}}{{$techs := .technologies}}{{else if .Technologies}}{{$techs := .Technologies}}{{end}}
+                {{if .technologies}}
+                <div class="flex flex-wrap gap-2">
+                    {{range .technologies}}
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">{{.}}</span>
+                    {{end}}
+                </div>
+                {{else if .Technologies}}
+                <div class="flex flex-wrap gap-2">
+                    {{range .Technologies}}
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">{{.}}</span>
+                    {{end}}
+                </div>
+                {{end}}
+            </div>
+            {{end}}
+        </div>
+        {{else}}
+        <p class="text-muted-foreground">{{.Content}}</p>
+        {{end}}
+    </div>
+</section>
+{{end}}

@@ -1,0 +1,137 @@
+{{define "projects-section"}}
+<section id="{{.Slug}}" class="min-h-screen px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h2 class="mb-12 text-3xl font-bold text-foreground">{{.Title}}</h2>
+        {{if .Data.projects}}
+        <div class="space-y-16">
+            {{range .Data.projects}}
+            <div class="group cursor-pointer relative grid gap-4 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4" 
+                 data-project="{{if .id}}{{.id}}{{else if .ID}}{{.ID}}{{end}}"
+                 @click.prevent="modalOpen = true; selectedProject = '{{if .id}}{{.id}}{{else if .ID}}{{.ID}}{{end}}'; currentSlide = 0">
+                <div class="z-10 sm:col-span-3">
+                    <div class="relative block overflow-hidden rounded-lg border border-border bg-card transition-all group-hover:border-primary/50">
+                        {{if .video_embed_url}}
+                        <div class="aspect-video bg-black">
+                            <iframe 
+                                src="{{.video_embed_url}}" 
+                                class="w-full h-full"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                            ></iframe>
+                        </div>
+                        {{else if .VideoEmbedURL}}
+                        <div class="aspect-video bg-black">
+                            <iframe 
+                                src="{{.VideoEmbedURL}}" 
+                                class="w-full h-full"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                            ></iframe>
+                        </div>
+                        {{else if .video_url}}
+                        <div class="aspect-video bg-black">
+                            <iframe 
+                                src="{{.video_url}}" 
+                                class="w-full h-full"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                            ></iframe>
+                        </div>
+                        {{else if .VideoURL}}
+                        <div class="aspect-video bg-black">
+                            <iframe 
+                                src="{{.VideoURL}}" 
+                                class="w-full h-full"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                            ></iframe>
+                        </div>
+                        {{else if .screenshots}}
+                        <img 
+                            src="{{index .screenshots 0}}" 
+                            alt="{{if .title}}{{.title}}{{else}}{{.Title}}{{end}} Screenshot"
+                            class="w-full h-full object-cover aspect-video"
+                            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'aspect-video bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center\'><div class=\'text-4xl\'>💻</div></div>';"
+                        />
+                        {{else if .Screenshots}}
+                        <img 
+                            src="{{index .Screenshots 0}}" 
+                            alt="{{.Title}} Screenshot"
+                            class="w-full h-full object-cover aspect-video"
+                            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'aspect-video bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center\'><div class=\'text-4xl\'>💻</div></div>';"
+                        />
+                        {{else}}
+                        <div class="aspect-video bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                            <div class="text-4xl">💻</div>
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
+                <div class="z-10 sm:col-span-5">
+                    <h3 class="font-medium leading-snug text-foreground">
+                        <a href="{{if .live_url}}{{.live_url}}{{else if .LiveURL}}{{.LiveURL}}{{else if .github_url}}{{.github_url}}{{else if .GitHubURL}}{{.GitHubURL}}{{else}}#{{end}}" target="_blank" rel="noopener noreferrer" class="inline-flex items-baseline gap-1 text-xl font-semibold leading-tight text-foreground hover:text-primary focus-visible:text-primary group/link">
+                            <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
+                            <span>
+                                {{if .title}}{{.title}}{{else}}{{.Title}}{{end}}
+                                <svg class="ml-1 inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </h3>
+                    <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{{if .description}}{{.description}}{{else if .Description}}{{.Description}}{{end}}</p>
+                    {{if .technologies}}{{$techs := .technologies}}{{else if .Technologies}}{{$techs := .Technologies}}{{end}}
+                    {{if .technologies}}
+                    <ul class="mt-2 flex flex-wrap gap-2" aria-label="Technologies used">
+                        {{range .technologies}}
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                {{.}}
+                            </div>
+                        </li>
+                        {{end}}
+                    </ul>
+                    {{else if .Technologies}}
+                    <ul class="mt-2 flex flex-wrap gap-2" aria-label="Technologies used">
+                        {{range .Technologies}}
+                        <li>
+                            <div class="flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium leading-5 text-primary">
+                                {{.}}
+                            </div>
+                        </li>
+                        {{end}}
+                    </ul>
+                    {{end}}
+                </div>
+            </div>
+            {{end}}
+        </div>
+        
+        {{if .Data.confidential_notice}}
+        <!-- Confidential Professional Work Disclaimer -->
+        <div class="mt-16">
+            <div class="rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-8">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-foreground mb-3">{{.Data.confidential_notice.title}}</h3>
+                        <div class="space-y-3 text-muted-foreground leading-relaxed whitespace-pre-line">{{.Data.confidential_notice.content}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{end}}
+        {{else}}
+        <p class="text-muted-foreground">{{.Content}}</p>
+        {{end}}
+    </div>
+</section>
+{{end}}

@@ -48,6 +48,10 @@ func SecurityHeaders() gin.HandlerFunc {
 		c.Header("X-XSS-Protection", "1; mode=block")
 		c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
 
+		// Additional DDoS mitigation headers
+		c.Header("X-DNS-Prefetch-Control", "off")
+		c.Header("X-Download-Options", "noopen")
+
 		// HSTS for HTTPS
 		if c.Request.TLS != nil {
 			c.Header("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
@@ -55,16 +59,16 @@ func SecurityHeaders() gin.HandlerFunc {
 
 		// Content Security Policy
 		csp := "default-src 'self'; " +
-			"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com https://fonts.googleapis.com https://www.youtube.com https://youtube.com; " +
+			"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com https://fonts.googleapis.com https://www.youtube.com https://youtube.com https://www.gstatic.com https://apis.google.com; " +
 			"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; " +
 			"font-src 'self' https://fonts.gstatic.com data:; " +
 			"img-src 'self' data: https: blob:; " +
-			"connect-src 'self' https://www.youtube.com https://youtube.com; " +
-			"frame-src 'self' https://www.youtube.com https://youtube.com; " +
+			"connect-src 'self' https://www.youtube.com https://youtube.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://accounts.google.com https://*.googleapis.com https://www.gstatic.com; " +
+			"frame-src 'self' https://www.youtube.com https://youtube.com https://accounts.google.com https://*.firebaseapp.com https://*.google.com; " +
 			"manifest-src 'self'; " +
 			"object-src 'none'; " +
 			"base-uri 'self'; " +
-			"form-action 'self';"
+			"form-action 'self' https://accounts.google.com;"
 		c.Header("Content-Security-Policy", csp)
 
 		// Permissions Policy

@@ -1,0 +1,137 @@
+{{define "admin/section-form.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body class="bg-gray-50 h-screen overflow-hidden">
+    <!-- Full-width modal for maximum editing space -->
+    <div class="h-full flex flex-col">
+        <!-- Header -->
+        <div class="bg-white border-b px-6 py-3 flex items-center justify-between">
+            <h1 class="text-lg font-semibold">{{.title}}</h1>
+            <button type="button" onclick="window.close()" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Form -->
+        <div class="flex-1 overflow-y-auto">
+            <form {{if .section}}hx-put="/admin/sections/{{.section.ID}}"{{else}}hx-post="/admin/pages/home/sections"{{end}} 
+                  hx-target="#result" hx-swap="innerHTML" class="max-w-7xl mx-auto p-6">
+                
+                <!-- Two-column layout for basic fields -->
+                <div class="grid grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="slug" class="block text-sm font-medium text-gray-700 mb-1">Slug *</label>
+                        <input type="text" id="slug" name="slug" {{if .section}}value="{{.section.Slug}}"{{end}} required
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type *</label>
+                        <select id="type" name="type" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Select type...</option>
+                            <option value="hero" {{if .section}}{{if eq .section.Type "hero"}}selected{{end}}{{end}}>Hero</option>
+                            <option value="about" {{if .section}}{{if eq .section.Type "about"}}selected{{end}}{{end}}>About</option>
+                            <option value="technologies" {{if .section}}{{if eq .section.Type "technologies"}}selected{{end}}{{end}}>Technologies</option>
+                            <option value="experience" {{if .section}}{{if eq .section.Type "experience"}}selected{{end}}{{end}}>Experience</option>
+                            <option value="projects" {{if .section}}{{if eq .section.Type "projects"}}selected{{end}}{{end}}>Projects</option>
+                            <option value="contact" {{if .section}}{{if eq .section.Type "contact"}}selected{{end}}{{end}}>Contact</option>
+                            <option value="custom" {{if .section}}{{if eq .section.Type "custom"}}selected{{end}}{{end}}>Custom</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+                        <input type="text" id="title" name="title" {{if .section}}value="{{.section.Title}}"{{end}} required
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label for="subtitle" class="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
+                        <input type="text" id="subtitle" name="subtitle" {{if .section}}value="{{.section.Subtitle}}"{{end}}
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label for="order" class="block text-sm font-medium text-gray-700 mb-1">Order *</label>
+                        <input type="number" id="order" name="order" {{if .section}}value="{{.section.Order}}"{{else}}value="1"{{end}} required
+                               class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" id="visible" name="visible" value="true" {{if .section}}{{if .section.Visible}}checked{{end}}{{else}}checked{{end}}
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="visible" class="ml-2 text-sm font-medium text-gray-700">Visible</label>
+                    </div>
+                </div>
+
+                <!-- Full-width content area -->
+                <div class="mb-6">
+                    <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Content *</label>
+                    <textarea id="content" name="content" rows="6" required
+                              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">{{if .section}}{{.section.Content}}{{end}}</textarea>
+                </div>
+
+                <!-- Maximized JSON editor -->
+                <div class="mb-6">
+                    <label for="data" class="block text-sm font-medium text-gray-700 mb-1">
+                        Section Data (JSON)
+                        <span class="text-xs text-gray-500 ml-2">Press Tab to auto-format</span>
+                    </label>
+                    <textarea id="data" name="data" rows="20" placeholder='{"example": "value"}'
+                              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm">{{if .section}}{{.section.Data | json}}{{end}}</textarea>
+                </div>
+
+                <div id="result" class="mb-4"></div>
+
+                <!-- Footer buttons -->
+                <div class="flex justify-end gap-3 pt-4 border-t">
+                    <button type="button" onclick="window.close()" 
+                            class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        {{if .section}}Update Section{{else}}Create Section{{end}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Auto-format JSON on Tab key
+        document.getElementById('data').addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                try {
+                    const json = JSON.parse(this.value || '{}');
+                    this.value = JSON.stringify(json, null, 2);
+                } catch (err) {
+                    console.error('Invalid JSON:', err);
+                }
+            }
+        });
+
+        // Auto-format on blur
+        document.getElementById('data').addEventListener('blur', function() {
+            try {
+                const json = JSON.parse(this.value || '{}');
+                this.value = JSON.stringify(json, null, 2);
+            } catch (e) {
+                // Invalid JSON, leave as is
+            }
+        });
+    </script>
+</body>
+</html>
+{{end}}

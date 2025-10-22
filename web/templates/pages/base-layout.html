@@ -1,0 +1,512 @@
+{{define "base-layout"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{if .Page}}{{.Page.Title}}{{else}}Warren Clough - Software Developer{{end}}</title>
+    <meta name="description" content="{{if .Page}}{{.Page.Description}}{{else}}Senior Software Engineer specializing in full-stack development{{end}}">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Custom CSS Variables for Modern Dark Theme -->
+    <style>
+        :root {
+            --background: 0.97 0.005 240;
+            --foreground: 0.25 0.02 240;
+            --card: 1 0 0;
+            --card-foreground: 0.25 0.02 240;
+            --primary: 0.65 0.15 195;
+            --primary-foreground: 0.98 0.005 240;
+            --secondary: 0.92 0.01 240;
+            --secondary-foreground: 0.25 0.02 240;
+            --muted: 0.55 0.02 240;
+            --muted-foreground: 0.55 0.02 240;
+            --accent: 0.65 0.15 195;
+            --accent-foreground: 0.98 0.005 240;
+            --border: 0.88 0.01 240;
+            --input: 0.88 0.01 240;
+            --ring: 0.65 0.15 195;
+            --radius: 0.5rem;
+        }
+
+        .dark {
+            --background: 0.12 0.03 250;
+            --foreground: 0.95 0.01 240;
+            --card: 0.15 0.03 250;
+            --card-foreground: 0.95 0.01 240;
+            --primary: 0.65 0.20 285;
+            --primary-foreground: 0.12 0.03 250;
+            --secondary: 0.20 0.03 250;
+            --secondary-foreground: 0.95 0.01 240;
+            --muted: 0.40 0.03 250;
+            --muted-foreground: 0.60 0.03 250;
+            --accent: 0.65 0.20 285;
+            --accent-foreground: 0.12 0.03 250;
+            --border: 0.22 0.03 250;
+            --input: 0.22 0.03 250;
+            --ring: 0.65 0.20 285;
+        }
+
+        .bg-background { background-color: oklch(var(--background)); }
+        .text-foreground { color: oklch(var(--foreground)); }
+        .bg-card { background-color: oklch(var(--card)); }
+        .text-card-foreground { color: oklch(var(--card-foreground)); }
+        .bg-primary { background-color: oklch(var(--primary)); }
+        .text-primary { color: oklch(var(--primary)); }
+        .text-primary-foreground { color: oklch(var(--primary-foreground)); }
+        .bg-secondary { background-color: oklch(var(--secondary)); }
+        .text-secondary-foreground { color: oklch(var(--secondary-foreground)); }
+        .text-muted-foreground { color: oklch(var(--muted-foreground)); }
+        .bg-accent { background-color: oklch(var(--accent)); }
+        .text-accent-foreground { color: oklch(var(--accent-foreground)); }
+        .border-border { border-color: oklch(var(--border)); }
+        .bg-input { background-color: oklch(var(--input)); }
+        .ring-ring { --tw-ring-color: oklch(var(--ring)); }
+
+        /* Animated Geometric Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: oklch(var(--primary));
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: particleFloat 15s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) { top: 10%; left: 20%; animation-duration: 18s; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 20%; left: 80%; animation-duration: 22s; animation-delay: 2s; }
+        .particle:nth-child(3) { top: 35%; left: 40%; animation-duration: 20s; animation-delay: 4s; }
+        .particle:nth-child(4) { top: 50%; left: 10%; animation-duration: 25s; animation-delay: 1s; }
+        .particle:nth-child(5) { top: 60%; left: 90%; animation-duration: 19s; animation-delay: 3s; }
+        .particle:nth-child(6) { top: 75%; left: 50%; animation-duration: 23s; animation-delay: 5s; }
+        .particle:nth-child(7) { top: 15%; left: 60%; animation-duration: 21s; animation-delay: 2.5s; }
+        .particle:nth-child(8) { top: 45%; left: 25%; animation-duration: 24s; animation-delay: 1.5s; }
+        .particle:nth-child(9) { top: 70%; left: 70%; animation-duration: 20s; animation-delay: 3.5s; }
+        .particle:nth-child(10) { top: 30%; left: 85%; animation-duration: 22s; animation-delay: 0.5s; }
+        .particle:nth-child(11) { top: 85%; left: 15%; animation-duration: 19s; animation-delay: 4.5s; }
+        .particle:nth-child(12) { top: 55%; left: 65%; animation-duration: 21s; animation-delay: 2s; }
+        .particle:nth-child(13) { top: 25%; left: 5%; animation-duration: 23s; animation-delay: 3s; }
+        .particle:nth-child(14) { top: 65%; left: 35%; animation-duration: 20s; animation-delay: 1.5s; }
+        .particle:nth-child(15) { top: 40%; left: 75%; animation-duration: 24s; animation-delay: 4s; }
+        .particle:nth-child(16) { top: 80%; left: 55%; animation-duration: 18s; animation-delay: 2.5s; }
+        .particle:nth-child(17) { top: 5%; left: 45%; animation-duration: 22s; animation-delay: 0.5s; }
+        .particle:nth-child(18) { top: 90%; left: 80%; animation-duration: 25s; animation-delay: 3.5s; }
+        .particle:nth-child(19) { top: 12%; left: 30%; animation-duration: 19s; animation-delay: 1s; }
+        .particle:nth-child(20) { top: 48%; left: 95%; animation-duration: 21s; animation-delay: 5s; }
+
+        @keyframes particleFloat {
+            0%, 100% {
+                transform: translate(0, 0);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translate(50px, -50px);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translate(-30px, 30px);
+                opacity: 0.2;
+            }
+            75% {
+                transform: translate(40px, 40px);
+                opacity: 0.5;
+            }
+        }
+
+        /* Particle Grid */
+        .particle-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 49px, oklch(var(--primary) / 0.03) 49px, oklch(var(--primary) / 0.03) 50px),
+                repeating-linear-gradient(90deg, transparent, transparent 49px, oklch(var(--primary) / 0.03) 49px, oklch(var(--primary) / 0.03) 50px);
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        /* Content needs to be above background */
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Section animation */
+        section {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
+        section:nth-child(5) { animation-delay: 0.5s; }
+        section:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section heading fixed on right */
+        .section-heading {
+            position: fixed;
+            right: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            display: none;
+        }
+
+        @media (min-width: 1536px) {
+            .section-heading {
+                display: block;
+            }
+        }
+
+        .section-nav-item {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            padding: 1rem 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .section-nav-item:hover,
+        .section-nav-item.active {
+            opacity: 1;
+            color: oklch(var(--primary));
+        }
+
+        .section-nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 0;
+            background: oklch(var(--primary));
+            transition: height 0.3s ease;
+        }
+
+        .section-nav-item.active::before {
+            height: 60%;
+        }
+
+        /* Left sidebar navigation - horizontal text, no vertical writing mode */
+        nav .section-nav-item {
+            writing-mode: horizontal-tb;
+            text-orientation: initial;
+            padding: 0;
+        }
+
+        /* Left nav - disable ::before background highlight */
+        nav .section-nav-item::before {
+            display: none;
+        }
+
+        /* Left nav - active state: make the line grow */
+        nav .section-nav-item.active span:first-child,
+        nav .section-nav-item:hover span:first-child {
+            width: 4rem;
+        }
+
+        /* Right side vertical navigation - keep vertical writing mode */
+        .section-heading .section-nav-item {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            padding: 1rem 0.5rem;
+        }
+    </style>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'oklch(var(--background))',
+                        foreground: 'oklch(var(--foreground))',
+                        card: {
+                            DEFAULT: 'oklch(var(--card))',
+                            foreground: 'oklch(var(--card-foreground))',
+                        },
+                        primary: {
+                            DEFAULT: 'oklch(var(--primary))',
+                            foreground: 'oklch(var(--primary-foreground))',
+                        },
+                        secondary: {
+                            DEFAULT: 'oklch(var(--secondary))',
+                            foreground: 'oklch(var(--secondary-foreground))',
+                        },
+                        muted: {
+                            DEFAULT: 'oklch(var(--muted))',
+                            foreground: 'oklch(var(--muted-foreground))',
+                        },
+                        accent: {
+                            DEFAULT: 'oklch(var(--accent))',
+                            foreground: 'oklch(var(--accent-foreground))',
+                        },
+                        border: 'oklch(var(--border))',
+                        input: 'oklch(var(--input))',
+                        ring: 'oklch(var(--ring))',
+                    },
+                    fontFamily: {
+                        'sans': ['Space Grotesk', 'system-ui', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#a78bfa">
+</head>
+<body class="dark bg-background text-foreground font-sans antialiased" style="background-image: url('/static/xandro-vandewalle-TRTqLbpShkM-unsplash.jpg'); background-size: cover; background-position: center; background-attachment: fixed;" x-data="{ modalOpen: false, selectedProject: null, currentSlide: 0, fullscreenImage: false, contactFormOpen: false, contactFormSubmitting: false, contactFormMessage: '' }" @open-contact-form.window="contactFormOpen = true">
+    <!-- Animated Particle Background -->
+    <div class="animated-bg">
+        <div class="particle-grid"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Right Side Section Navigation -->
+    <div class="section-heading">
+        <nav class="flex flex-col gap-6">
+            {{range .Sections}}
+            {{if and .Visible (ne .Type "hero")}}
+            <a href="#{{.Slug}}" class="section-nav-item relative" data-section="{{.Slug}}">
+                {{if eq .Type "technologies"}}Tech{{else if eq .Type "experience"}}Work{{else if eq .Type "about"}}About{{else if eq .Type "projects"}}Projects{{else if eq .Type "contact"}}Contact{{end}}
+            </a>
+            {{end}}
+            {{end}}
+        </nav>
+    </div>
+
+    {{template "home-navigation" .}}
+    
+    <!-- Main Content -->
+    <main class="lg:ml-80">
+        {{template "home-content" .}}
+    </main>
+
+    {{template "home-modals" .}}
+    
+    <!-- Contact Form Dialog -->
+    <div x-show="contactFormOpen" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+         @click="contactFormOpen = false"
+         style="display: none;">
+        
+        <div @click.stop
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-90"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-90"
+             class="bg-card border border-border rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative p-8">
+            
+            <!-- Close Button -->
+            <button @click="contactFormOpen = false" 
+                    class="absolute top-4 right-4 w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center hover:bg-primary hover:border-primary hover:rotate-90 transition-all duration-300">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <h2 class="text-3xl font-bold text-foreground mb-2">Send Me a Message</h2>
+            <p class="text-muted-foreground mb-6">I'll get back to you as soon as possible!</p>
+
+            <form @submit.prevent="submitContactForm" class="space-y-4">
+                <!-- Honeypot field for spam protection -->
+                <input type="text" name="website" tabindex="-1" autocomplete="off" class="absolute opacity-0 pointer-events-none" aria-hidden="true">
+                
+                <div>
+                    <label for="contact-name" class="block text-sm font-medium text-foreground mb-2">Name *</label>
+                    <input type="text" id="contact-name" name="name" required 
+                           x-model="$el.form.name.value"
+                           class="w-full px-3 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label for="contact-email" class="block text-sm font-medium text-foreground mb-2">Email *</label>
+                    <input type="email" id="contact-email" name="email" required 
+                           x-model="$el.form.email.value"
+                           class="w-full px-3 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label for="contact-message" class="block text-sm font-medium text-foreground mb-2">Message *</label>
+                    <textarea id="contact-message" name="message" rows="5" required 
+                              x-model="$el.form.message.value"
+                              class="w-full px-3 py-2 border border-border rounded-lg bg-input text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-vertical"></textarea>
+                </div>
+                
+                <div x-show="contactFormMessage" 
+                     :class="contactFormMessage.includes('success') ? 'text-green-500' : 'text-red-500'"
+                     class="text-sm p-3 rounded-lg bg-background/50"
+                     x-text="contactFormMessage">
+                </div>
+                
+                <button type="submit" 
+                        :disabled="contactFormSubmitting"
+                        class="w-full inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span x-show="!contactFormSubmitting">Send Message</span>
+                    <span x-show="contactFormSubmitting">Sending...</span>
+                    <svg x-show="!contactFormSubmitting" class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {{template "home-scripts" .}}
+    
+    <script>
+        // Track form open time for spam detection
+        let formOpenTime = null;
+        document.addEventListener('alpine:initialized', () => {
+            window.addEventListener('open-contact-form', () => {
+                formOpenTime = Date.now();
+            });
+        });
+        
+        function submitContactForm(event) {
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            // Check honeypot field (should be empty)
+            if (formData.get('website')) {
+                // Spam detected - honeypot filled
+                return;
+            }
+            
+            // Check if form was filled too quickly (less than 3 seconds)
+            const timeTaken = Date.now() - formOpenTime;
+            if (timeTaken < 3000) {
+                this.contactFormMessage = '⚠ Please take a moment to review your message before sending.';
+                return;
+            }
+            
+            this.contactFormSubmitting = true;
+            this.contactFormMessage = '';
+            
+            fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    message: formData.get('message'),
+                    timestamp: formOpenTime
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.contactFormSubmitting = false;
+                if (data.success) {
+                    this.contactFormMessage = '✓ Message sent successfully! I\'ll get back to you soon.';
+                    form.reset();
+                    setTimeout(() => {
+                        this.contactFormOpen = false;
+                        this.contactFormMessage = '';
+                    }, 3000);
+                } else {
+                    this.contactFormMessage = '✗ Failed to send message. Please try again or email me directly.';
+                }
+            })
+            .catch(error => {
+                this.contactFormSubmitting = false;
+                this.contactFormMessage = '✗ An error occurred. Please try again or email me directly at clough.warren@gmail.com';
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
+{{end}}

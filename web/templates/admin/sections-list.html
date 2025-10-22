@@ -1,0 +1,132 @@
+{{define "admin/sections-list.html"}}
+<div class="space-y-3" x-data="{ draggedItem: null }">
+    {{range .sections}}
+    <div data-section-id="{{.ID}}" data-visible="{{.Visible}}" 
+         class="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+         draggable="true"
+         @dragstart="draggedItem = $el; $el.classList.add('opacity-50')"
+         @dragend="$el.classList.remove('opacity-50')"
+         @dragover.prevent
+         @drop.prevent="if (draggedItem && draggedItem !== $el) { 
+             const draggedId = draggedItem.dataset.sectionId; 
+             const targetId = $el.dataset.sectionId;
+             htmx.ajax('PUT', `/admin/sections/${draggedId}/reorder`, {values: {target_id: targetId}, target: '#sections-list'});
+         }">
+        
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="cursor-move text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M7 2a1 1 0 000 2h6a1 1 0 100-2H7zM7 8a1 1 0 000 2h6a1 1 0 100-2H7zM7 14a1 1 0 100 2h6a1 1 0 100-2H7z"></path>
+                    </svg>
+                </div>
+                
+                <div class="flex-1">
+                    <div class="flex items-center space-x-2">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">{{.Title}}</h4>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{if eq .Type "hero"}}bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200{{else if eq .Type "about"}}bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200{{else if eq .Type "technologies"}}bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200{{else if eq .Type "experience"}}bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200{{else if eq .Type "projects"}}bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200{{else if eq .Type "contact"}}bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200{{else}}bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200{{end}}">
+                            {{.Type}}
+                        </span>
+                        {{if .Visible}}
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                            <svg class="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Visible
+                        </span>
+                        {{else}}
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-200">
+                            <svg class="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd"></path>
+                                <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"></path>
+                            </svg>
+                            Hidden
+                        </span>
+                        {{end}}
+                    </div>
+                    
+                    {{if .Subtitle}}
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{.Subtitle}}</p>
+                    {{end}}
+                    
+                    <div class="flex items-center mt-2 text-xs text-gray-500 dark:text-gray-400">
+                        <span>Order: {{.Order}}</span>
+                        <span class="mx-2">•</span>
+                        <span>Slug: {{.Slug}}</span>
+                        {{if .Content}}
+                        <span class="mx-2">•</span>
+                        <span>{{len .Content}} chars</span>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+                <!-- Quick Toggle Visibility -->
+                <button hx-put="/admin/sections/{{.ID}}/toggle-visibility" 
+                        hx-target="#sections-list"
+                        hx-swap="innerHTML"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                        title="Toggle visibility">
+                    {{if .Visible}}
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                    </svg>
+                    {{else}}
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd"></path>
+                        <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"></path>
+                    </svg>
+                    {{end}}
+                </button>
+                
+                <!-- Edit Button -->
+                <button hx-get="/admin/sections/{{.ID}}/edit" 
+                        hx-target="#modal-content"
+                        onclick="document.getElementById('modal').style.display='block'"
+                        class="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300"
+                        title="Edit section">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                </button>
+                
+                <!-- Delete Button -->
+                <button hx-delete="/admin/sections/{{.ID}}" 
+                        hx-target="#sections-list"
+                        hx-swap="innerHTML"
+                        hx-confirm="Are you sure you want to delete this section? This action cannot be undone."
+                        class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+                        title="Delete section">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    {{else}}
+    <div class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No sections</h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating a new section.</p>
+        <div class="mt-6">
+            <button type="button" 
+                    hx-get="/admin/sections/new" 
+                    hx-target="#modal-content" 
+                    onclick="document.getElementById('modal').style.display='block'"
+                    class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Add Section
+            </button>
+        </div>
+    </div>
+    {{end}}
+</div>
+{{end}}

@@ -11,11 +11,14 @@ google-cloud-cli-*.tar.gz
 *.deb
 *.rpm
 
-# Google Cloud service account keys
+# Google Cloud service account keys and credentials
 *.json
 !firebase.json
 !firestore.indexes.json
 !firestore.rules
+credentials/
+*.pem
+*.key
 
 # Go build artifacts
 *.exe

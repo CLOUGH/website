@@ -8,7 +8,7 @@ set -e
 echo "🚀 Starting deployment of Warren Clough website..."
 
 # Set project variables
-PROJECT_ID="my-website-a3970"
+PROJECT_ID="${FIREBASE_PROJECT_ID:-my-website-a3970}"
 SERVICE_NAME="warren-clough-website"
 REGION="us-central1"
 IMAGE_NAME="us-docker.pkg.dev/$PROJECT_ID/gcr.io/$SERVICE_NAME"
@@ -63,7 +63,8 @@ gcloud run deploy $SERVICE_NAME \
     --memory=512Mi \
     --concurrency=1000 \
     --timeout=300 \
-    --set-env-vars="GIN_MODE=release"
+    --set-env-vars="GIN_MODE=release,FIREBASE_PROJECT_ID=$PROJECT_ID,SMTP_HOST=smtp.gmail.com,SMTP_PORT=587,ADMIN_EMAILS=clough.warren@gmail.com" \
+    --set-secrets="SMTP_USERNAME=smtp-username:latest,SMTP_PASSWORD=smtp-password:latest,GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account:latest"
 
 # Deploy Firebase Hosting (this will connect to Cloud Run)
 echo "🌐 Deploying Firebase Hosting..."

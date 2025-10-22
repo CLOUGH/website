@@ -1,0 +1,29 @@
+{{define "about-section"}}
+<section id="{{.Slug}}" class="min-h-screen px-6 py-24 lg:px-24">
+    <div class="max-w-3xl">
+        <h2 class="mb-8 text-3xl font-bold text-foreground">{{.Title}}</h2>
+        {{if .Subtitle}}
+        <h3 class="mb-6 text-xl text-primary">{{.Subtitle}}</h3>
+        {{end}}
+        <div class="space-y-4 text-muted-foreground leading-relaxed">
+            {{if .Data.paragraphs}}
+                {{range .Data.paragraphs}}
+                <p>{{.}}</p>
+                {{end}}
+            {{else}}
+                <div>{{.Content | html}}</div>
+            {{end}}
+        </div>
+        {{if .Data.highlights}}
+        <div class="mt-8 grid gap-4 md:grid-cols-2">
+            {{range .Data.highlights}}
+            <div class="rounded-lg border border-border bg-card/50 p-6">
+                <h4 class="mb-2 font-semibold text-foreground">{{.title}}</h4>
+                <p class="text-sm text-muted-foreground">{{.description}}</p>
+            </div>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+</section>
+{{end}}
